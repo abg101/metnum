@@ -1,0 +1,48 @@
+Porcentaje de casos en donde se cumple la relación
+100.0%
+Casos en los que se cumple la relacion
+5
+Casos en los que no se cumple
+0
+--------------------------
+Equipos ordenados por rating, de mayor a menor
+9 1.0
+5 1.0
+10 1.0
+30 1.0
+2 1.0
+16 1.0
+28 1.0
+8 1.0
+21 1.0
+25 1.0
+13 1.0
+18 1.0
+20 0.5
+6 0.5
+7 0.5
+15 0.5
+1 0.5
+19 0.0
+22 0.0
+23 0.0
+29 0.0
+4 0.0
+3 0.0
+12 0.0
+11 0.0
+17 0.0
+27 0.0
+24 0.0
+26 0.0
+14 0.0
+--------------------------
+Cumplen transitividad(ordenado A B C | rating_A rating_B rating_C, tal que A >= B >= C)
+1 20 17 | 0.5 0.5 0.0
+5 6 15 | 1.0 0.5 0.5
+6 15 12 | 0.5 0.5 0.0
+9 1 20 | 1.0 0.5 0.5
+13 7 24 | 1.0 0.5 0.0
+--------------------------
+No cumplen transitividad
+--------------------------

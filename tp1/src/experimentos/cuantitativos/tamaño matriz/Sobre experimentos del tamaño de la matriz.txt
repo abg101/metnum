@@ -1,0 +1,17 @@
+En estos experimentos vamos a analizar el tiempo de computo que lleva resolver
+el sistema Cr=b usando EG o Cholesky, variando el tamaño de la matriz C.
+
+Recordemos que el tamaño de C depende de la cantidad de equipos que participan 
+en la competencia, ya que $C \in R^{cant_equipos \times cant_equipos}$.
+
+Tenemos una limitacion al tamaño maximo de la matriz. Como estamos usando double
+para realizar los calculos de punto flotante, cada elemento de C ocupa 8 bytes.
+Entonces, la matriz C ocupa cant_equipos * cant_equipos * 8 bytes. Suponiendo una
+computadora promedio con 4GB de ram, el tamaño maximo de matriz con el podemos
+experimentar es aproximadamente 22360 \times 22360.
+
+Sin embargo, hay un problema mas que limita el tamaño de la matriz. Cuando 
+realizamos la descomposición de Cholesky, la matriz L tal que C = L L^t tiene el 
+mismo tamaño que C, por lo cual en un momento dado tenemos dos matrices del 
+mismo tamaño que exceden la cantidad de memoria con la que vamos a experimentar.
+Por lo tanto, elegimos como tamaño maximo la mitad del valor anterior, 11180.
