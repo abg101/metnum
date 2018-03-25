@@ -1,9 +1,0 @@
-Comando
-./tp [archivo de entrada] [archivo de salida] [modo] [cant_b] mostrar_equipos
-Parametros necesarios
-**** Archivo de entrada
-**** Archivo de salida
-**** modo = 0(EG), 1(CL), 2(WP)
-**** cant_b: Si no queres variar el b, pone 0. Sino pone la cantidad de veces que queres variar el 0
-Parametros opcionales
-**** Mostrar equipo: Muestra en pantalla los equipos en el mismo orden que sus ratings resultantes. Si, tenes que escribir mostrar_equipos

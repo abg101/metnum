@@ -1,5 +1,0 @@
-En este experimento vamos a ver el tiempo de computo del sistema al resolver 
-varios sistemas de la forma $Cr = b$, donde C es constante y b varía, utilizando
-Eliminación Gaussiana y Factorización de Cholesky.
-
-
