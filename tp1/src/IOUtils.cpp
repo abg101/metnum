@@ -19,15 +19,17 @@ Matriz IOUtils::leerEntrada(const string &nombreArchivo){
 		exit(1);
 	}
 	unsigned long num_pag=0, num_links=0, pag_i=0, pag_j=0;
-	in >> num_pag >> num_links;
-	if(num_pag==0 || num_links==0){
-		cerr << "La cantidad de paginas o links debe ser mayor que cero" << endl;
+	if(!(in >> num_pag >> num_links)){
+		cerr << "No se pudo leer el numero de paginas o el numero de links." << endl;
+		exit(1);
+	}
+	if(num_pag==0){
+		cerr << "La cantidad de paginas debe ser mayor que cero" << endl;
 		exit(1);
 	}
 	Matriz mat(num_pag, num_pag);
 	for(unsigned long i=0; i<num_links; i++){
-		in >> pag_i >> pag_j;
-		if(!in.good()){
+		if(!(in >> pag_i >> pag_j)){
 			cerr << "Error archivo: " << nombreArchivo << " incompleto, se esperaban: " 
                              << num_links << " links y se leyeron hasta: " << i << " links." << endl;
 			exit(2);
