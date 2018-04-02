@@ -7,7 +7,7 @@ Matriz::Matriz()
     columnas = 0;
 }
 
-Matriz::Matriz(long filas, long columnas)
+Matriz::Matriz(int filas, int columnas)
 {
     this->construct(filas, columnas);
 }
@@ -17,17 +17,17 @@ Matriz::~Matriz()
    
 }
 
-long Matriz::Filas()
+int Matriz::Filas()
 {
     return filas;
 }
 
-long Matriz::Columnas()
+int Matriz::Columnas()
 {
     return columnas;
 }
 
-void Matriz::construct(long filas, long columnas)
+void Matriz::construct(int filas, int columnas)
 {
     if (filas < 1 || columnas < 1) {
         throw "La dimension de la matriz no puede ser cero o negativa";
@@ -36,63 +36,44 @@ void Matriz::construct(long filas, long columnas)
     this->filas = filas;
     this->columnas = columnas;
 
-    vals = vector<double> (); 
-    cols = vector<long> ();
-    filas_ptr =  vector<long>(filas + 1, 1);
+    unordered_map<int,double> mapa;
+    vector<unordered_map<int,double> > vec(filas,mapa);
+
+    filas_ptr = vec;
+    nnz = 0;
 }
 
 
-Matriz & Matriz::Set(double val, long fila, long col)
+Matriz & Matriz::Set(double val, int fila, int col)
 {
     this->validarCoordenadas(fila, col);
 
-    long pos = filas_ptr.at(fila - 1) - 1;
-    long actual = -1;
-    //recorro la fila en el vector de cols entre los indices apuntados por filas_ptr y 
-    // el de la fila siguiente.
-    for (; pos < filas_ptr.at(fila) - 1; pos++) {
-        actual = cols.at(pos);
-//en la posicion pos de cols me indica que columna esta almacenada.
-        if (actual == col) {
-            break; //la quiero ya estaba.
+   // pair<int,double> par = make_pair(col, val);
+  
 
-        } else if (actual > col) {
-            break; //la que quiero no estaba.
+        if (abs(val) < epsilon){
+           if ((filas_ptr[fila-1].count(col)) > 0){
+            
+                filas_ptr[fila-1].erase(col);
+                --nnz;
+                }
+        }else{
+            filas_ptr[fila-1][col] = val;
+            ++nnz;
         }
-    }
-
-    if (actual != col) {
-        if (val != 0) {
-            this->insert(pos, fila, col, val); //mete el valor.
-        } //si no estaba y quiero meter un cero no hago nada.
-
-    } else if (abs(val) < 0.00000001) {
-        this->remove(pos, fila); //si quiero ehcufar un cero saco esa posicion de los vectores val y cols.
-
-    } else {
-        vals.at(pos) = val; //si no y si ya estaba meto el valor.
-    }
 
     return *this;
 }
 
 
 
-double Matriz::Get(long fila, long col) const
+double Matriz::Get(int fila, int col) const
 {
     this->validarCoordenadas(fila, col);
 
-    long actual;
-    //recorro la fila en el vector de cols entre los indices apuntados por filas_ptr y el de la fila siguiente.
-    for (long i = filas_ptr.at(fila - 1) - 1; i < filas_ptr.at(fila) - 1; i++) {
-        actual = cols.at(i); //en la pos i de cols me indica que columna esta almacenada.
-
-        if (actual == col) { //si es igual a la buscada retorno el elem de vals en esa pos.
-            return vals.at(i);
-
-        } else if (actual > col) { //si es mayor es porque en la posicion buscada hay cero.
-            break;
-        }
+    if ((filas_ptr[fila-1].count(col)) > 0)
+    {
+        return (filas_ptr[fila-1].at(col));
     }
 
     return 0;
@@ -100,62 +81,16 @@ double Matriz::Get(long fila, long col) const
 
 vector<double> Matriz::multiply(const vector<double> & x) const
 {
-    if (this->columnas != (long) x.size()) {
-        throw "No matchea la dimension";
-    }
 
-    vector<double> result(this->filas, 0);
-    long actual = 1;
-
-   //recorro el vector de no ceros.
-   for (long i = 0; i < vals.size(); ++i)
-   {      
-        if (i == (filas_ptr.at(actual) -1))
-        {
-            actual ++;
-            long j = filas_ptr.at(actual-1);
-            while (j == filas_ptr.at(actual))
-            {
-                actual ++;
-            }
-        }
-
-       long columna = cols.at(i);
-       result[actual-1] += (vals.at(i))*x[columna-1];
-
-      
-   }    //
-
-    return result;
 }
 
 
 Matriz Matriz::multiply(const Matriz & b) const
 {
-    if (this->columnas != b.filas) {
-        throw "No matchea la dimension";
-    }
 
-    Matriz result(this->filas, b.columnas);
-
-    double a;
-
-    for (long i = 1; i <= this->filas; i++) {
-        for (long j = 1; j <= b.columnas; j++) {
-            a = 0;
-
-            for (long k = 1; k <= this->columnas; k++) {
-                a += this->Get(i, k) * b.Get(k, j);
-            }
-
-            result.Set(a, i, j);
-        }
-    }
-
-    return result;
 }
 
-void imprimirvector80(std::vector<double> v) {
+void imprimirvector80(std::vector<double>& v) {
     for (int i = 0; i < v.size(); ++i)
     {
         cout << v[i] << "," << endl;
@@ -163,59 +98,38 @@ void imprimirvector80(std::vector<double> v) {
 }
 
 vector<double> Matriz::valores(){
-   // vector<double> res = vals
-    return this->vals;
+
 }
+
+
 
 void Matriz::escalar(double k)
 {
-    //Matriz result(this->filas, this->columnas)   
+     
 
-    for (int i = 0; i < vals.size(); i++)
+    for (int i = 0; i < filas; i++)
     {
-        (this->vals)[i]= (double)(k*(this->vals)[i]);
+        for(auto it = filas_ptr[i-1].begin(); it != filas_ptr[i-1].end(); ++it){
+
+            it->second = (it->second)*k;
+        }
      
     }
-
 }
 
 
 Matriz Matriz::add(const Matriz & mat) const
 {
-    if (this->filas != mat.filas|| this->columnas != mat.columnas) {
-        throw "No matchea dimension";
-    }
-
-    Matriz result(this->filas, this->columnas);
-
-    for (int i = 1; i <= this->filas; i++) {
-        for (int j = 1; j <= this->columnas; j++) {
-            result.Set(this->Get(i, j) + mat.Get(i, j), i, j);
-        }
-    }
-
-    return result;
+ 
 }
 
 Matriz Matriz::sub(const Matriz & mat) const
 {
-    if (this->filas != mat.filas || this->columnas != mat.columnas) {
-        throw "No matchea dimension";
-    }
 
-    Matriz result(this->filas, this->columnas);
-
-    for (int i = 1; i <= this->filas; i++) {
-        for (int j = 1; j <= this->columnas; j++) {
-            result.Set(this->Get(i, j) - mat.Get(i, j), i, j);
-        }
-    }
-
-    return result;
 }
 
 
-void Matriz::validarCoordenadas(long fila, long col) const
+void Matriz::validarCoordenadas(int fila, int col) const
 {
     if (fila < 1 || col < 1 || fila > this->filas || col > this->columnas) {
         throw "Coordenadas fuera del rango";
@@ -223,40 +137,20 @@ void Matriz::validarCoordenadas(long fila, long col) const
 }
 
 
-void Matriz::insert(long index, long fila, long col, double val)
+void Matriz::insert(int index, int fila, int col, double val)
 {
-    if (vals.empty()) {
-        vals =  vector<double>(1, val);
-        cols =  vector<long>(1, col);
-     //si no habia nada creo los vectores vals y columnas con sus respectivos elems
-    } else {
-        vals.insert(vals.begin() + index, val);
-        cols.insert(cols.begin() + index, col);
-    } //si no, ingreso en la posicion deseada .
 
-    for (long i = fila; i <= this->filas; i++) {
-        filas_ptr.at(i) = filas_ptr.at(i) + 1;
-    } //todos los indices de las filas que le siguen se corren . inc a cant de no ceros.
 }
 
 
-void Matriz::remove(long index, long fila)
+void Matriz::remove(int index, int fila)
 {
-    vals.erase(vals.begin() + index); //borro esa posicion en vals
-    cols.erase(cols.begin() + index); //borro esa posicion en cols
-
-    for (long i = fila; i <= this->filas; i++) {
-        filas_ptr.at(i) = filas_ptr.at(i) - 1;
-    } //los indices de las filas que le siguen ahora son uno menos al igual que los no ceros.
+ 
 }
 
 bool operator == (const Matriz & a, const Matriz & b)
 {
-    return ((a.vals).empty() && b.vals.empty())
-                || (!(a.vals).empty() && !(b.vals).empty() && (a.vals) == (b.vals))
-            && (((a.cols).empty() && (b.cols).empty())
-                || (!(a.cols).empty() && !(b.cols).empty() && (a.cols) == (b.cols)))
-            && (a.filas_ptr) == (b.filas_ptr);
+    return a.filas_ptr == b.filas_ptr;
 }
 
 
@@ -306,47 +200,91 @@ Matriz operator - (const Matriz & a, const Matriz & b){
     return a.sub(b);
 }
 
+void Matriz::columnaPorMenosPSobreSuGrado(vector<int>& grados, double p){
 
-Matriz Matriz::transpose()
-{
-	long m = this->filas;
-	long n = this->columnas;
-
-	Matriz res(n,m);
-	for(long i = 1; i <= m; i++)
-		for(long j = 1; j <= n; j++)
-			res.Set(this->Get(i,j),j,i);
-	return res;
+   for (int i = 0; i < filas; ++i)
+    {   
+        for(auto it = filas_ptr[i].begin(); it != filas_ptr[i].end(); ++it){
+            it->second = (-1.0)*(it->second)*p/grados[it->first-1];
+        }
+        //vals[i] = (-1)*vals[i]*p/grados[cols[i]-1];
+    }
 }
 
-vector<double> Matriz::transmultiply(const vector<double> & x) const
-{
-    if (this->filas != (int) x.size()) {
-        throw "No matchea la dimension";
+void Matriz::resolver(vector<double> & ranking, vector<double> &b){
+
+
+    this->eliminacionGaussiana(b);
+
+
+    this->backwardSubstitution(ranking,b);
+
+}
+
+int binary_search_find_index(vector<int> v, int data) {
+
+}
+
+int Matriz::IndiceFila(int j, int k){
+
+
+    
+}
+
+void Matriz::eliminacionGaussiana(vector<double>& b){
+
+    for (int k = 0; k < filas; ++k)
+    {   
+        for (int i = k+1; i < filas; ++i)
+          {
+              if (filas_ptr[i].count(k+1) > 0)
+              {
+                  double coef =  (double)(this->Get(i+1,k+1)) / (this->Get(k+1,k+1));//filas_ptr[i][k+1]/filas_ptr[k][k+1];
+
+
+                  //recorro fila k
+
+                    for (int j = k; j < columnas; ++j)
+                    {
+                         
+                         double resta = this->Get(i+1,j+1) - coef*(this->Get(k+1,j+1));
+                 
+                        this->Set(resta,i+1,j+1);
+                   
+                    }
+
+                    b[i] = b[i] - coef*b[k] ;
+  
+              }
+          }  
     }
 
-    vector<double> result(this->columnas, 0);
-    long actual = 1;
-
-   //recorro el vector de no ceros.
-   for (long i = 0; i < vals.size(); ++i)
-   {      
-        if (i == (filas_ptr.at(actual) -1))
-        {
-            actual ++;
-            long j = filas_ptr.at(actual-1);
-            while (j == filas_ptr.at(actual))
-            {
-                actual ++;
-            }
-        }
-
-       long columna = cols.at(i);
-       result[columna-1] += (vals.at(i))*x[actual-1];
-
-      
-   }    //
-
-    return result;
-
 }
+
+void Matriz::backwardSubstitution(vector<double>& ranking, vector<double>& b){
+
+    double acum = 0.0;
+    //int i = this->vals.size()-1; // empezamos desde el ultimo.
+    for (int k = filas-1; k >= 0; --k)
+    {
+        // indice en vals donde empieza la fila k y por lo tanto a_k_k.
+        
+
+        //recorro la fila en busca de coeficientes no nulos que multipliquen a las
+        // x_l mayores que a x_i_i.
+        for (int l = k+1; l < columnas ; ++l)
+        {   
+            acum = acum +  this->Get(k+1,l+1)*ranking[l];
+           
+        }
+        //resto b_i menos el acum y lo divido por el coef de a_i_i.
+
+        ranking[k] = (double) ((b[k]-acum) / this->Get(k+1,k+1));//  vals[i]);
+        acum = 0.0;
+
+
+        //imprimirvector80(ranking);
+
+    }
+
+ }

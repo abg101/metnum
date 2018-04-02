@@ -10,8 +10,16 @@
 //#include <math.h>
 #include <cmath>
 #include <assert.h>
+#include <utility>
+#include <unordered_set>
+#include <unordered_map>
 
 using namespace std;
+
+
+#define epsilon 0.00000001
+
+
 
 
 /// Indexa de 1 a n/m ///
@@ -23,17 +31,17 @@ public:
 
     Matriz();
 
-    Matriz(long, long);
+    Matriz(int, int);
 
     ~Matriz();
 
-    long Filas();
+    int Filas();
 
-    long Columnas();
+    int Columnas();
 
-    Matriz & Set(double val, long fila, long col); 
+    Matriz & Set(double val, int fila, int col); 
 
-    double Get(long, long) const;    
+    double Get(int, int) const;    
 
    // void Resize(long,long);
 
@@ -46,6 +54,14 @@ public:
     Matriz add(const Matriz & m) const;
 
     Matriz sub(const Matriz & m) const;
+
+    void resolver(vector<double> & ranking, vector<double> &b);
+
+    void eliminacionGaussiana(vector<double>& b);
+
+    void backwardSubstitution(vector<double>& ranking, vector<double>& b);
+
+    int IndiceFila(int j, int k);
 
     friend bool operator == (const Matriz & a, const Matriz & b);
 
@@ -62,27 +78,24 @@ public:
     friend ostream & operator << (ostream & os, const Matriz & matrix);
 
     friend void prlong(const Matriz & matrix, ostream & os);
-		
-	Matriz transpose();
-
-    vector<double> transmultiply(const vector<double> & x) const;
 
     vector<double> valores();
+
+    void columnaPorMenosPSobreSuGrado(vector<int>& grados, double p);
 
 
 private:
     
-    vector<double>  vals;
-    vector<long>  cols;
-    vector<long>  filas_ptr;
+    vector<unordered_map<int,double> >  filas_ptr;
+    int nnz;
 
-    long filas;
-    long columnas;
+    int filas;
+    int columnas;
 
-    void construct(long fila, long columna);
-    void validarCoordenadas(long fila, long col) const;
-    void insert(long index, long fila, long col, double val);
-    void remove(long index, long fila);
+    void construct(int fila, int columna);
+    void validarCoordenadas(int fila, int col) const;
+    void insert(int index, int fila, int col, double val);
+    void remove(int index, int fila);
 
 
 };
