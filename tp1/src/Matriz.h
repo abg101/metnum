@@ -13,13 +13,12 @@
 #include <utility>
 #include <unordered_set>
 #include <unordered_map>
+#include <map>
 
 using namespace std;
 
 
 #define epsilon 0.00000001
-
-
 
 
 /// Indexa de 1 a n/m ///
@@ -86,7 +85,7 @@ public:
 
 private:
     
-    vector<unordered_map<int,double> >  filas_ptr;
+    vector<map<int,double> >  filas_ptr;
     int nnz;
 
     int filas;

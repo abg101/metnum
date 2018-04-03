@@ -57,10 +57,11 @@ void IOUtils::escribirSalida(const string &nombreArchivo, double p, const std::v
 		exit(4);
 	}
 	out << p << endl;
+	cout << "despues de p" << endl;
 	for(std::vector<double>::const_iterator it=rank.begin(); it!=rank.end(); ++it){
 		out << *it << endl;
 	}
-
+	cout << "depsues de imprimir" << endl;
 	out.flush();
 	out.close();
 } 

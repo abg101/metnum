@@ -2,17 +2,6 @@
 #include <iostream>
 #include <fstream>
 
-void imprimirvector7(std::vector<double>& v) {
-    for (int i = 0; i < v.size(); ++i)
-    {
-        cout << v[i] << "," << endl;
-    }}
-void imprimirvector7(std::vector<pair<int, int> >& v) {
-    for (int i = 0; i < v.size(); ++i)
-    {
-        cout << v[i].first << ", " << v[i].second << endl;
-    }
-}
 ////////////////////////////////////////////////////////
 PageRank::PageRank()
 {
@@ -119,10 +108,9 @@ void PageRank::calcularRanking(double p)
 
     vector<double> solucion(cantDePaginas);
 
-
     this->matrizDeConectividad.resolver(this->ranking,b);
- 
-    normalizar(ranking);
 
+    normalizar(ranking);
+    cout << "asd" << endl; 
 
 }
