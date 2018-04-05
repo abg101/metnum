@@ -9,7 +9,7 @@ int main(int argc, char const *argv[])
 	double p = stod(argv[2]);
 
 	IOUtils utilidad;
-	PageRank rank = utilidad.leerEntrada("../tests/catedra"+archivo_entrada);
+	PageRank rank = utilidad.leerEntrada("../tests/catedra/"+archivo_entrada);
 
 	rank.calcularRanking(p);
 
