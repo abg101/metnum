@@ -111,6 +111,5 @@ void PageRank::calcularRanking(double p)
     this->matrizDeConectividad.resolver(this->ranking,b);
 
     normalizar(ranking);
-    cout << "asd" << endl; 
 
 }

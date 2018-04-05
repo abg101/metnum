@@ -11,9 +11,6 @@ tp1: $(OBJ)
 %.o: %.cpp $(DEPS)
 	$(CPP) $(FLAGS) -c -o $@ $<
 
-#IOUtils.o: IOUtils.cpp IOUtils.h
-#	$(CPP) $FLAGS -c -o $^	
-
 clean:
 	rm -f *.o
 	rm -f tp1

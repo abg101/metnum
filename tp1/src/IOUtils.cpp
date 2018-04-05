@@ -1,8 +1,6 @@
 #include "IOUtils.h"
-//#include "Matriz.h"
 #include <iostream>
 #include <fstream>
-
 
 using namespace std;
 
@@ -52,16 +50,15 @@ PageRank IOUtils::leerEntrada(const string &nombreArchivo){
 
 void IOUtils::escribirSalida(const string &nombreArchivo, double p, const std::vector<double>& rank){
 	ofstream out(nombreArchivo.c_str());
+
 	if(!out){
 		cerr << "No se puede crear el archivo: " << nombreArchivo << endl;
 		exit(4);
 	}
 	out << p << endl;
-	cout << "despues de p" << endl;
 	for(std::vector<double>::const_iterator it=rank.begin(); it!=rank.end(); ++it){
 		out << *it << endl;
 	}
-	cout << "depsues de imprimir" << endl;
 	out.flush();
 	out.close();
 } 

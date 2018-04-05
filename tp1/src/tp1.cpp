@@ -1,5 +1,3 @@
-//include "Matriz.h"
-//#include <iostream>
 #include "IOUtils.h"
 
 using namespace std;
@@ -11,13 +9,11 @@ int main(int argc, char const *argv[])
 	double p = stod(argv[2]);
 
 	IOUtils utilidad;
-	PageRank rank = utilidad.leerEntrada("../tests/catedra/tests_tp1/"+archivo_entrada);
-
+	PageRank rank = utilidad.leerEntrada("../tests/catedra"+archivo_entrada);
 
 	rank.calcularRanking(p);
 
-	utilidad.escribirSalida("archivo_entrada.txt",p,rank.GetRanking());
-
+	utilidad.escribirSalida(archivo_entrada+".out",p,rank.GetRanking());
 
 	return 0;
 }
