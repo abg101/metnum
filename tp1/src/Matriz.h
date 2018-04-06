@@ -15,7 +15,8 @@
 using namespace std;
 
 
-#define epsilon 0.00000000001
+//#define epsilon 0.00000000001
+const double epsilon = 0.000000001;
 
 /// Indexa de 1 a n/m ///
 

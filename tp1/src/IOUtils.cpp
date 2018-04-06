@@ -2,12 +2,41 @@
 #include <iostream>
 #include <fstream>
 
+
 using namespace std;
 
 IOUtils::IOUtils(){
 }
 
 IOUtils::~IOUtils(){
+}
+
+config IOUtils::parse(int argc, char** argv){
+
+	config args;
+
+	args.input_file = argv[1];
+	args.output_file = args.input_file+".out";
+	args.p = stod(argv[2]);
+
+	char option;
+    while ((option = getopt(argc, argv, "t")) != -1) {
+        switch (option) {
+            case 't': { // calcular tiempo de ejecución
+                args.timer_flag = true;
+                break;
+            }         
+
+            default: { // si las opciones son inválidas
+               // mostrar_ayuda(argv[0]);
+                exit(1);
+                break;
+            }
+        }
+    }
+
+    return args;
+
 }
 
 PageRank IOUtils::leerEntrada(const string &nombreArchivo){

@@ -1,4 +1,102 @@
 \section{Desarrollo}
 
+\subsubsection{Consideraciones preliminares} %TODO: mejor nombre
 
+Para ejecutar el algoritmo de \emph{Page Rank} debemos resolver el sistema de ecuaciones lineales $A x = x$, donde la matriz A $\in \mathbb{R}^{nxn}$ esta definida como:
 
+\begin{equation}
+    a_{ij} = \left\{
+            \begin{array}{ll}
+                 (1-p)/n + (pw_{ij})/c_j      & \mathrm{si\ } c_j \neq 0 \\
+                 1/n & \mathrm{si\ } c_j = 0
+            \end{array}
+        \right.
+\end{equation}
+
+Queremos demostrar que $A = pWD + e.z^t$, donde:  
+\begin{itemize}
+	\item p $\in \mathbb{R}$ la probabilidad de seguir un link de la página actual.  
+	\item W $\in \mathbb{R}^{nxn}$ es la matriz de conectividad.  
+	\item  e $\in \mathbb{R}^{n}$ es un vector de unos.
+    \item D $\in \mathbb{R}^{nxn}$ es una matriz diagonal con cada elemento de la misma de la forma:     
+    \begin{equation}
+    	\label{defd}
+        d_{jj} = \left\{
+                \begin{array}{ll}
+                     1/cj & \mathrm{si\ } c_j \neq 0 \\
+                     0    & \mathrm{si\ } c_j = 0
+                \end{array}
+            \right.
+    \end{equation}
+    \item z $\in \mathbb{R}^{n}$ es un vector de la forma:  
+    \begin{equation}
+    	\label{defz}
+        z_{j} = \left\{
+                \begin{array}{ll}
+                     (1-p)/n      & \mathrm{si\ } c_j \neq 0 \\
+                     1/n & \mathrm{si\ } c_j = 0
+                \end{array}
+            \right.
+    \end{equation}
+\end{itemize}
+
+La matriz $B = p.W$, por ser multiplicacion de un escalar con una matriz, es de la forma:
+
+\begin{equation}
+	\label{defb}
+	b_{ij} = p.w_{ij}
+\end{equation}
+
+Luego sea la matriz $R = BD = pWD$. Entonces cada elemento de R queda definido como $R_{ij} = \sum_{k=1}^n b_{ik} d_{kj}$
+
+Pero, como la matriz D es nula excepto en la diagonal, se cancelan todos los términos de la sumatoria excepto cuando k = j, luego: 
+\begin{equation}
+R_{ij} = b_{ij} d_{jj}
+\end{equation}
+
+Reemplazando por las definiciones \ref{defb} y \ref{defd}: 
+
+\begin{equation}
+	\label{defr}
+    R_{ij} = \left\{
+            \begin{array}{ll}
+                 (p.w_{ij})/c_j & \mathrm{si\ } c_j \neq 0 \\
+                 0              & \mathrm{si\ } c_j = 0
+            \end{array}
+        \right.
+\end{equation}
+
+Ahora, si tomamos $e.z^t$ y la nombramos Q, entonces Q $\in \mathbb{R}^{nxn}$ (porque $e \in \mathbb{R}^{nx1}$ y $z^t \in \mathbb{R}^{1xn}$). Luego $Q_{ij} = \sum{k=1}^1e_i.z_j$.
+
+Observando que cada fila de $e$ tiene un solo elemento podemos escribir:  
+$Q_{ij} = e_i.z_j$
+
+Siendo $\forall i, e_i = 1$ y los elementos $z_j$ definidos como en la ecuacion \ref{defz}:
+
+\begin{equation}
+	\label{defq}
+    Q_{ij} = \left\{
+            \begin{array}{ll}
+                 (1-p)/n      & \mathrm{si\ } c_j \neq 0 \\
+                 1/n & \mathrm{si\ } c_j = 0
+            \end{array}
+        \right.
+\end{equation}
+
+Entonces $pWD + e.z^t = R + Q$. La suma esta bien definida al ser R $\in \mathbb{R}^{nxn}$ y Q $\in \mathbb{R}^{nxn}$. A esta matriz la llamo C y quiero ver que $C=A$:
+
+$C_{ij} = R_{ij} + Q_{ij}$
+
+Reemplazo por las definiciones \eqref{defr} y \eqref{defq}:
+
+\begin{equation}
+	\label{defc}
+    C_{ij} = \left\{
+            \begin{array}{ll}
+                 (1-p)/n + (p.w_{ij})/c_j & \mathrm{si\ } c_j \neq 0 \\
+                 1/n + 0                  & \mathrm{si\ } c_j = 0
+            \end{array}
+        \right.
+\end{equation}
+
+Luego nos queda $C=A$.
