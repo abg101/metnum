@@ -5,6 +5,18 @@
 
 using namespace std;
 
+string GetFilename (const string& str)
+{
+  size_t ultimo = str.find_last_of("/\\");
+  return str.substr(ultimo+1);
+}
+
+string GetPath (const string& str)
+{
+  size_t ultimo = str.find_last_of("/\\");
+  return str.substr(0,ultimo+1);
+}
+
 IOUtils::IOUtils(){
 }
 
@@ -16,25 +28,34 @@ config IOUtils::parse(int argc, char** argv){
 	config args;
 
 	args.input_file = argv[1];
-	args.output_file = args.input_file+".out";
+	args.output_path = "";//GetPath(args.input_file);
+	args.output_file = GetFilename(args.input_file)+".out";
 	args.p = stod(argv[2]);
 
 	char option;
-    while ((option = getopt(argc, argv, "t")) != -1) {
+    while ((option = getopt(argc, argv, "te:o:")) != -1) {
         switch (option) {
             case 't': { // calcular tiempo de ejecución
                 args.timer_flag = true;
                 break;
+            }
+            case 'e':{	
+            	args.output_path = optarg;
+            	break;
+            }
+            case 'o':{
+            	args.output_file = optarg;
+            	break;
             }         
 
             default: { // si las opciones son inválidas
-               // mostrar_ayuda(argv[0]);
+            
                 exit(1);
                 break;
             }
         }
-    }
 
+    }
     return args;
 
 }
@@ -77,18 +98,23 @@ PageRank IOUtils::leerEntrada(const string &nombreArchivo){
 	return pageRank;
 }
 
-void IOUtils::escribirSalida(const string &nombreArchivo, double p, const std::vector<double>& rank){
-	ofstream out(nombreArchivo.c_str());
+void IOUtils::escribirSalida(const vector<double>& rank, const config &args){
+	
+	ofstream out(args.output_path+args.output_file);
 
 	if(!out){
-		cerr << "No se puede crear el archivo: " << nombreArchivo << endl;
+		cerr << "No se puede crear el archivo: " << args.output_path+args.output_file<< endl;
 		exit(4);
 	}
-	out << p << endl;
+	out << args.p << endl;
 	for(std::vector<double>::const_iterator it=rank.begin(); it!=rank.end(); ++it){
 		out << *it << endl;
 	}
 	out.flush();
 	out.close();
+
+	if(args.timer_flag) cout << (args.timer) << endl;
 } 
+
+
 

@@ -1,19 +1,19 @@
 #include "IOUtils.h"
-#include <chrono>
+#include <ctime>
 
 using namespace std;
 
-static chrono::time_point<chrono::high_resolution_clock> start_time;
+time_t start_time;
+
 
 void start_timer() {
-    start_time = chrono::high_resolution_clock::now();
+    start_time = clock();
 }
 
 double stop_timer() {
-    chrono::time_point<chrono::high_resolution_clock> end_time = chrono::high_resolution_clock::now();
-    return double(chrono::duration_cast<chrono::nanoseconds>(end_time - start_time).count());
+    auto end_time = clock();
+    return (end_time - start_time /(double)  CLOCKS_PER_SEC);
 }
-
 
 int main(int argc, char* argv[])
 {
@@ -21,13 +21,14 @@ int main(int argc, char* argv[])
 	IOUtils utilidad;
 	config args = utilidad.parse(argc,argv);
 	PageRank rank = utilidad.leerEntrada(args.input_file);
-	
-	start_timer();
+
+    start_timer();
 	rank.calcularRanking(args.p);
 	args.timer = stop_timer();
-	utilidad.escribirSalida(args.output_file,args.p,rank.GetRanking());
 
-	if(args.timer_flag) cout << args.timer << endl;
+	utilidad.escribirSalida(rank.GetRanking(),args);
 
 	return 0;
 }
+
+

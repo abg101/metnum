@@ -37,7 +37,11 @@ public:
 
     Matriz & Set(double val, int fila, int col); 
 
-    double Get(int, int) const;    
+    double Get(int, int) const;
+
+    void escalar(double k);    
+
+    vector<double> multiply(const vector<double> & x) const;
 
     void resolver(vector<double> & ranking, vector<double> &b);
 
@@ -49,9 +53,13 @@ public:
 
     friend bool operator != (const Matriz & a, const Matriz & b);
 
+    friend vector<double> operator * (const Matriz & a, const vector<double> & b);
+
     friend ostream & operator << (ostream & os, const Matriz & matrix);
 
     void columnaPorMenosPSobreSuGrado(vector<int>& grados, double p);
+
+    int GetNoNulos();
 
 
 private:

@@ -15,6 +15,7 @@ struct config
 
     string input_file;
     string output_file;
+    string output_path;
     double p = 0.0;
 };
 
@@ -24,6 +25,7 @@ public:
 	~IOUtils();
 	config parse(int argc, char** argv);
 	PageRank leerEntrada(const std::string &nombreArchivo);
-	void escribirSalida(const std::string &nombreArchivo, double p, const std::vector<double>& rank);
+	void escribirSalida(const std::vector<double>& rank, const config &args);
+	//void escribirSalida(const std::string &nombreArchivo, double p, const std::vector<double>& rank);
 }; 
 #endif

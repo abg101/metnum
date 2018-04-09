@@ -17,7 +17,7 @@ Queremos demostrar que $A = pWD + e.z^t$, donde:
 \begin{itemize}
 	\item p $\in \mathbb{R}$ la probabilidad de seguir un link de la página actual.  
 	\item W $\in \mathbb{R}^{nxn}$ es la matriz de conectividad.  
-	\item  e $\in \mathbb{R}^{n}$ es un vector de unos.
+	\item e $\in \mathbb{R}^{n}$ es un vector de unos.
     \item D $\in \mathbb{R}^{nxn}$ es una matriz diagonal con cada elemento de la misma de la forma:     
     \begin{equation}
     	\label{defd}
@@ -66,7 +66,7 @@ Reemplazando por las definiciones \ref{defb} y \ref{defd}:
         \right.
 \end{equation}
 
-Ahora, si tomamos $e.z^t$ y la nombramos Q, entonces Q $\in \mathbb{R}^{nxn}$ (porque $e \in \mathbb{R}^{nx1}$ y $z^t \in \mathbb{R}^{1xn}$). Luego $Q_{ij} = \sum{k=1}^1e_i.z_j$.
+Ahora, si tomamos $e.z^t$ y la nombramos Q, entonces Q $\in \mathbb{R}^{nxn}$ (porque $e \in \mathbb{R}^{nx1}$ y $z^t \in \mathbb{R}^{1xn}$). Luego $Q_{ij} = \sum_{k=1}^1e_i.z_j$.
 
 Observando que cada fila de $e$ tiene un solo elemento podemos escribir:  
 $Q_{ij} = e_i.z_j$
@@ -87,7 +87,7 @@ Entonces $pWD + e.z^t = R + Q$. La suma esta bien definida al ser R $\in \mathbb
 
 $C_{ij} = R_{ij} + Q_{ij}$
 
-Reemplazo por las definiciones \eqref{defr} y \eqref{defq}:
+Reemplazo por las definiciones \ref{defr} y \ref{defq}:
 
 \begin{equation}
 	\label{defc}
@@ -100,3 +100,72 @@ Reemplazo por las definiciones \eqref{defr} y \eqref{defq}:
 \end{equation}
 
 Luego nos queda $C=A$.
+
+También es relevante analizar si es aplicable el metodo de Eliminación Gaussiana (esto es sin intercambiar filas) para resolver el sistema de ecuaciones:
+
+\begin{equation}
+    \label{defSistema}
+    I - pWD = \gamma e
+\end{equation}
+
+Lo cual es equivalente a demostrar que tiene una factorización LU.     
+Los elementos de la matriz $I - pWD$ (de ahora en adelante, M) son de la forma:
+\begin{equation}
+    \label{defMatriz}
+    M_{ij} = I_{ij} - R_{ij}
+\end{equation}
+
+Donde R es la matriz definida en la ecuación \ref{defr}. Observamos la matriz transpuesta de M, a la cual llamaremos T:
+
+\begin{equation}
+    \label{defT}
+    T_{ij} = \left\{
+            \begin{array}{ll}
+                 1 & \mathrm{si\ } j = i \\
+                 (p.W_{ji})/ci & \mathrm{si\ } j \neq i 
+            \end{array}
+        \right.
+\end{equation}
+
+Para que esta matriz sea estrictamente diagonal dominante se debe cumplir que para cada fila, el modulo del elemento en la diagonal es mayor a la suma de los modulos de la fila. Dicho de otra manera:  
+
+
+$   |a_{ii}| > \sum_{j = 1, j \neq i}^n |-p.W_{ij}/c_i| $
+    
+$   |a_{ii}| > |-p|.|1/c_i|. \sum_{j = 1, j \neq i}^n |W_{ji}|$
+
+Sabemos por enunciado que $\sum_{j = 1, j \neq i}^n |W_{ji}| = c_i$, al ser los elementos de la matriz de conectividad todos mayores o iguales a cero. Ademas el elemento que no usamos en la sumatoria (el de la diagonal) siempre está en cero, porque no permitimos autolinks. Luego:
+
+
+$   |a_{ii}| > |-p|.1/c_i.c_i$
+
+$   |a_{ii}| > |-p|.1 $
+
+Entonces, si $|-p| < 1$, La matriz T es estrictamente diagonal dominante y, por lo tanto posee factorizacion LU. %TODO: explicar caso p = 1
+
+
+$T = LU$ 
+
+$T^t = (LU)^t$ 
+
+$M = U^tL^t$ 
+
+Encontramos una manera de escribir a M como producto de dos matrices, siendo $U^t$ triangular inferior y $L^t$ triangular superior. Sin embargo, no tenemos garantizado que $U^t$ tenga 1 en los elementos de la diagonal. Para ello definimos la matriz diagonal D:
+
+\begin{equation}
+    \label{defD}
+    D_{ii} = 1/U_{ii} %estos elementos son siempre distintos de cero?
+\end{equation}
+
+Luego tenemos que:
+$M = U^t.D.D^{-1}.L^t$. Observamos que los elementos de la diagonal de la matriz $(U^tD)$ son 1 y que es una matriz triangular inferior. La matriz $D^{-1}.L^t$ es triangular superior. Luego M tiene una factorizacion LU y por lo tanto se puede aplicar el algoritmo de eliminación gaussiana sobre ella. 
+
+
+\subsection{Implementación}
+\subsubsection{PageRank}
+
+\subsubsection{Matriz rala}
+
+\subsubsection{Eliminación Gaussiana}
+
+

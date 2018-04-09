@@ -109,6 +109,38 @@ double Matriz::Get(int fila, int col) const
     return 0;
 }
 
+int Matriz::GetNoNulos(){
+
+    return nnz;
+}
+
+void Matriz::escalar(double k)
+{
+    for (int i = 0; i < filas; ++i)
+    {
+        for (auto it = filas_ptr[i].begin(); it != filas_ptr[i].end(); ++it)
+        {
+            it->second = it->second*k;
+        }
+    }
+}
+
+vector<double> Matriz::multiply(const vector<double> & x) const
+{
+    vector<double> res (filas, 0.0);
+
+    for (int i = 0; i < filas; ++i)
+    {
+        double acum = 0.0;
+        for (auto it = filas_ptr[i].begin(); it != filas_ptr[i].end(); ++it)
+        {
+            acum = acum + it->second*x[it->first];
+        }
+        res[i] = acum;
+    }
+
+    return res;
+}
 
 
 void Matriz::validarCoordenadas(int fila, int col) const
@@ -148,6 +180,11 @@ ostream & operator << (ostream & os, const Matriz & matrix)
     }
 
     return os;
+}
+
+vector<double> operator * (const Matriz & a, const vector<double> & b) {
+
+    return a.multiply(b);
 }
 
 
