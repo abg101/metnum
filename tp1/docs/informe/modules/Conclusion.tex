@@ -1,2 +1,30 @@
 \section{Conclusión}
 
+En el presente trabajo analizamos el método de PageRank con el fin de ordenar un conjunto de páginas webs. Para ello intrujimos el modelo de navegante aleatorio que, basándose en estudios del comportamiento de un usuario al recorrer la web, mejora el PageRank al asignarle una probabilidad p a la siguiente página que el navegante decide visitar a través de uno de los enlaces de la página en la que esta parado.\\
+De esta manera se logra evitar quedarse estancado en un sitio que no posee links salientes y además le otorga granularidad al peso que posee la estructura del grafo que describe la red.\\
+Para calcular este ranking que pondera el puntaje de la página enlazadora y su grado de salida en cada link entrante, se debe resolver un sistema de ecuaciones lineales. Teniendo en cuenta los pocos links que suelen existir en una red en relación a su tamaño, implementamos el algoritmo de Eliminación Gaussiana sobre una matriz rala con el fin de garantizar una mayor eficiencia del método.\\
+
+Se contrastó empíricamente la eficiencia de tal representación variando la cantidad de nodos y ejes del grafo de la red de páginas, dando como resultado un menor requerimiento de computacional a nivel temporal en función del tamaño de la matriz cuando, enespecial cuando la cantidad de ejes es poca en relación a la cantidad de nodos. \\
+A su vez se evaluó cómo afecta la probabilidad p al tiempo demandado por el método, dando como resultado un incremento del mismo a medida que dicha probabilidad aumentaba. Esto a la mayor cantidad de elementos no nulos que la matriz rala debe almacenar al estar sus valore más alejados del cero definido por nosotros. \\
+
+Luego se probó PageRank en una serie de redes elegidas cuidadosamente para resaltar la esencia de este ranking. \\
+Vimos que efectivamente este no solo toma en cuenta el grado de entrada de un nodo sino el puntaje que le aportan cada una de esas páginas que lo apuntan. Ese es el caso de la primera red testeada, en la cual una página que solo recibía un enlace de la páginas mejor úbicada (que a su vez era la más popular en cuenta a grado de entrada se refiere) le disputaba el primer puesto a esta última.\\
+A raiz de esto discutimos acerca de la contextualización del uso de PageRank y su valorización. Esta esencia del PageRank que pondera los enlaces por el puntaje de las páginas enlazadoras puede filtrar muchas páginas irrelevantes en la tématica buscada y subir el puntaje no solo a las que reciben muchos links sino a las que reciben de otros sitios importantes de la red. Si bien creemos que esto es más justo que medir solo el grado de entrada, se debe tener cuidado en ciertos contextos como aquel en el cual una página linkea a otra por publicidad sin tener relación alguna con el tópico de la página, ni el buscado por usuario. \\
+
+Luego se observó cierta trasnferencia de puntaje y retroalimentación en la valoración de una página que recibe links de sitios a los que esta apunta. A veces esto puede llevar a una sobrevaloración de los nodos involucrados en detrimento de otros sin este feedback pero con varios enlaces de relativa importancia. Si bien esto puede dejar relagada algunas páginas temáticas, creemos que la existencia de un doble enlace entre páginas importantes sugieren una conexión en cuento al contenido de las mismas y esto puede verse reflejado aprovechando el rasgo retroalimentación de PageRank. \\
+
+En redes no conexas con igua cantidad de enlaces entre sí en cada componente, PageRank optó por equiprobabilidad a lo largo de toda la red. En nuestra opinión esto constituye una debilidad del método ya que subgrafos conexos más grandes infieren cierta relación entre los mismos que puede usarse para ordenar un resultado de búsqueda. \\
+
+Los nodos aislados son relegados adecuadamente por PageRank. En otro test, esa retroalimentación descripta arriba resultó ser algo excesiva a nuestros ojos ya que una página con pocos links de entrada casi empardaba el puntaje de otra de mayor grado de entrada. Aún así, \\
+
+Por otro lado, vimos que PageRank captura correctamente la noción de indexador y no le otorga tanta relevancia como aquellas páginas webs que indexa. \\
+Por su parte, el aumento de la probabilidad p de transición a una página enlazada por la actual siempre redundó en una mayor desigualdad entre las mejores páginas ubicadas en el ranking y las peores ya que a mayor p más se tiene en cuenta la estructura de la red. Al ser p pequeño existen más saltos aleatorios entre páginas no necesariamente enlazadas, aumentando así el puntaje de las páginas más desfavorecidas.
+
+Por último, se comprobó la importancia que le asigna al grado de salida del nodo enlazador. La distribución del puntaje del mismo en varios nodos reduce el puntaje de quienes lo recepcionan. Puede verse esto también como una disminución de la relevancia transferida por una página a otra. Esta propiedad es la esencia de PageRank. \\
+
+
+Concluimos entonces que el método de tales características resumidas aquí y desarrolladas en el pesente trabajo a partir de los experimentos previamente documentados ha de utilizarse con criterio, contextualizando su uso y combinándolo con otras métricas que se adapten a un dominio específico con el fin de elebarorar un ranking de páginas webs importantes para ser devueltos por un motor de búsqueda.\\
+
+Queda pendiente para trabajos posteriores la corrida de PageRank sobre bases temáticas reales de miles de páginas con el fin de determinar su comportamiento en un escenario más aproximado al mundo real. \\
+
+Otros posibles trabajos pueden abordar otras aplicaicones de PageRank, la confecicón de un ranking deportivo. \\

@@ -2,28 +2,44 @@
 
 \subsection{Análisis Cuantitativo}
 
-\subsubsection{Objetivo:}
+\subsubsection{Objetivo e hipótesis:}
 
-Realizamos dos pruebas del tiempo de cómputo necesario para resolver el problema del presente trabajo.
-En el primero variamos la cantidad de páginas manteniendo una proporción de los links entre ellas.
-En el segundo fijamos la cantidad de páginas y variamos la densidad de la misma.
+En los siguientes experimentos vamos a analizar el tiempo de cómputo que es necesario para resolver el problema del presente trabajo. Decidimos para los tres experimentos fijar el epsilon en $10^{-9}$. Este valor es el comparado para determinar si la resta de dos números es cero. \\
 
-epsilon: $10^{-9}$
+En todos los experimentos cuantitativos se generan grafos dirigidos al azar utilizando la librería networkx \cite{networkx} de Python. Nos aseguramos que no contengan autolinks y en caso de tenerlos los generamos de vuelta hasta que obtener un grafo que cumpla con lo especificiado en el trabajo. Las redes que este generador devuelve son conexas. 
+Si bien no es una condición necesaria para aplicar PageRank y de hecho muchos conjuntos de páginas no lo son, creemos que esto no afecta lo buscado en esta experiencia, esto es, el tiempo de cómputo demandado por PageRank para estbalecer un ranking de páginas en función de la cantidad de las mismas (nodos), cantidad de ejes( links) o p, la probabilidad de transicionar de una página a otra a través de un link en la red.\\
 
-Nodos: 500, 30 veces, 50 de distancia, porcentaje de ejes: 1, 10, 33. Repeticiones 5. 
+A continuación se detallan los parametros de los experimentos y las hipótesis de los mismos. \\
+
+\subsubsection{Experimento 1: Variación de Páginas}
+Para este experimento variamos la cantidad de páginas manteniendo una proporción de los links entre ellas. 
+Partimos de una red de 500 nodos e iteramos 30 veces, sumándole 50 nodos en cada iteración. \\
+Tomamos como porcentaje de ejes sobre el total de ejes posibles 1$\%$, 10$\%$ y 33$\%$. Vale recordar que la cantidad máxima de ejes de un digrafo es $n(n-1)$. Cada iteración la corremos 5 veces y promediamos con el fin de evitar disrupciones y anomalías en la corrida del algoritmo. La semilla para el generador es 1687980. \\
+ 
+Hipotetizamos que a medida que se se exapanda el grafo en cantidad de nodos aumente el tiempo en el que PageRank termina de calcular el ranking. Creemos por lo visto en la sección anterior que ronda el orden cúbico en función de n. Seguro que esa función no va a ser menos que cuadrática ya que la Eliminación Gaussiana debe recorrer todas la diagonal y las columnas debajo de ella. \\
+
+A medida que aumentamos el porcentaje de ejes, mayor es el requisito temporal para computar el método. \\ 
+
+\subsubsection{Experimento 2: Variación de Links}
+En este segundo experimento fijamos la cantidad de páginas en 1000 y variamos la densidad de la misma. Para ello, iteramos 25 veces desde $\frac{nodos \times nodos-1}{25}$ hasta $nodos \times nodos-1$ (es decir, dividimos la cantidad máxima de ejes que puede tener un grafo dirigido en 25 y en cada iteración le sumamos esa fracción hasta llegar al grafo completo), repitiendo el cálculo 5 veces y promediando el tiempo reportado. La semilla es 597234279. \\
+
+Nuestra hipótesis para este experimento es que el crecimiento del tiempo en función de la cantidad de ejes es lineal ya que de ellos depende el recorrido de las listas y la posible anulación de la columna pertinente. \\
+
+\subsubsection{Experimento 3: Variación de p}
+Para este tercer experimento vamos a variar el valor de p tomando [0.1,0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9], fijando la cantidad de páginas en 1000 y la cantidad de ejes en 8000, repitiendo el calculo 5 veces y promediando el tiempo dado, con semilla = 546412. \\
+
      %500, 17 veces, 250 distancia, prop 15, rep 5
 %viejos nodos: 500, 25, 100, 200 ejes fijo
-\\
-Ejes: Mantenemos la cantidad de nodos fijos en 1000, iteramos 25 desde $\frac{nodos \times nodos-1}{25}$ hasta $nodos \times nodos-1$ (es decir, dividimos la cantidad máxima de ejes que puede tener un grafo dirigido en 25 y en cada iteración le sumamos esa fracción hasta llegar al grafo completo), repitiendo el cálculo 5 veces y promediándo el tiempo reportado.
 
-p: nodos 1000, ejes 8000, p = {0.1 ... 0.9} $\cup$ {0.85}. Repeticiones 5.
+ %p: nodos 1000, ejes 8000, p = {0.1 ... 0.9} $\cup$ {0.85}. Repeticiones 5.
 
-\subsubsection{Hipótesis:}
+Nuestra hipótesis es que a medida que aumenta p más costosa es la computación del PageRank debido al alejamiento del épsilon por parte de los valores de la matriz. \\
 
-Cúbica en nodos, lineal en ejes. A medida que aumenta el p más costosa es la computación del PageRank.
+\newpage
 
 \subsubsection{Resultado y Análisis: }
 
+\subsubsection{Experimento 1: Variación de Páginas}
 Comenzemos analizando el experimento sobre la cantidad de nodos:
 
          \noindent{} \begin{minipage}{\textwidth}
@@ -52,23 +68,33 @@ Resultado de la ejecución del algoritmo en función del cantidad de nodos para 
                 \label{fig:exp1-nodos}
             \end{minipage}
 
+Se observa un crecimiento el tiempo de cómputo de la eliminación Gaussiana a medida que aumentamos la cantidad de páginas de la red, tal como esperábamos. La curva sugiere una función polinomial del tamaño del grafo (medido en vértices). A la derecha de cada se ilustra el mismo pero normalizado por una función cuadrática (o sea dividimos los resultados por una cuadrática sobre el rango al que aplica, en este caso 500-2000 aproximadamente). Rapidamente se visualiza una función lineal semajante a una lineal.\\
 
+A medida que se vuelve más densa la mátriz más tarda. Esto lo vemos en más detalle con un experimento dedicado a ello a continuación. Las curvas mostradas no resultan del todo suave, en especial la del 2. Conjeturamos que se debe a la aleatorieadad de la disposición de los ejes y por lo tanto de los elementos no nulos que tiene que almacenar la matriz rala. \\
 
+\subsubsection{Experimento 2: Variación de cantidad de Links}
 
 Por otro lado, la iteración sobre los ejes arrojó el siguiente resultado:
 
-\begin{figure}
+\begin{figure}[H]
    \begin{center}
      \includegraphics{img/tiempo_ejes_solo.png} 
   \end{center}
 \caption{Tiempo en función de la cantidad de ejes} \label{fig:exp1-ejes}
 \end{figure}
 
+Como también se reporta en el anterior experimento, en este el costo computacional de PageRank medido en tiempo crece a medida que la red a la que se le desea calcular un ranking para determinar un orden de importancia de sus páginas se densifica. \\
+
+Se aprecia una curva polinómica que se deriva de la mayor cantidad de elementos no nulos que la eliminación Gaussiana afronta a la hora de triangular la matriz. Existen más elementos para anular si estan debajo de la diagonal, para insertar multiplicado por p y el grado del nodo de salida, cosa que conlleva una nuevas inserciones del resultado de esa cuenta en algunas filas posteriores a la suya cuando a la suya le toca ser pivot. \\
+ 
+\newpage
+
+\subsubsection{Experimento 3: Variación de p}
 
 
-Con respecto a p:
+Por último, variamos p y obtuvimos lo siguiente:
 
-\begin{figure}
+\begin{figure}[H]
    \begin{center}
      \includegraphics{img/tiempo_p.png} 
   \end{center}
@@ -76,74 +102,118 @@ Con respecto a p:
 \end{figure}
 
 
+Tal como se esperaba, a medida que crecemos el p, el requerimiento computacional del método analizado crece en una función que parece ser sublineal. Dicho crecimiento estipulamos que tiene su causa en el incremento de la cantidad de valores no nulos que han de almacenarse. Un p chico logra tender más al cero al $w_{ij}/d_{j}$ que está multiplicando y converge a su vez más rapido a lo que denominamos cero (épsilon) a medida que vamos restando valores en la ecuación de la eliminación Gaussiana $a_{ij}$ = $a_{ij}$ $-$ $\frac{a_{ik}}{a_{kk}} a_{kj}$. \\
+
+Notese que este resultado se encuentra relacionado con el épsilon que decidimos como cero. Otro test no reportado en el presente trabajo arrojó una funación de crecimiento del tiempo de PageRank parecida a p. Es que si el épsilon es grande, muchos valores son contemplados como cero y por consiguiente la matriz almacena menos elementos no nulos y las restas de la ecuación anterior convergen más rapido y a mayor cuantía a cero. \\
 
 \newpage
 
 \subsection{Análisis Cualitativo}
 
-\subsubsection{Objetivo:}
+\subsubsection{Objetivos e hipótesis:}
 
 En la presente sección se busca analizar la calidad de los rankings calculados por el método de PageRank, evaluarlo según el contexto en el que se lo aplique y relacionándolo con la estructura del grafo subyacente a la red de páginas web a las que deseamos asignarles algún valor de preferencia. \\
 
-Para este fin, diseñamos el siguiente conjunto de instancias. \\
+Para este fin, diseñamos el siguiente conjunto de instancias.
 
-\begin{figure}
-   \begin{center}
-     \includegraphics{img/prueba-circular.png} 
-  \end{center}
+\subsubsection{Grafo 1}
+
+
+\begin{figure}[h]
+     \begin{center}
+     \includegraphics[scale=0.65]{img/prueba-circular.png} 
+    \end{center}
 \caption{Grafo 1: Un circuito fuertemente conexo conecta a un nodo y este a otro.} \label{fig:exp3-circular}
 \end{figure}
 
-\begin{figure}
-   \begin{center}
-     \includegraphics{img/prueba_grafo_2.png} 
-  \end{center}
+Se busca con esta red evaluar el comportamiento de PageRank cuando una página con mucho grado de entrada apunta a otro que solo recibe un link de esa. De esta manera contrastamos grados vs peso del link, entre otras cosas que puedan surgir. \\
+
+La hipótesis que planteamos es que la página nueve va ser la mas rankeada dado que la página diez es la contiene mas links y ésta sólo tiene un link hacia la página nueve, le está delegando mayor importancia y a su vez la página nueve no tiene links hacia otras páginas, por lo que no reduce su relevancia. \\
+
+\subsubsection{Grafo 2}
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics{img/prueba_grafo_2.png}
+    \end{center}
 \caption{Grafo 2: Ahora el la página que recibe un link del de mayor grado contiene un link hacia esa} \label{fig:exp3-grafo2}
 \end{figure}
 
-\begin{figure}
+Aquí se busca tratar el ranking devuelto por el método para el caso donde una página muy popular en cuanto a links que la apuntan enlaza a otra y esta última le devuelve el link. Con esto creemos que se puede ver la transferencia de pesos entre los links. \\
+
+Hipotetizamos que el puntaje otorgodo a las páginas 1 y 2 son parecidos, con una leve diferencia a favor del 1 debido a la mayor cantidad de links y el hecho que otra página relevante como la 3 apunte solo a la 1. \\
+
+\subsubsection{Grafo 3}
+
+\begin{figure}[H]
    \begin{center}
      \includegraphics{img/prueba_3_no_conexa.png} 
   \end{center}
 \caption{Grafo 3: Grafo de páginas no conexo.} \label{fig:exp3-noconexo}
 \end{figure}
 
-\begin{figure}
+En esta experiencia se aborda el tratamiento de grafos no conexos. Cada uno es un circuito pero de distinta longitud. \\
+
+La hipótesis plateada es que las páginas del circuito más largo lograrán un mayor puntaje. Sin embargo, también podemos pensar que dado que las páginas son referenciadas y linkeadas por una sola página, todas podrían tener la misma importancia. \\
+
+\subsubsection{Grafo 4}
+
+\begin{figure}[H]
    \begin{center}
      \includegraphics{img/prueba_aislado.png} 
   \end{center}
 \caption{Grafo 4: 3 nodos aislados (9,10,11) no se muestran en la ilustración.} \label{fig:exp3-aislado}
 \end{figure}
 
-\begin{figure}
+Este grafo amplia la desconectividad evaulada anteriormente y agega nodos aislados. Por otra parte los dos subgrafos conexos presentan una estrucutra más compleja. No se aprecia tan fácilmente la página más puntuada.\\
+
+Creemos que en una subred, 5 por ser el más apuntado, 7 por ser apuntado por este y 4 por ambos y tener pocos links de salida pelean por el primer puesto, mientras que en el otro subgrafo, el 1 parecería ser el más indicado a coronarse debido a la conexión entrante desde los otros dos vértices. En todo caso, esta es una red que creemos pareja.
+Los nodos aislados deberían recibir el menor puntaje y este variar fuertemente al compás de p. \\
+
+\subsubsection{Grafo 5}
+
+\begin{figure}[H]
    \begin{center}
      \includegraphics{img/prueba_estrella.png} 
   \end{center}
 \caption{Grafo estrella: Una página apunto a todas las demás.} \label{fig:exp3-estrella}
 \end{figure}
 
-En el primer grafo, 
+Este grafo se conoce como grafo estrella. En este caso al ser dirigido elegimos que uno apunto a todos, buscando una equivalencia de puntajes entre ellos. Al mismo tiempo también se evalua el comportamiento de un indexador según PageRank\\
 
-\subsubsection{Hipótesis:}
+Hipotetizamos que que este las páginas que son apuntadas reciben el mismo puntaje y que la página enlazadora arroja un menor puntaje ya que nadie la linkea a pesar de ser indexadora. \\
 
-\begin{itemize}
-	\item Con respecto al primer grafo, la hipotesis que planteamos es que la página nueve va ser la mas rankeada dado que la página diez es la contiene mas links y ésta sólo tiene un link hacia la página nueve, le está delegando mayor importancia y a su vez la página nueve no tiene links hacia otras páginas, por lo que no reduce su relevancia.
-	
-\item En el segundo grafo, nuestra hipotesis es que la página uno va ser la mas rankeada ya que la página tres tiene gran importancia y a la única página que referencia es a la uno, además la página uno es referenciada por las mismas páginas que la tres y mas.
+\subsubsection{Grafo 6}
 
-\item Para el tercer grafo, la hipotesis plateada es que van a estar todos en el mismo nivel del ranking, es decir, van a estar empatados dado que las páginas son referenciadas y linkeadas por una sola página, lo que haría que todas tuvieran la misma importancia.
+\begin{figure}[H]
+   \begin{center}
+     \includegraphics{img/prueba_estrella_apuntada.png} 
+  \end{center}
+\caption{Grafo estrella apuntada: Todas apuntan a una.} \label{fig:exp3-estrella}
+\end{figure}
 
-\item En el grafo estrella donde todos apuntan a una misma página, este va a ser el de mayor ranking independientemente del p que se elija. 
 
-\Para Por último, para el grafo estrella donde uno apunto a todos, hipotetizamos que que este las páginas que son apuntadas reciben el mismo puntaje y que la página enlazadora arroja un menor puntaje ya que nadie la linkea.  
+Aquí tenemos un grafo estrella donde todos apuntan a una misma página. \\
 
-\end{itemize}
+En el grafo estrella donde todos apuntan a una misma página, este va a ser el de mayor ranking independientemente del p que se elija. Pero este test no termina aca. Contamos con 5 grafos más. Cada uno es el resultado de agregar un eje que no estaba en el grafo y que va desde la página 1 (esa a la que enlazan todos) hasta una que no tenga grado de entrada positivo. Por lo tanto el último grafo es uno en el cual todos apuntan a uno (el 1) y este apunta a todos como se ilustra a continuación: \\
 
+\begin{figure}[H]
+   \begin{center}
+     \includegraphics{img/prueba_estrella_apuntada+5.png} 
+  \end{center}
+\caption{Grafo estrella apuntada + 5 ejes: Todas apuntan a una y esta apunta a todas} \label{fig:exp3-estrella}
+\end{figure}
+
+En este experimento gradualista, nuestra hipótesis es que cada nuevo nodo apuntado pierde relevancia por que su enlazador debe distribuir el puntaje entre más páginas. \\\
+
+Todos estos experimentos se corren con p = 0.3, 0.6, 0.8, 0.9 para también evaluar la influencia de la probabilidad de que el navegante aleatorio siga atrevsando la red por una página a la que la página actual enlaza.
+
+\newpage
 \subsubsection{Resultado y Análisis: }
-
 
 Los resultados arrojados fueron los siguientes:
 
+\subsubsection{Resultado Grafo 1}
 \begin{center}
          \begin{tabular}{|c|c|c||c|c|c|}
                     \hline
@@ -176,7 +246,27 @@ Los resultados arrojados fueron los siguientes:
                 \end{tabular}
             \end{center}
 
-Grafo 2:
+Vemos en los primeros 3 p el la página lider es la 10, que es la de mayor grado de entrada. Con p = 0.9 la página 9 que solo es apuntada por las 10 pasa al frente con cierta diferencia. Esto se debe a que con mayor probabilidad de pasar de una página a otro a través de uno de sus enlaces más en cuenta se tiene la estructura de la red. Como la página 10 es la a la que más se apunta (todos lo hacen menos la 9), esta es una página importante y al encontrarse enlazando a la 9 le transfiere un gran peso a través de dicho link. \\
+
+A su vez todo el puntaje del nodo 10 se pondera en el mencionado enlace ya que no apunta a otra página. Solo a la 9. \\
+En cuanto al resto de los nodos, poseen siempre el mismo entre ellos porque solo reciben un link y de páginas como ellos. Ninguno de 10 ni de 9. Por lo tanto el peso de esos links es el mismo y es bastante pobre comparado con el eje previamente mencionado. \\
+
+Por último, se puede observar que a medida que aumentamos el p baja el puntaje de las paginas 1-8. La razón es la misma que la expuesta previamente. Al ponderar más la topología del grafo, mayor valor tienen los enlaces fuertes como el del 10 al 9 y el grado de entrada de 10. Esto sucede en detrimento del ranking de los nodos 1-8. Al estar un navegante aleatorio 9 de cada 10 veces en caso de p = 0.9 eligiendo las páginas a las que enlaza la actual en donde esta parado, entonces mayor es la probabilidad de que este atraviese uno de los links que lo lleve a una página popular dentro de la red (como es el caso de la 10 donde 7 páginas lo apuntan) y además, mayor es la probabilidad de parar en la página 9 ya que la probabilidad de estar en la 10 es alta y esta solo tiene un enlace a 9. Como 9 de cada 10 veces se elige seguir el recorrido virtual atrevesando un link, entonces es bastante probable que se visite la página 9. \\
+
+Esto puede deducirse a su vez de las ecuaciones del PageRank. Si se esta en una página entre la 1-8, es equiprobable que se siga la navegacón en la página web 10 o en otra a la página en cuestión apunte. Por lo que solo se divide por dos en la sumatoria de los pesos de las aristas que apuntan al nodo 10 y nadie entre el 1-8 y 10 ostenta mayor grado de entrada que la 10. \\
+
+Por otra parte, como solo 10 apunta a 9, al peso de 10 solo se lo divide por 1. Se transfiere así el puntaje de 10 en su totalidad ponderado en exclusivo por el p excogido. Si se quiere menor desigualdad de puntaje se decrementa el p como vimos antes. Asimismo se puede reducir el valor de p con el fin de que el navegante quede estancado un tiempo largo en la página 9, que es la única que no posee enlaces de salida. \\
+
+Nos podemos preguntar que interpretación a través el cristal de un motor de búsqueda temática emerge de lo discutido. En este grafo, PageRank enpareja una página que recibe muchos links con una que solo recibe un link proveniente de la más popular. \\ 
+Por un lado la web más popular de un conjunto puede no tener relación con lo buscado. Solo nos deriva a la de mayor peso y quizás una aputnada específicamente por esta podría ser más autoritativa en el tópico deseado. La página derivada de la más popular (en este caso 9 que deriva de 10) podría ser de caracter más preciso en relación a lo solicitado.\\
+
+Por otro lado si la red se arma a partir de un filtrado de paginas relacionadas entre sí (como por ejemplo un filtrado temático basado en la correspondencia de palabras búscadas con el nombre de la página y el parseo de algunos contenidos de la misma, entre otras métricas posibles) tal vez la página más enlazada y, que además es linkeada por páginas con puntaje importante en relación a esta red, sea la que más se aproxima a lo pretendido por quien busca un tema específico.\\
+
+La página 9 apuntada en solitario por la 10 podría no ser relevante en el tópico y solo estar inflada debido que su enlazador es la más popular. Este creemos que es un problema en algunos contextos donde PageRank calcula el ranking. Por ejemplo, se puede considerar a 10 como un sitio importante en la materia y 9 como uno sitio al que solo enlaza a través de una publicidad que 9 le paga a 10 para otorgarse importancia. 9 sabe que 10 es popular dentro de una comunidad y desea parovechar esto para su beneficio. Esa ambigüedad puede ser un punto en contra del método.\\
+
+Creemos entonces que contexto de aplicación de PageRank para un caso como el grafo descripto condiciona la calidad del ranking obtenido. \\
+
+\subsubsection{Resultado Grafo 2}
 
 \begin{center}
          \begin{tabular}{|c|c|c||c|c|c|}
@@ -208,8 +298,18 @@ Grafo 2:
 
                 \end{tabular}
             \end{center}
+   
+En este grafo a medida que aumentamos p, más se ve achiando la difrerencia del 2 con el 1, que es el de mayor grado de entrada. Es notable tambíen como el nodo 3 con p = 0.3 ostenta un puntaje no tan distinto del 2 pero esta diferencia crece ostensiblemente a medida que ponderamos más el entramado del grafo aumentando p. \\
+
+Otra vez los nodos más desfavorecidos (4-8), que reciben el mismo puntaje entre ellos en cada corrida, disminuyen su score a medida que aumentamos p. Creiamos que 3 podía escapar de esta lógica al ser una página apuntada por casi todos. Sin embargo, analizando detenidamente el grafo y relacionándolo con las ecuaciones del PageRank, los mismos que apuntan a 1 apuntan a 3, pero este último apunta al primero y el primero no lo apunta a él si no al 2. \\
+
+Por lo tanto el 3 transfiere autoridad acumulada a través de su unico enlace en la red. Y el destino de este link es 1. Este entonces recibe los mismos enlace que 3 y a todo el peso de 3. El 2 por su parte recibe un link del 1 pero este a su vez se lo refleja. Ninguno de los dos posee otros links de salida por lo que se puede describir este ciclo como una retroalimentación. Solo por que posee otros enlaces entrantes es el 1 algo mejor puntuado que la página 2. \\
+
+Si de sitios webs se trata, nos resulta exagerada la poca relevancia que PageRank le otorga al 3. Su puntaje es hasta 10 veces menor que el 2 si se considera un alto p.\\
+A diferencia del anterior grafo y a favor de PageRank podemos decir que si 2 ahora enlaza a 1 entonces el vínculo entre estas páginas es más fuerte. Dificilmente un caso como el descripto anteriormente pueda darse. El nexo temático nos parece más factible en esta estructura de red y PageRank logra capturarlo. \\
+
+\subsubsection{Resultado Grafo 3}   
             
-Grafo 3: 
 
 \begin{center}
          \begin{tabular}{|c|c|c|}
@@ -229,8 +329,19 @@ Pos. & Nodo & Puntaje \\ \hline
 
                 \end{tabular}
             \end{center}
+ 
+Para nuestra sorpresa el puntaje otorgado por PageRank a los distintos nodos es el mismo. Con lo cual es equiprobable partiendo de cualquier página terminar en cualquier otra. Analizando cuidadosamente la ecuación que define el score vemos que solo depende del peso del link de entrada. Cada vértice tiene un eje entrante y uno saliente por lo que la única ponderación es el p. El score se propaga a través del subgrafo que es un circuito dirigido por lo que todos reciben el mismo. En ningún lado se hace mención a la cantidade de páginas involucradas en este. \\
+
+Como se observa, PageRank no distingue entre el tamaño de cada circuito. Todos tienen el mismo grado de entrada y de salida. Dada esta curiosidad experimentamos con el mismo grafo pero completo en cada componente conexa. El resultado fue el mismo. Y probamos también en un caso de mayor diferencia. Un digrafo $K_{2}$ completo y otro $K_{7}$. Arrojó el exactamente el mismo resultado. \\
+
+Este comportamiento de PageRank de alguna manera ilustra lo que denominamos trasnferencia de peso, poder o importancia entre los nodos. Toda página vale del score de todas las demás en esa componente conexa por lo que se divide el puntaje entre todas. \\
+
+Una consideración que nos surge es cómo determinamos la importancia relativa entre dos componentes conexas. Si en un conjunto de páginas no hay links entre dos subconjuntos, ¿cómo determinamos cuál es más relevante?. Múltiples propuestas se desprenden de esta pregunta. Puede ponderarse la de mayor cantidad de páginas o links entre ellas. O como realiza PageRank, que pondera los enlaces en relación al puntaje de la página enlazadora. Pero si tenemos un caso como este,
+entonces no escapa de la equiprobabilidad.\\
+
+Creemos que una comunidad de sitios web representada como subgrafo conexo de mayor cantidad de páginas debería tener más relevancia que una comunidad más chica. Esto PageRank no lo captura y otorga el mismo puntaje a todas las páginas en una búsqueda temática. \\
             
-Grafo 4 con aislados:
+\subsubsection{Resultado Grafo 4} 
 
 \begin{center}
          \begin{tabular}{|c|c|c||c|c|c|}
@@ -265,8 +376,23 @@ Grafo 4 con aislados:
 
                 \end{tabular}
             \end{center}
+
+
+Este grafo contiene 3 nodos aislados, 9, 10 y 11. Como en el anterior grafo, existen dos componentes conexas. Sin embargo la estructura de ambos subgrafos conexos es distinta. En la subred más poblada 5 resulta ser el más volarado por PageRank. Es a su vez al que todos las páginas de la red apuntan. Si bien el vértice 4 recibe un enlace de todos los nodos de ese subgrafo, este no hace lo mismo y mantiene un solo enlace de salida que apunta a 5. \\
+
+De esta manera, 4 es solo realimanetado por 5, mientras que este último es realimentado por todo el subgrafo. Esta noción puede explicarse por las ecuaciones. Como el puntaje de la página 5 depende de todos los que lo apuntan y a su vez el puntaje de esos depende del puntaje de el nodo 5 (ya que este poee lins hacia ellos) entonces entendemos que PageRank logra que la página 5 se reatroalimente de su propio puntaje. \\
+
+A nuestro criterio esto logra que un sitio web autoritativo en la materia obtenga una posición merecedora en el ranking armado por el algoritmo de PageRank. Es que una web así puede pensarse sumamente influyente dentro de una comunidad vinculada al tópico que se desa encontrar. Sirve como puente e introducción a las demás y estas a su vez la conocen, la linkean. Se puede interpretar una página como la 5 como poderosa en el marco de cierto dominio, tanto para delegar conocimiento como referencia en un área. \\
+
+Una objeción que puede surgir es una página de dichas características ha de ser leida como una importante pero generalista. Pueden ser buscadores / indexadores y todos la apuntan por es motivo: sirve para que las hagan conocidas. A su vez esta página que puede ser un portal o sitio de noticias enlaza a las otras con el fin de capturar alguna porción del tráfico que busca asunto determinado. Claramente este "pulpo" no sería la mejor opción en un ranking ponderado por la materia que se desea encontrar en la web .\\
+
+Por otra lado, el nodo 1 se gana el segundo lugar en el ranking para cualquier p. A pesar de contar con solo dos links de entrada, el feedback es fuerte ya que esas dos páginas son enlazadas por esta misma. A medida que se tiene más en cuenta la estructura del grafo, aumentando p, disminuye su relación de fuerza respecto al nodo 5 pero le saca mayor ventaja al resto.
+Esta sobrevaloración de una página que se retroalimenta de pocas y que pertenece a una componente conexa mucho más pequeña que otra, como es el caso del subrafo al que pertence el sitio 5 donde varios nodos tienen más enlaces, se antoja como una debilidad del ranking de PageRAank y de esa manera lo notamos nosotros. \\
+
+Por último y como era de esperarse, los vértices aislados son asignados a los puestos más bajos del ranking. Se cumple la lógica en este caso y es deseable que así sea ya que páginas a las que ninguna cita y ni siquiera estas se conectan con algún otra de la red, no parecen ser una envidiable muestra de envergadura en la materia buscada.\\
+
             
-Grafo Estrella Saliente:
+\subsubsection{Resultado Grafo 5: Estrella saliente} 
 
 \begin{center}
          \begin{tabular}{|c|c|c||c|c|c|}
@@ -292,7 +418,14 @@ Grafo Estrella Saliente:
                 \end{tabular}
             \end{center}
             
-Grafo Estrella Entrante:
+Este grafo puede leerse como una representación de un indexador. Puede considerarse una página de esta índole como destacada por el simple hecho de ser un canal de retransmisión de información. Pero como sitio autoritativo en la materia no tanto. Creemos que son más imporante las apuntadas por este. \\
+
+El ranking concebido por PageRank no otorga demasiadas pistas sobre qué paginas pueden resultar útiles pero destacamos que al menos no sobrevalora a un indexador que podría ser considerado poderoso en otras circunstancias y en diferentes métodos de oredanamiento de páginas webs. \\
+Notar que incluso aunque sea un buscador o redireccionador exclusivamente de contenidos que abarquen a lo pretendido, los sitios enlazados por este serán lógicamente de mayor relevancia y esto es capturado por PageRank.\\
+
+p por suparte juega el papel que en los experimentos predecesores. A medida que aumenta más énfasis se hace sobre la estructura del grafo, en particular, su conectividad. \\
+            
+\subsubsection{Resultado Grafo 6: Etrella entrante} 
 
 \begin{center}
          \begin{tabular}{|c|c|c||c|c|c|}
@@ -364,5 +497,21 @@ Grafo Estrella Entrante:
                 \end{tabular}
             \end{center} 
             
-análisis.            
+Para terminar, analizamos los resultados arrojados por correr PageRank sobre un grafo estrella al que uno es apuntado por todos. Lo buscado en verdad no es esto sino la tranformación del ranking a medida que se agrega un eje del más apuntado a uno que no es enlazado por ningun otro. Para simplificar su visualización solo se muestran los casos para p = 0.3 y p = 0.9. 
+p cumple el mismo rol que reiteramos con anterioridad en otras experiencias y creemos que con tomar los dos extremos alcanza para analizar esta prueba. \\
+
+En el primer caso, cuando todos apuntan a la página 1, esta recibe el mayor puntaje como es de esperarse. Con p = 0.9 la probabilidad parar en la página 1 es mayor a 0.5. \\
+Cuando agregamos un eje entre 1 y 6, esta última trepa a casi el puntaje de 1 para p = 0.9. Es decir, si se pondera mucho la estructurade la red, la página 6 a la que solo apunta la página 1 escala hasta casi alcanzarla. Esto se puede explicar por la ya expuesto antes. El link de entrante a 6 otorga todo el puntaje de 1, pesado por p. Pero como el sitio 6 enlaza al 1, este último se retroalimenta ya que ahora 6 cuenta con el puntaje de 1 ponderado. Como además a 1 lo apunta también el resto de la red, este se mantiene primero en el ranking, aunque con menor puntaje debido al grado de salida positivo que ahora posee y la consecuente transferencia de score. \\
+
+Se podría argumentar que en esta red el más influyente sigue siendo el nodo 1. Todos lo conectan. Pagerank tiene la tendencia de otorgarle un gran puntaje a aquellas páginas que son apuntadas por nodos importantes. En este caso un link proveniente del sitio mejor puntuado de este conjunto alcanzan para casi equiprar a la página 6 con la 1, la página de mayor importancia. \\
+
+Desde un punto de vista, el sitio 1 ni siquiera tendría por qué ser el que mejor se corresponde con un dominio específico. Si este es solo una página popular y es por eso que la linkean varias otras independientemente del tema que se maneje, entonces este problema constituye uno estructural a la concepción de PageRank. No vislumbramos una salida sencilla al mismo y como muchas decisiones que se toman, acrrean sus puntos a favor y en contra. Pero creemos que valiéndose de un preprocesamiento adecuado de los sitios que los agrupes por ejemplo según una correspondencia linguística, entnces PageRank logra un ranking bastante justo para este caso en el que todos apuntan a una. Nos da una buena pista de por cuál sitio empezar. \\
+
+Lo realmente interesante viene en los experimentos siguientes. 1 ahora enlaza a a 5. Este sube su puntaje y escala puestos pero no obtiene el mismo puntaje que 6 en el grafo anterior sino casi la mitad.\\
+Este fenómeno se debe a que ahora el puntaje de la página 1 se lo dividen entre la página 6 y la página 5. Por consiguiente, cada una recibe el mismo puntaje. Como ambas apuntan a 1, esta última no ve modificado su puntaje. El puntaje que vuelve al nodo 1 en el grafo anterior de la mano del sitio 6, es devuelto ahora por la suma de los enlaces (5,1) y (6,1). \\
+
+A medida que se agrega un link desde la página 1 hasta otra página j que no lo tiene, aumenta el puntaje de j en detrimento de los demás menos del 1. (tanto de los que ya tienen un enlace proveniente del nodo 1 , que ven disminuido su ranking por el reparte del puntaje de este último al estar ponderado este por el grado saliente, como de los que todavía no poseen un link entrante proveniente del sitio 1 - debido a la menor importancia relativa que ostentan estos ahora en compración con los que ya tienen un link ). El score del vértice 1 no se ve modificado por lo explicado arriba.  \\
+
+En el último caso, todos poseen el mismo puntaje salvo la página 1, ya que es la de mayor grado de entrada. \\
+Por lo tanto, en este test se visualizó la noción de que conviene que apunten nodos importantes y que estos no tengan un grado de salida muy grande para así recibir buena parte del puntaje de tal nodo relevante. \\
                                                
