@@ -1,6 +1,6 @@
 \section{Desarrollo}
 
-\subsubsection{Sistema de ecuación a resolver} %TODO: mejor nombre
+\subsection{Sistema de ecuación a resolver} %TODO: mejor nombre
 
 Para ejecutar el algoritmo de \emph{Page Rank} debemos resolver el sistema de ecuaciones lineales $A x = x$, donde la matriz A $\in \mathbb{R}^{nxn}$ esta definida como:
 
@@ -101,9 +101,9 @@ Reemplazo por las definiciones \ref{defr} y \ref{defq}:
 
 Luego nos queda $C=A$. \\
  
-\subsection{Aplicabilidad de ELiminación Gaussiana}
+\subsection{Aplicabilidad de Eliminación Gaussiana} \label{demAppEG}
 
-También es relevante analizar si es aplicable el metodo de Eliminación Gaussiana (esto es sin intercambiar filas) para resolver el sistema de ecuaciones:
+También es relevante analizar si es aplicable el método de Eliminación Gaussiana (esto es sin intercambiar filas) para resolver el sistema de ecuaciones:
 
 \begin{equation}
     \label{defSistema}
@@ -136,14 +136,14 @@ $   |a_{ii}| > \sum_{j = 1, j \neq i}^n |-p.W_{ij}/c_i| $
     
 $   |a_{ii}| > |-p|.|1/c_i|. \sum_{j = 1, j \neq i}^n |W_{ji}|$
 
-Sabemos por enunciado que $\sum_{j = 1, j \neq i}^n |W_{ji}| = c_i$, al ser los elementos de la matriz de conectividad todos mayores o iguales a cero. Ademas el elemento que no usamos en la sumatoria (el de la diagonal) siempre está en cero, porque no permitimos autolinks. Luego:
+Sabemos por enunciado que $\sum_{j = 1, j \neq i}^n |W_{ji}| = c_i$, al ser los elementos de la matriz de conectividad todos mayores o iguales a cero. Además el elemento que no usamos en la sumatoria (el de la diagonal) siempre está en cero, porque no permitimos autolinks. Luego:
 
 
-$   |a_{ii}| > |-p|.1/c_i.c_i$
+$   |a_{ii}| > |-p|. c_i/c_i.$
 
 $   |a_{ii}| > |-p|.1 $
 
-Entonces, si $|-p| < 1$, La matriz T es estrictamente diagonal dominante por filas y, por lo tanto posee factorizacion LU \cite{burden}. Además recordemos que $p$ (por enunciado) es una probabilidad y en el caso en que $p = 1$, no nos encontramos en un modelo de navegante aleatorio y solo sigue la estructura de la red.. Ahora consideramos como se relacionan las matrices de la factoriación LU de T con M: 
+Entonces, si $|-p| < 1$, La matriz T es estrictamente diagonal dominante por filas y, por lo tanto posee factorizacion LU \cite{burden}. Además recordemos que $p$ (por enunciado) es una probabilidad y en el caso en que $p = 1$, no nos encontramos en un modelo de navegante aleatorio y solo sigue la estructura de la red. Ahora consideramos como se relacionan las matrices de la factorización LU de T con M: 
 
 
 $T = LU$ 
@@ -163,49 +163,46 @@ Esta matriz diagonal se encuentra bien definida ya que al ser la matriz U de una
 
 $M = U^t.D.D^{-1}.L^t$. 
 
-Observamos que los elementos de la diagonal de la matriz $(U^tD)$ son 1 y que es una matriz triangular inferior. La matriz $D^{-1}.L^t$ es triangular superior. Luego M tiene una factorizacion LU y por lo tanto se puede aplicar el algoritmo de eliminación gaussiana sobre ella. Además la matriz es inversible y la solución al sistema es única.
+Observamos que los elementos de la diagonal de la matriz $(U^tD)$ son 1 y que es una matriz triangular inferior. La matriz $D^{-1}.L^t$ es triangular superior. Luego M tiene una factorización LU y por lo tanto se puede aplicar el algoritmo de eliminación gaussiana sobre ella. Además la matriz es inversible y la solución al sistema es única.
 
 \subsection{Condicionamiento y estabilidad numérica}
 
-Como realizaremos una implementacion del modelo de navegante aleatorio y experimentaremos sobre la misma, tambien es pertinente analizar que tan bien condicionada está la matriz que usaremos para el algoritmo de PageRank. \\
+Como realizaremos una implementación del modelo de navegante aleatorio y experimentaremos sobre la misma, también es pertinente analizar que tan bien condicionada está la matriz que usaremos para el algoritmo de PageRank. \\
 
 El número de condición de una matriz es k(A)= $\left\lVert A \right\rVert$ $\left\lVert A^{-1} \right\rVert$. Se dice que está bien condicionada si ese valor se encuentra en torno al 1.\\
 
-Veamos que $\left\lVert (I-pWD) \right\rVert$  $\leq 1$. 
-$\left\lVert (I-pWD) \right\rVert$ = maximo $\left\lVert (I-pWD)x \right\rVert$, con 
- $\left\lVert x \right\rVert$ = 1. \\
- Luego $\left\lVert (I-pWD) \right\rVert$ < 2.\\
+Veamos que $\left\lVert -pWD \right\rVert$  < $1$. \\
+$\left\lVert -pWD \right\rVert$ = máximo $\left\lVert -pWDx \right\rVert$, con 
+ $\left\lVert x \right\rVert _{1}$ = 1. \\
+  $\left\lVert -pWD \right\rVert$ < 1 puesto que la norma uno de x es 1 y se multiplican cada componente por valores menores a 1. \\
+ Luego $\left\lVert -pWD \right\rVert$ < 1  \\
 
-$\left\lVert (I-pWD)x \right\rVert$ $\leq$ $\left\lVert Ix \right\rVert$ + $\left\lVert pWDx \right\rVert$.
- $\left\lVert Ix \right\rVert$ = 1.  \\
-  $\left\lVert (I-pWD) \right\rVert$ < 1 puesto que la norma infinito de x es 1 y se multiplican cada componente por valores menores a 1. \\
- Luego $\left\lVert (I-pWD) \right\rVert$ < 2  \\
+Por el ejercicio 21 de la práctica 2, sabemos que si una matriz R tiene norma $\left\lVert R \right\rVert$ < 1 entonces\\ $ \left\lVert (I+R)^{-1} \right\rVert \leq \frac{1}{1- \left\lVert R \right\rVert}$. \\
+En nuestro caso R = $-pWD$ que sabemos que tiene norma uno < 1 para p < 1. \\
+Luego podemos aplicar la propiedad y nos queda que $ \left\lVert (I-pWD)^{-1} \right\rVert \leq \frac{1}{1- \left\lVert R \right\rVert}$ < 1. \\
 
-Por el ejercicio 21 de la práctica 2, sabemos que si una matriz R tiene norma $\left\lVert R \right\rVert$ < 1 entonces $ \left\lVert (I+R)^{-1} \right\rVert \leq \frac{1}{1- \left\lVert R \right\rVert}$. 
-En nuestro caso R = $-pWD$ que sabemos que tiene norma infinito < 1 para p < 1. Luego podemos aplicar la propiedad y nso queda que $ \left\lVert (I-pWD)^{-1} \right\rVert \leq \frac{1}{1- \left\lVert R \right\rVert}$ < 1. \\
-
-Por lo tanto $K(I-pWD)$ < 2*1. La matriz se encuentra razonablemente bien condicionada. \\
+Por lo tanto $K(I-pWD)$ < 1. La matriz se encuentra muy bien condicionada. \\
 
 Además, sabemos que es estrictamente diagonal dominante por columnas, es decir que para cada columna $j$ se cumple que:
 \begin{equation}
     |m_{jj}| > \sum_{i=1,i \neq j}^n |m_{ij}|
 \end{equation}
-Esto garantiza la estabilidad númerica del algoritmo de Eliminación Gaussiana \cite{burden}. Es decir, no condiciona más a la matriz de lo que ya estaba. \\
+Esto garantiza la estabilidad numérica del algoritmo de Eliminación Gaussiana \cite{burden}. Es decir, no condiciona más a la matriz de lo que ya estaba. \\
 
 \subsection{Implementación}
 
 \subsubsection{Matriz rala}
 
-Múltiples representaciones de matrices ralas fueron tenidas en cuenta. La primera que se abordó fue la Compressed Sparse Row \cite{CSR}. En esta se tienen 3 arreglos, valores, columnas e índice de fila. Valores y columnas son de tamaño equivalente a la cantidad de elementos no nulos y en $columnas_{i}$ contiene la columna del i-ésimo valor en valores. El indice de filas es un arreglo de cantidad de filas + 1 elementos. 
-En cada j-esima entrada contiene la posición (índice) en el vector de valores donde se encuentra el elemento no nulo más a la izquierda de la matriz. Es decir, el primer elemento si se recorre la matriz de izquierda a derecha y arriba a abajo. La fila j-esima va desde $valores[indice de filas[j]]$ hasta $valores[indice de filas[j+1]-1]$. Notese que la cantidad de elementos no nulos de una fila puede determinarse restando al indice de la fila j+1 el indice de la fila j. Luego la última entrada n+1 del vector de índice de filas mantiene el conteo de los elementos no nulos de la matriz.  \\
+Múltiples representaciones de matrices ralas fueron tenidas en cuenta. La primera que se abordó fue la Compressed Sparse Row \cite{CSR}. En esta se tienen 3 arreglos, valores, columnas e índice de fila. Valores y columnas son de tamaño equivalente a la cantidad de elementos no nulos y  $columnas_{i}$ contiene la columna del i-ésimo valor en valores. El índice de filas es un arreglo de cantidad de filas + 1 elementos. 
+En cada j-ésima entrada contiene la posición (índice) en el vector de valores donde se encuentra el elemento no nulo más a la izquierda de la matriz. Es decir, el primer elemento si se recorre la matriz de izquierda a derecha y arriba a abajo. La fila j-ésima va desde valores[índice de filas[j]] hasta valores[índice de filas[j+1]-1]. Nótese que la cantidad de elementos no nulos de una fila puede determinarse restando al índice de la fila j+1 el índice de la fila j. Luego la última entrada n+1 del vector de índice de filas mantiene el conteo de los elementos no nulos de la matriz.  \\
 
 Esta representación resulta muy adecuada para producto de matrices o matrices y vectores pero no tanto para resolver sistemas de ecuaciones lineales a partir del método de Eliminación Gaussiana. El problema radica en que la inserción y el borrado de valores es costoso. Por ser arreglos, se almacenan contiguamente el memoria. Cada inserción implica el reacomodamiento de los elementos ubicados en posiciones posteriores a donde se requiera ubicarlo al elemento en el vector $valores$ y lo mismo sucede para el vector columnas ya que se inserta la columna del mismo en la misma posición.\\
 
-Al vector de índice de filas se lo debe recorrer a partir de la siguiente fila para incrementarle en uno la posición donde empieza la misma. Tal overhead resulta execivo para lo que se necesita realizar en este trabajo y así se puedo comprobar. Corridas con test provistos por la catedra tardaban en el orden de los minutos cuando se piden que se concrete en el orden de los segundos.\\
+Al vector de índice de filas se lo debe recorrer a partir de la siguiente fila para incrementarle en uno la posición donde empieza la misma. Tal overhead resulta excesivo para lo que se necesita realizar en este trabajo y así se pudo comprobar. Corridas con test provistos por la cátedra tardaban en el orden de los minutos cuando se piden que se concrete en el orden de los segundos.\\
 
-Otra representación tenida en cuenta fue la de vector de conjuntos. Por cada fila, posición del vector, se tiene un conjunto implementado en c++ como $unordered_map$ \cite{STL}. Tal conjunto es de pares columnas, valor. La STL de C++ implementa el conjunto como tablas de Hash, que si bien pueden lograr una inserción y borrado en $O(1)$ en promedio, el no ordenamiento de los elementos no nulos no termina aprovechando la manera ordenada en que se realiza la eliminación Gaussiana necesaria para resolver el sistema de ecuaciones de este trabajo. En la práctica resultó demandar algo más de tiempo que la representación e implementación final que decidimos elegir. \\
+Otra representación tenida en cuenta fue la de vector de conjuntos. Por cada fila, posición del vector, se tiene un conjunto implementado en c++ como unordered map \cite{STL}. Tal conjunto es de pares columnas, valor. La STL de C++ implementa el conjunto como tablas de Hash, que si bien pueden lograr una inserción y borrado en $O(1)$ en promedio, el no ordenamiento de los elementos no nulos no termina aprovechando la manera ordenada en que se realiza la eliminación Gaussiana necesaria para resolver el sistema de ecuaciones de este trabajo. En la práctica resultó demandar algo más de tiempo que la representación e implementación final que decidimos elegir. \\
 
-Una representación más sencilla, directa y ordenada de los elementos distintos de cero de la matriz, que es la que terminamos escogiendo, es la de lista de listas. En particular, vector de listas. El vector indexa a las filas por lo que su tamaño es de $n$, siendo como siempre $n$ la cantida de filas (y columnas en el caso de las matrices del presente trabajo). En cada posición $filas[i]$ se almacenan en una lista \cite{STL} los valores no nulos de la fila $i$. Si bien no se garantizan inserciones y borrados en $O(1)$, al estar las listas ordenadas por columnas sabemos en que posición insertar o borrar a medida que la recorremos con el algoritmo de eliminación Guassiana. \\
+Una representación más sencilla, directa y ordenada de los elementos distintos de cero de la matriz, que es la que terminamos escogiendo, es la de lista de listas. En particular, vector de listas. El vector indexa a las filas por lo que su tamaño es de $n$, siendo como siempre $n$ la cantidad de filas (y columnas en el caso de las matrices del presente trabajo). En cada posición $filas[i]$ se almacenan en una lista \cite{STL} los valores no nulos de la fila $i$. Si bien no se garantizan inserciones y borrados en $O(1)$, al estar las listas ordenadas por columnas sabemos en qué posición insertar o borrar a medida que la recorremos con el algoritmo de eliminación Guassiana. \\
 
 Las dos operaciones que se necesitamos realizar sobre ellas, excluyendo la resolución del sistema, son insertar elemento (set) y multiplicar por escalar. Los siguientes pseudocódigos resumen sus comportamientos. \\
 
@@ -214,13 +211,13 @@ Las dos operaciones que se necesitamos realizar sobre ellas, excluyendo la resol
 \begin{algorithmic}[1]
 \Procedure{Set}{valor, fila, columna}
 
-\State{lista = $indice_flas[fila]$}
+\State{lista = $indice filas[fila]$}
 \If{valor $\neq$ 0}
     \While{$lista_{col}$ $<$ columna}
       \State avanzar lista
     \EndWhile
-    \If{$lista_{col}$ == columna}
-      \State $lista_{val}$ = valor 
+    \If{$lista_{col}$ $==$ columna}
+      \State $lista_{val}$ $=$ valor 
     \Else
       \If{$lista_{col}$ > columna}
          \State Agregar par (col, valor) antes que este elemento 
@@ -229,7 +226,7 @@ Las dos operaciones que se necesitamos realizar sobre ellas, excluyendo la resol
       \EndIf
     \EndIf              
 \Else
-    \State Recorro igual que en el caso anterior pero borrando si existe un elemento en al lista con igual columna que 
+    \State Recorro igual que en el caso anterior pero borrando si existe un elemento en la lista con igual columna que 
      col 
         
 \EndIf
@@ -250,7 +247,7 @@ Las dos operaciones que se necesitamos realizar sobre ellas, excluyendo la resol
 \end{algorithm}
 
 En la primera operación se recorre la lista hasta llegar a donde debería ubicarse el nuevo elemento. Si no hay un nodo de la lista con la misma columna se lo inserta en esa posición manteniendo el orden de menor a mayor columna. La complejidad es el del máximo entre filas y nnz, donde nnz es la cantidad de elementos no nulos de la matriz.
-En la segunda operación se recorre todas las listas mulitplicando por el escalar. Su complejidad es $O(nnz)$.
+En la segunda operación se recorren todas las listas multiplicando por el escalar. Su complejidad es $O(nnz)$.
 
 
 \subsubsection{PageRank}
@@ -267,7 +264,7 @@ Luego se setean los 1s en la diagonal y se resuelve el sistema normalizándolo. 
 \Procedure{PageRank}{Matriz Rala $W$, vector de grados D, $p$}
     \For{fila $in$ Filas}
     	\State{Multiplicar por escalar(W,D[fila]*$-p$)}
-    	\State{Set(W,1,fila, fila}
+    	\State{Set(W,1,fila, fila)}
     \EndFor	
     \State{Eliminación Gaussiana (W)}
     \State{ranking $\leftarrow$ Backward Substitution (W)}
@@ -283,15 +280,15 @@ Como norma se toma la norma 1 para asegurarnos que el ranking devuelto sume uno.
 
 \subsubsection{Eliminación Gaussiana y Backward Substitution}
 
-Por último, para resolver el sistema de ecuaciones lineales del trabajo realizamos eliminación Gaussiana para triangular la matriz asociada al sistema y luego despejamos por Backward Substitution. Ya probamos que no se requiere de pivoteo para. En cada iteración se garantiza que en la diagonal el elemento sea no nulo. Además, vimos que este método sobre matrices diagonales dominantes aseguran estabilidad numérica. Por lo tanto implementamos eliminación Gaussiana clásica sin pivoteo.\\
+Por último, para resolver el sistema de ecuaciones lineales del trabajo realizamos eliminación Gaussiana para triangular la matriz asociada al sistema y luego despejamos por Backward Substitution. Ya probamos (en la sección \ref{demAppEG}) que no se requiere de pivoteo para triangular el sistema. En cada iteración se garantiza que en la diagonal el elemento sea no nulo. Además, vimos que este método sobre matrices diagonales dominantes aseguran estabilidad numérica. Por lo tanto implementamos eliminación Gaussiana clásica sin pivoteo.\\
 
-Resta ver como aprovechamos la matriz rala. El algoritmo no es muy distinto al convencional. Solo que no recorre toda una fila si el elemento debajo del pivot es nulo. En caso de recorrerlo, solo se atraviasen los valores distinto de cero que están almacenados en esa fila y en la del pivot, por lo que se hace un aprovechamiento de la estructura de la matriz rala descripta anteriormente.\\
+Resta ver como aprovechamos la matriz rala. El algoritmo no es muy distinto al convencional. Solo que no recorre toda una fila si el elemento debajo del pivot es nulo. En caso de recorrerlo, solo se atraviesan los valores distinto de cero que están almacenados en esa fila y en la del pivot, por lo que se hace un aprovechamiento de la estructura de la matriz rala descripta anteriormente.\\
 
-En cada iteración tenemos como invariante que el primer elemento de las listas de las filas debajo de la del pivot se ubica en la misma columna que este o en una mayor. De esta manera, descartamos rápidamente cuando tenemos que actualizar los valores de la fila a la que le anulamos un elemento debajo de la columan del pivot y cuando no.
-Si se tiene que anular, se recorre la lista del pivot (que sabemos que empieza con el pivot como primer valor no nulo ) y en base a esta se itera en la lista del elemento que se quiere anular actualizando según la formula $a_{ij}$ = $a_{ij}$ $-$ $\frac{a_{ik}}{a_{kk}} a_{kj}$ vista en la introducción. La razon por la cual la fila del pivot $k$ comando la actualización es que si esta es nula en la columna $j$, entonces $a_{ij}$ no cambia. \\
+En cada iteración tenemos como invariante que el primer elemento de las listas de las filas debajo de la del pivot se ubica en la misma columna que este o en una mayor. De esta manera, descartamos rápidamente cuando tenemos que actualizar los valores de la fila a la que le anulamos un elemento debajo de la columna del pivot y cuando no.
+Si se tiene que anular, se recorre la lista del pivot (que sabemos que empieza con el pivot como primer valor no nulo ) y en base a esta se itera en la lista del elemento que se quiere anular actualizando según la formula $a_{ij}$ = $a_{ij}$ $-$ $\frac{a_{ik}}{a_{kk}} a_{kj}$ vista en la introducción. La razón por la cual la fila del pivot $k$ comando la actualización es que si esta es nula en la columna $j$, entonces $a_{ij}$ no cambia. \\
 
-Al ir iterando sobre ambas listas al mismo tiempo (o más precisamente, iterando la del elemento a anular en función de del pivot) sabemos dónde insertar o borar (en caso que la resta sea cero) según corresponda, garantizando rapidez en sendas operaciones ($O(1)$ en listas si sabemos qué borrar o dónde insertar). 
-Por ejemplo, si ya llegamos al final de lista de la fila $i$ y en la fila del pivot $k$ sigue habiendo elementos, entonces se inserta el cálculo correspondiente a la ecuación anterior al final de la lista $i$, ya que esa columna es mayor al del último valor no nulo de la fila $i$. Esta es el principalmente la razón por la que mantemos la lista ordenada.\\
+Al ir iterando sobre ambas listas al mismo tiempo (o más precisamente, iterando la del elemento a anular en función de del pivot) sabemos dónde insertar o borrar (en caso que la resta sea cero) según corresponda, garantizando rapidez en sendas operaciones ($O(1)$ en listas si sabemos qué borrar o dónde insertar). 
+Por ejemplo, si ya llegamos al final de lista de la fila $i$ y en la fila del pivot $k$ sigue habiendo elementos, entonces se inserta el cálculo correspondiente a la ecuación anterior al final de la lista $i$, ya que esa columna es mayor al del último valor no nulo de la fila $i$. Esta es la razón principal por la que mantenemos la lista ordenada.\\
 
 Si al recorrer la fila $i$ llegamos a un elemento con fila mayor al elemento de la fila del pivot, entonces sabemos que tenemos que ingresarlo antes que este. Solo cuando coinciden se realiza la resta y se borra el elemento si esta es cero. \\
 
@@ -301,19 +298,19 @@ Valiéndonos de esto, la eliminación Gaussiana sobre una matriz A se resume al 
 \caption{Eliminación Gaussiana}
 \begin{algorithmic}[4]
 \Procedure{Eliminación Gaussiana}{Matriz Rala $A$, vector $b$}
-    \For{i = 1 hasta cantidad de filas}
-    	\For{j = i+1 hasta cantidad de filas }
-    		\State{$lista_{i}$ $\leftarrow$ $indice_filas$[j]}
-    		\If{$lista_{col}$ == $i$ }
-    			\State{coeficiente = $lista_{i}{valor}$ / $lista pivot_{valor}$ }
+    \For{i $=$ 1 hasta cantidad de filas}
+    	\For{j $=$ i+1 hasta cantidad de filas }
+    		\State{$lista_{i}$ $\leftarrow$ $indice filas$[j]}
+    		\If{$lista_{col}$ $==$ $i$ }
+    			\State{coeficiente $=$ $lista_{i}{valor}$ / $lista pivot_{valor}$ }
     			\While{ $lista pivot$ no termine }
     				\State{Avanzo $lista_{i}$ hasta encontrar la posición de la columna $lista pivot_{col}$ en ella }
     				\If{No estaba esa poción}
-    					\State{Inserto $-coef*lista pivot_{valor}$ donde corresponda si es que esa cuenta $\neq$ 0}
-    				\Else{$lista_{i}{valor}$ = $lista_{i}{valor}$ $-coef*lista pivot_{valor}$}		
+    					\State{Inserto $-$coef$*$lista $pivot_{valor}$ donde corresponda si es que esa cuenta $\neq$ 0}
+    				\Else { $lista_{i}{valor}$ $=$ $lista_{i}{valor}$ $-coef*lista pivot_{valor}$}		
 					\EndIf
 				\EndWhile
-				\State{ b[j] = b[j] - coef*b[i] }
+				\State{ b[j] $=$ b[j] $-$ coef*b[i] }
 			\EndIf
 		\EndFor
 	\EndFor						
@@ -322,23 +319,23 @@ Valiéndonos de esto, la eliminación Gaussiana sobre una matriz A se resume al 
 \end{algorithmic}
 \end{algorithm} 
 
-La complejidad de esta eliminación Gaussiana no es tan sencilla de determinar. Sabemos que seguro es cuadrática porque recorre toda la diagonal y en cada una toda la columna debajo de la misma. Si es denso es cúbico. Si es es poco denso depende de los cantidad de valores no nulos y se distribución en la matriz. \\
+La complejidad de esta eliminación Gaussiana no es tan sencilla de determinar. Sabemos que seguro es cuadrática porque recorre toda la diagonal y en cada una toda la columna debajo de la misma. Si es denso es cúbico. Si es es poco denso depende de los cantidad de valores no nulos y su distribución en la matriz. \\
 
-En el caso de Backward Substitution, el algoritmo es el mismo que el clásico solo que en cada despeje de incógnita de la matriz triangular superior que devuelve la eliminación Gaussiana, solo se recorren las varaibles no nulos ya calculadas. Por lo que la complejidad del mismo es $O(n+nnz)$. 
+En el caso de Backward Substitution, el algoritmo es el mismo que el clásico solo que en cada despeje de incógnita de la matriz triangular superior que devuelve la eliminación Gaussiana, solo se recorren las variables no nulos ya calculadas. Por lo que la complejidad del mismo es $O(n+nnz)$. 
 
 \begin{algorithm}[H]
 \caption{Backward Substitution}
 \begin{algorithmic}[5]
 \Procedure{Eliminación Gaussiana}{Matriz Rala $A$, vector $b$}
     \State{Ranking $\leftarrow$ $[]$}
-    \For{i = n hasta 1}
-       \State{acum = 0}
-    	\State{$a_{ii}$ = $lista_{i}{valor}$} \Comment{Sabemos que el primer valor de cada fila esta en al diagonal}
+    \For{i $=$ n hasta 1}
+       \State{acum $=$ 0}
+    	\State{$a_{ii}$ $=$ $lista_{i}{valor}$} \Comment{Sabemos que el primer valor de cada fila esta en al diagonal}
     	\While{$lista_{i}$ no termine }
-			\State{acum = acum + $lista_{i}{valor}$ }
+			\State{acum $=$ acum + $lista_{i}{valor}$ }
 			\State{avanzar $lista_{i}$ }
 		\EndWhile
-		$raking_{i}$ = ($b_{i}$ - acum)/ $a_{ii}$
+		\State{ $raking_{i}$ $=$ ($b_{i}$ $-$ acum)/ $a_{ii}$}
 	\EndFor						
 \EndProcedure 
 
