@@ -1,0 +1,16 @@
+[] marca los parametros obligatorios
+() marca los parametros opcionales
+
+./tp [archivo de entrada] [archivo de salida] (Modo de uso) (k de kNN o k de PCA, depende de modo) (archivo de salida de mediciones)
+
+## archivos de entrada: Son los .in armados en el formato definido en el enunciado
+## archivos de salida: Son los .out
+## Modo de uso: Debe ser alguno de los siguientes valores: kNN, kNN_pesos, PCA, PCA_pesos o ES_CARA. 
+#    kNN_pesos y PCA_pesos estan mal nombrados, deberian ser kNN_dist y PCA_dist, pero elegimos no cambiarlo 
+#    ya que hay muchos archivos llamados asi.
+#    Los dos kNN estan de debug. 
+#    PCA hace PCA + kNN canonico y PCA_pesos hace PCA + kNN distancia.
+## k de kNN o k de PCA: Debe ser un numero positivo mayor a 0. Cuando Modo de Uso es ES_CARA, este k representa al k de PCA.
+#    Cuando Modo de Uso es otro valor, representa al k de kNN.
+## Archivo de salida de mediciones: Es el archivo donde escribimos las mediciones tomadas. Por defecto, toma el valor de 
+archivo de salida y le agrega ".mediciones" al final.

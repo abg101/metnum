@@ -1,0 +1,113 @@
+\documentclass[10pt,a4paper, enlgish, spanish]{article}
+
+\usepackage{color}     % para snipets de codigo coloreados
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+ \geometry{
+    a4paper,
+    total={210mm,297mm},
+    left=5mm,
+    right=5mm,
+    top=15mm,
+    bottom=15mm
+ }
+
+\usepackage{dependencies/caratula,dependencies/aed2-symb,dependencies/aed2-itef,dependencies/aed2-tad, dependencies/aed2-helper}
+\usepackage[spanish]{babel}
+\usepackage{fancyhdr}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{pdfpages} 
+\usepackage{fancybox}  % para el sbox de los snipets de codigo
+\usepackage{graphicx}
+
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{lastpage}
+\usepackage{afterpage}
+\usepackage{cite}
+\usepackage{url}
+
+
+% definiciones
+
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{lemma}[theorem]{Lema}
+\newtheorem{proposition}[theorem]{Proposici\'on}
+\newtheorem{corollary}[theorem]{Corolario}
+
+\newcommand{\Var}{\textbf{var }}
+\newcommand{\True}{\textbf{true }}
+\newcommand{\False}{\textbf{false }}
+\newcommand{\Break}{\textbf{break }}
+
+\newenvironment{proof}[1][Demostraci\'on]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{definition}[1][Definici\'on]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{example}[1][Ejemplo]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Observaci\'on]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\definecolor{litegrey}{gray}{0.94}
+
+\newenvironment{codesnippet}{%
+	\begin{Sbox}\begin{minipage}{\textwidth}\sffamily\small}%
+	{\end{minipage}\end{Sbox}%
+		\begin{center}%
+		\vspace{-0.4cm}\colorbox{litegrey}{\TheSbox}\end{center}\vspace{0.3cm}}
+
+\lstset{frame=tb,
+	  language=C++,
+	  aboveskip=3mm,
+	  belowskip=3mm,
+	  showstringspaces=false,
+	  columns=flexible,
+	  basicstyle={\scriptsize\ttfamily},
+	  numberstyle=\tiny\color{gray},
+	  keywordstyle=\color{blue},
+	  commentstyle=\color{green},
+	  stringstyle=\color{red},
+	  breaklines=true,
+	  breakatwhitespace=true,
+	  tabsize=3,
+	  numbers=left,
+	  numbersep=15pt,
+	  numberfirstline = false
+	}
+
+
+\begin{document}
+
+\input{modules/caratula}
+\newpage
+
+\tableofcontents
+\newpage
+
+\input{modules/Introduccion}
+\newpage
+
+\input{modules/Desarrollo}
+\newpage
+
+\input{modules/Resultados}
+\newpage
+
+\input{modules/Conclusion}
+\newpage
+
+\input{modules/Referencias}
+\newpage
+
+\input{modules/Apendice}
+%\newpage
+
+\end{document}

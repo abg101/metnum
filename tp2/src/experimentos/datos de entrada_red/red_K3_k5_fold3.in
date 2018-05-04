@@ -1,0 +1,179 @@
+../data/ImagenesCarasRed/ 28 23 41 9 5
+s1/ 2 3 4 6 7 9 10
+s2/ 2 3 4 5 6 7 8
+s3/ 2 3 4 5 6 8 10
+s4/ 2 3 4 5 6 7 8 9 10
+s5/ 2 5 6 7 8 9 10
+s6/ 1 3 4 6 7 9 10
+s7/ 3 5 6 9
+s8/ 1 3 4 5 7 8
+s9/ 1 4 8
+s10/ 1 3 4 5 6 8 9
+s11/ 3 4 6
+s12/ 2 4 7 8 10
+s13/ 1 2 5 6 7 8 9 10
+s14/ 1 5 7 9
+s15/ 1 2 4 5 6 7 9 10
+s16/ 1 4 6 7 8 9
+s17/ 1 2 3 4 5 7 8 9 10
+s18/ 2 3 4 8 9 10
+s19/ 1 2 5 7 10
+s20/ 3 4 5 7 8 9 10
+s21/ 1 2 3 4 5 7 9 10
+s22/ 1 3 4 5 6 8 10
+s23/ 1 2 3 4 5 8 9
+s24/ 3 6 7 8
+s25/ 4 5 6 7 9 10
+s26/ 1 2 6 8 9
+s27/ 1 2 6 8 9 10
+s28/ 2 3 5 6 7 8 9 10
+s29/ 1 4 5 6 7 8 9
+s30/ 1 3 6 8 9 10
+s31/ 1 2 3 5 6 7 8 9
+s32/ 1 2 3 4 5 7 8 9 10
+s33/ 1 2 4 5 6 7 8 9 10
+s34/ 1 2 3 4 5 7 8 9 10
+s35/ 6 7 8 9 10
+s36/ 2 3 4 5 7 8 9 10
+s37/ 1 2 4 6 7 9 10
+s38/ 3 4 5 6 7 8 9 10
+s39/ 1 2 4 5 9 10
+s40/ 1 2 3 5 6 7 9 10
+s41/ 1 2 3 5 6 7 8 9
+136
+../data/ImagenesCarasRed/s1/1.pgm 1
+../data/ImagenesCarasRed/s1/8.pgm 1
+../data/ImagenesCarasRed/s1/5.pgm 1
+../data/ImagenesCarasRed/s2/9.pgm 2
+../data/ImagenesCarasRed/s2/10.pgm 2
+../data/ImagenesCarasRed/s2/1.pgm 2
+../data/ImagenesCarasRed/s3/7.pgm 3
+../data/ImagenesCarasRed/s3/1.pgm 3
+../data/ImagenesCarasRed/s3/9.pgm 3
+../data/ImagenesCarasRed/s4/1.pgm 4
+../data/ImagenesCarasRed/s5/1.pgm 5
+../data/ImagenesCarasRed/s5/3.pgm 5
+../data/ImagenesCarasRed/s5/4.pgm 5
+../data/ImagenesCarasRed/s6/5.pgm 6
+../data/ImagenesCarasRed/s6/2.pgm 6
+../data/ImagenesCarasRed/s6/8.pgm 6
+../data/ImagenesCarasRed/s7/2.pgm 7
+../data/ImagenesCarasRed/s7/1.pgm 7
+../data/ImagenesCarasRed/s7/7.pgm 7
+../data/ImagenesCarasRed/s7/8.pgm 7
+../data/ImagenesCarasRed/s7/4.pgm 7
+../data/ImagenesCarasRed/s7/10.pgm 7
+../data/ImagenesCarasRed/s8/6.pgm 8
+../data/ImagenesCarasRed/s8/9.pgm 8
+../data/ImagenesCarasRed/s8/10.pgm 8
+../data/ImagenesCarasRed/s8/2.pgm 8
+../data/ImagenesCarasRed/s9/2.pgm 9
+../data/ImagenesCarasRed/s9/10.pgm 9
+../data/ImagenesCarasRed/s9/6.pgm 9
+../data/ImagenesCarasRed/s9/3.pgm 9
+../data/ImagenesCarasRed/s9/9.pgm 9
+../data/ImagenesCarasRed/s9/5.pgm 9
+../data/ImagenesCarasRed/s9/7.pgm 9
+../data/ImagenesCarasRed/s10/7.pgm 10
+../data/ImagenesCarasRed/s10/10.pgm 10
+../data/ImagenesCarasRed/s10/2.pgm 10
+../data/ImagenesCarasRed/s11/2.pgm 11
+../data/ImagenesCarasRed/s11/10.pgm 11
+../data/ImagenesCarasRed/s11/9.pgm 11
+../data/ImagenesCarasRed/s11/1.pgm 11
+../data/ImagenesCarasRed/s11/7.pgm 11
+../data/ImagenesCarasRed/s11/5.pgm 11
+../data/ImagenesCarasRed/s11/8.pgm 11
+../data/ImagenesCarasRed/s12/5.pgm 12
+../data/ImagenesCarasRed/s12/1.pgm 12
+../data/ImagenesCarasRed/s12/3.pgm 12
+../data/ImagenesCarasRed/s12/6.pgm 12
+../data/ImagenesCarasRed/s12/9.pgm 12
+../data/ImagenesCarasRed/s13/4.pgm 13
+../data/ImagenesCarasRed/s13/3.pgm 13
+../data/ImagenesCarasRed/s14/3.pgm 14
+../data/ImagenesCarasRed/s14/4.pgm 14
+../data/ImagenesCarasRed/s14/2.pgm 14
+../data/ImagenesCarasRed/s14/8.pgm 14
+../data/ImagenesCarasRed/s14/10.pgm 14
+../data/ImagenesCarasRed/s14/6.pgm 14
+../data/ImagenesCarasRed/s15/3.pgm 15
+../data/ImagenesCarasRed/s15/8.pgm 15
+../data/ImagenesCarasRed/s16/10.pgm 16
+../data/ImagenesCarasRed/s16/5.pgm 16
+../data/ImagenesCarasRed/s16/3.pgm 16
+../data/ImagenesCarasRed/s16/2.pgm 16
+../data/ImagenesCarasRed/s17/6.pgm 17
+../data/ImagenesCarasRed/s18/5.pgm 18
+../data/ImagenesCarasRed/s18/7.pgm 18
+../data/ImagenesCarasRed/s18/6.pgm 18
+../data/ImagenesCarasRed/s18/1.pgm 18
+../data/ImagenesCarasRed/s19/4.pgm 19
+../data/ImagenesCarasRed/s19/3.pgm 19
+../data/ImagenesCarasRed/s19/8.pgm 19
+../data/ImagenesCarasRed/s19/6.pgm 19
+../data/ImagenesCarasRed/s19/9.pgm 19
+../data/ImagenesCarasRed/s20/2.pgm 20
+../data/ImagenesCarasRed/s20/6.pgm 20
+../data/ImagenesCarasRed/s20/1.pgm 20
+../data/ImagenesCarasRed/s21/8.pgm 21
+../data/ImagenesCarasRed/s21/6.pgm 21
+../data/ImagenesCarasRed/s22/7.pgm 22
+../data/ImagenesCarasRed/s22/9.pgm 22
+../data/ImagenesCarasRed/s22/2.pgm 22
+../data/ImagenesCarasRed/s23/7.pgm 23
+../data/ImagenesCarasRed/s23/10.pgm 23
+../data/ImagenesCarasRed/s23/6.pgm 23
+../data/ImagenesCarasRed/s24/5.pgm 24
+../data/ImagenesCarasRed/s24/9.pgm 24
+../data/ImagenesCarasRed/s24/1.pgm 24
+../data/ImagenesCarasRed/s24/2.pgm 24
+../data/ImagenesCarasRed/s24/10.pgm 24
+../data/ImagenesCarasRed/s24/4.pgm 24
+../data/ImagenesCarasRed/s25/1.pgm 25
+../data/ImagenesCarasRed/s25/8.pgm 25
+../data/ImagenesCarasRed/s25/3.pgm 25
+../data/ImagenesCarasRed/s25/2.pgm 25
+../data/ImagenesCarasRed/s26/4.pgm 26
+../data/ImagenesCarasRed/s26/5.pgm 26
+../data/ImagenesCarasRed/s26/7.pgm 26
+../data/ImagenesCarasRed/s26/10.pgm 26
+../data/ImagenesCarasRed/s26/3.pgm 26
+../data/ImagenesCarasRed/s27/7.pgm 27
+../data/ImagenesCarasRed/s27/5.pgm 27
+../data/ImagenesCarasRed/s27/4.pgm 27
+../data/ImagenesCarasRed/s27/3.pgm 27
+../data/ImagenesCarasRed/s28/1.pgm 28
+../data/ImagenesCarasRed/s28/4.pgm 28
+../data/ImagenesCarasRed/s29/10.pgm 29
+../data/ImagenesCarasRed/s29/3.pgm 29
+../data/ImagenesCarasRed/s29/2.pgm 29
+../data/ImagenesCarasRed/s30/2.pgm 30
+../data/ImagenesCarasRed/s30/7.pgm 30
+../data/ImagenesCarasRed/s30/5.pgm 30
+../data/ImagenesCarasRed/s30/4.pgm 30
+../data/ImagenesCarasRed/s31/10.pgm 31
+../data/ImagenesCarasRed/s31/4.pgm 31
+../data/ImagenesCarasRed/s32/6.pgm 32
+../data/ImagenesCarasRed/s33/3.pgm 33
+../data/ImagenesCarasRed/s34/6.pgm 34
+../data/ImagenesCarasRed/s35/1.pgm 35
+../data/ImagenesCarasRed/s35/4.pgm 35
+../data/ImagenesCarasRed/s35/2.pgm 35
+../data/ImagenesCarasRed/s35/5.pgm 35
+../data/ImagenesCarasRed/s35/3.pgm 35
+../data/ImagenesCarasRed/s36/1.pgm 36
+../data/ImagenesCarasRed/s36/6.pgm 36
+../data/ImagenesCarasRed/s37/8.pgm 37
+../data/ImagenesCarasRed/s37/5.pgm 37
+../data/ImagenesCarasRed/s37/3.pgm 37
+../data/ImagenesCarasRed/s38/2.pgm 38
+../data/ImagenesCarasRed/s38/1.pgm 38
+../data/ImagenesCarasRed/s39/6.pgm 39
+../data/ImagenesCarasRed/s39/3.pgm 39
+../data/ImagenesCarasRed/s39/7.pgm 39
+../data/ImagenesCarasRed/s39/8.pgm 39
+../data/ImagenesCarasRed/s40/4.pgm 40
+../data/ImagenesCarasRed/s40/8.pgm 40
+../data/ImagenesCarasRed/s41/10.pgm 41
+../data/ImagenesCarasRed/s41/4.pgm 41

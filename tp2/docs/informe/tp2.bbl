@@ -1,0 +1,12 @@
+\begin{thebibliography}{1}
+
+\bibitem{STL}
+Stl.
+\newblock \url{http://en.cppreference.com/w/cpp/container}.
+
+\bibitem{burden}
+R.L. Burden and J.D. Faires.
+\newblock {\em Numerical Analysis}.
+\newblock Cengage Learning, 2010.
+
+\end{thebibliography}

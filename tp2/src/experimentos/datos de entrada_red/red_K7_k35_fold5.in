@@ -1,0 +1,101 @@
+../data/ImagenesCarasRed/ 28 23 41 10 35
+s1/ 1 2 4 5 6 7 8 9
+s2/ 1 2 3 4 5 6 7 8 9 10
+s3/ 1 2 3 4 5 6 8 9
+s4/ 1 2 3 4 5 6 7 8 9 10
+s5/ 1 2 3 5 6 7 8 9 10
+s6/ 1 2 3 4 7 8 9 10
+s7/ 2 3 4 5 6 7 8 10
+s8/ 1 2 3 4 5 6 8 9 10
+s9/ 1 2 3 4 5 6 7 8 10
+s10/ 1 2 3 4 5 7 8 10
+s11/ 1 2 3 4 5 7 8 9 10
+s12/ 2 3 4 5 7 8 9 10
+s13/ 1 2 3 4 5 6 7 8 9 10
+s14/ 2 3 4 5 6 7 8 9 10
+s15/ 1 2 3 5 6 8 9 10
+s16/ 1 2 3 4 5 6 7 8 9
+s17/ 1 2 3 4 5 6 8 9 10
+s18/ 1 2 3 4 5 6 7 8 10
+s19/ 1 2 4 5 6 7 8 9 10
+s20/ 1 2 4 6 7 8 9 10
+s21/ 2 3 4 5 6 8 9 10
+s22/ 1 2 4 5 6 7 8 9 10
+s23/ 1 2 3 4 5 6 7 8 9 10
+s24/ 1 2 4 5 6 7 8 9 10
+s25/ 2 3 4 6 7 8
+s26/ 2 3 4 5 8 9 10
+s27/ 1 2 4 5 6 7 9 10
+s28/ 1 2 3 4 5 6 7 8 9 10
+s29/ 1 2 3 4 5 7 8 9 10
+s30/ 1 2 3 4 7 8 10
+s31/ 1 2 3 4 5 6 7 9 10
+s32/ 4 5 6 7 8 9 10
+s33/ 1 2 3 4 5 7 8 9 10
+s34/ 1 2 3 4 5 6 7 8
+s35/ 1 3 4 5 6 7 8 10
+s36/ 1 2 3 6 7 8 9 10
+s37/ 1 5 6 7 8 10
+s38/ 1 2 3 4 5 6 7 8 9 10
+s39/ 1 2 3 4 5 6 7 8 9 10
+s40/ 1 2 3 4 5 6 7 8 9 10
+s41/ 2 3 4 5 6 7 8 9 10
+58
+../data/ImagenesCarasRed/s1/3.pgm 1
+../data/ImagenesCarasRed/s1/10.pgm 1
+../data/ImagenesCarasRed/s3/7.pgm 3
+../data/ImagenesCarasRed/s3/10.pgm 3
+../data/ImagenesCarasRed/s5/4.pgm 5
+../data/ImagenesCarasRed/s6/6.pgm 6
+../data/ImagenesCarasRed/s6/5.pgm 6
+../data/ImagenesCarasRed/s7/1.pgm 7
+../data/ImagenesCarasRed/s7/9.pgm 7
+../data/ImagenesCarasRed/s8/7.pgm 8
+../data/ImagenesCarasRed/s9/9.pgm 9
+../data/ImagenesCarasRed/s10/9.pgm 10
+../data/ImagenesCarasRed/s10/6.pgm 10
+../data/ImagenesCarasRed/s11/6.pgm 11
+../data/ImagenesCarasRed/s12/1.pgm 12
+../data/ImagenesCarasRed/s12/6.pgm 12
+../data/ImagenesCarasRed/s14/1.pgm 14
+../data/ImagenesCarasRed/s15/7.pgm 15
+../data/ImagenesCarasRed/s15/4.pgm 15
+../data/ImagenesCarasRed/s16/10.pgm 16
+../data/ImagenesCarasRed/s17/7.pgm 17
+../data/ImagenesCarasRed/s18/9.pgm 18
+../data/ImagenesCarasRed/s19/3.pgm 19
+../data/ImagenesCarasRed/s20/5.pgm 20
+../data/ImagenesCarasRed/s20/3.pgm 20
+../data/ImagenesCarasRed/s21/1.pgm 21
+../data/ImagenesCarasRed/s21/7.pgm 21
+../data/ImagenesCarasRed/s22/3.pgm 22
+../data/ImagenesCarasRed/s24/3.pgm 24
+../data/ImagenesCarasRed/s25/9.pgm 25
+../data/ImagenesCarasRed/s25/5.pgm 25
+../data/ImagenesCarasRed/s25/1.pgm 25
+../data/ImagenesCarasRed/s25/10.pgm 25
+../data/ImagenesCarasRed/s26/6.pgm 26
+../data/ImagenesCarasRed/s26/1.pgm 26
+../data/ImagenesCarasRed/s26/7.pgm 26
+../data/ImagenesCarasRed/s27/8.pgm 27
+../data/ImagenesCarasRed/s27/3.pgm 27
+../data/ImagenesCarasRed/s29/6.pgm 29
+../data/ImagenesCarasRed/s30/6.pgm 30
+../data/ImagenesCarasRed/s30/9.pgm 30
+../data/ImagenesCarasRed/s30/5.pgm 30
+../data/ImagenesCarasRed/s31/8.pgm 31
+../data/ImagenesCarasRed/s32/3.pgm 32
+../data/ImagenesCarasRed/s32/2.pgm 32
+../data/ImagenesCarasRed/s32/1.pgm 32
+../data/ImagenesCarasRed/s33/6.pgm 33
+../data/ImagenesCarasRed/s34/9.pgm 34
+../data/ImagenesCarasRed/s34/10.pgm 34
+../data/ImagenesCarasRed/s35/9.pgm 35
+../data/ImagenesCarasRed/s35/2.pgm 35
+../data/ImagenesCarasRed/s36/4.pgm 36
+../data/ImagenesCarasRed/s36/5.pgm 36
+../data/ImagenesCarasRed/s37/3.pgm 37
+../data/ImagenesCarasRed/s37/4.pgm 37
+../data/ImagenesCarasRed/s37/9.pgm 37
+../data/ImagenesCarasRed/s37/2.pgm 37
+../data/ImagenesCarasRed/s41/1.pgm 41

@@ -1,0 +1,12 @@
+Para usar las maquinas del labo de forma remota necesitas tu usuario(USER)y contraseña de los labos.
+Para conectarse se usa ssh, esta disponible en linux sin instalar nada. Tambien hay clienes ssh para windows.
+Te permite usar la maquina del labo desde la consola.
+Como conectarse:
+1. Poner en una consola(o en el programa de windows): ssh USER@milagro.dc.uba.ar
+2. Te va a pedir la contraseña, pone la de tu usuario del labo
+3. Despues de esto te va a mostrar una pantalla con info.
+4. Pones en la consola el comando verMaquinas, que te muestra las computadoras a las que se puede ingresar, ordenadas por labo. 
+Para cada computadora te muestra si esta encendida y el sistema operativo que esta usando.
+5. Elegi una computadora a usar, por lo general usamos las de labo6 porque son las más nuevas. Para ingresar a esa compu pones:
+ssh ws[numero compu].labo[numero labo].lab.dc.uba.ar. Te va a pedir la misma contraseña que antes.
+6. Si esta todo bien, entras en esa compu con tu usuario y ya podes usar la consola de esa maquina
