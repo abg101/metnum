@@ -144,7 +144,7 @@ bool LoadPPMFile(uchar** data, int *width, int *height, PPM_LOADER_PIXEL_TYPE* p
 	}
 
   if (line[2] == '\n') {
-    fgets(line, 256, fid);
+    //fgets(line, 256, fid);
 
     // Parse comments
     fgets(line, 256, fid);
