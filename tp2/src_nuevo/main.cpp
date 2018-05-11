@@ -43,13 +43,12 @@ struct info_archivo
 };
 
 //Modo de operacion
-// dond dice _pesos en realidad iria _distancia, pero es tarde para cambiar eso
-// kNN y kNN_pesos estan para debug
+// kNN y kNN_distancia estan para debug
 enum Modo{
     kNN = 0,
-    kNN_pesos,
+    kNN_distancia,
     PCA,
-    PCA_pesos,
+    PCA_distancia,
     ES_CARA
 };
 
@@ -88,7 +87,7 @@ std::ostream& operator<<(std::ostream& os, const info_archivo& obj)
 }
 
 // Leemos el archivo de input, el .in
-void leer_archivo(std::string path, info_archivo& res)
+void leer_archivo_in(std::string path, info_archivo& res)
 {
     std::fstream fs;
     fs.open(path.c_str(),std::fstream::in);
@@ -105,15 +104,40 @@ void leer_archivo(std::string path, info_archivo& res)
     fs >> res.p;
     fs >> res.nimgp;
     fs >> res.k;
+    fs.close();
+}
+
+void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res){
+    std::fstream fs1;
+    fs1.open(path_1.c_str(),std::fstream::in);
+    
+    if(!fs1.good())
+    {
+        std::cout<<"Fallo lectura archivo 1 .csv";
+        return;
+    }
+
+    std::fstream fs2;
+    fs2.open(path_2.c_str(),std::fstream::in);
+    
+    if(!fs2.good())
+    {
+        std::cout<<"Fallo lectura archivo 2 .csv";
+        return;
+    }
 
     res.total_imagenes_train = 0;
+    std::string temp;
     for(unsigned int i = 0;i < res.p;i++)
     {
         datos_sujeto ds;
         unsigned int s;
 
-        fs >> ds.path_imagenes;
-
+        //Para saber el path_imagenes al que pertenecen las imagenes, vemos el path donde se entran dichas imagenes, por lo gral de la forma "../data/ImagenesCaras/s{0}/{1}.pgm"
+        // o "../data/ImagenesCarasRed/s{0}/{1}.pgm"
+        fs1 >> temp;
+        temp = temp.substr(0, temp.find_last_of("/")-1)
+        ds.path_imagenes = temp.substr(temp.find_last_of("/"),temp.length()-1)
         //Para saber el sujeto al que pertenecen las imagenes, vemos el path donde se entran dichas imagenes, por lo general de la forma "s[sujeto]/.."
         //Nos interesa extraer [sujeto de ese string]
         //Primero tomamos la parte del path que queremos, "s[sujeto]/", extraemos [sujeto] y lo convertimos a uint
@@ -142,8 +166,10 @@ void leer_archivo(std::string path, info_archivo& res)
         res.casos_a_testear[i] = ct;
     }
 
-    fs.close();
 }
+
+
+
 
 // Lee una imagen de formato .pgm
 // Esta imagenes se las puede interpretar como archivos de texto armados de las siguientes maneras:
@@ -517,10 +543,10 @@ int main(int argc, char* argv[]){
     std::string output_medidas(output + ".medidas");
     Modo m = PCA;
     unsigned int valor_knn = 1;
-    bool con_pesos = false;
+    bool con_distancia = false;
 
     // Vemos que metodo para clasificar vamos a usar
-    // kNN, kNN con pesos, PCA + kNN o PCA + kNN con pesos
+    // kNN, kNN con distancia, PCA + kNN o PCA + kNN con distancia
     // Ademas necesitamos el valor k de kNN
     if(argc >= 5)
     {
@@ -536,17 +562,17 @@ int main(int argc, char* argv[]){
 
         if(modo_s == "kNN")
             m = kNN;
-        else if(modo_s == "kNN_pesos")
+        else if(modo_s == "kNN_distancia")
         {
-            m = kNN_pesos;
-            con_pesos = true;
+            m = kNN_distancia;
+            con_distancia = true;
         }
         else if(modo_s == "PCA")
             m = PCA;
-        else if(modo_s == "PCA_pesos")
+        else if(modo_s == "PCA_distancia")
         {
-            m = PCA_pesos;
-            con_pesos = true;
+            m = PCA_distancia;
+            con_distancia = true;
         }
         else if(modo_s == "ES_CARA")
             m = ES_CARA;
@@ -581,7 +607,7 @@ int main(int argc, char* argv[]){
 
     //Cargo los datos del archivo input
     info_archivo info;
-    leer_archivo(input, info);  
+    leer_archivo_in(input, info);  
     //Cambio la cantidad de digitos con las que nos muestra los doubles en pantalla
     std::cout<<std::fixed;std::setprecision(50);   
   
@@ -608,8 +634,8 @@ int main(int argc, char* argv[]){
     }
 
     clock_t total = 0;
-    // Si usamos PCA o PCA_pesos, realizamos la transformacion de las bases
-    if(m == PCA || m == PCA_pesos)
+    // Si usamos PCA o PCA_distancia, realizamos la transformacion de las bases
+    if(m == PCA || m == PCA_distancia)
     { 
         clock_t conv = clock();
 
@@ -630,7 +656,7 @@ int main(int argc, char* argv[]){
     clock_t clasif = clock();
     // Clasificamos las imagenes de test usando las de train y obtenemos mediciones
     Clasificador c(train, s_train);
-    medidas_info r = c.clasificar_y_medir(test, s_test, valor_knn, con_pesos);
+    medidas_info r = c.clasificar_y_medir(test, s_test, valor_knn, con_distancia);
     clasif = ((clock() - clasif));
     total = total + clasif;
 
