@@ -33,7 +33,7 @@ def armar_archivo_csv(path_archivo, path_datos, imgs):
                     f.write(path_test.format(i, j % 10, i))
 
 
-def armar_archivo_in(path_archivo, path_datos_corto, path_datos, ancho, alto, cant_sujetos, max_imgs_train, k):
+def armar_archivo_in(path_archivo, path_datos_corto, path_datos, ancho, alto, cant_sujetos, max_imgs_train, k,n_train,n_test):
     path_test = path_datos + " {2}\n"
     with open(path_archivo, mode='w') as f:
         f.write(path_datos_corto)
@@ -41,6 +41,8 @@ def armar_archivo_in(path_archivo, path_datos_corto, path_datos, ancho, alto, ca
         f.write("{} ".format(ancho))
         f.write("{} ".format(cant_sujetos))
         f.write("{} ".format(max_imgs_train))
+        f.write("{} ".format(n_train))
+        f.write("{} ".format(n_test))
         f.write("{}\n".format(k))
 
 
@@ -105,16 +107,16 @@ if __name__ == "__main__":
             if sujeto_x_imagen[i] not in train_imgs_x_sujeto:
                 train_imgs_x_sujeto[sujeto_x_imagen[i]] = []
             train_imgs_x_sujeto[sujeto_x_imagen[i]].append(i)
-
+        
         # Armamos un dict que mapee un sujeto con las imagenes de test que le correponden
         test_imgs_x_sujeto = dict()
         for i in datos_fold["test"]:
             if sujeto_x_imagen[i] not in test_imgs_x_sujeto:
                 test_imgs_x_sujeto[sujeto_x_imagen[i]] = []
             test_imgs_x_sujeto[sujeto_x_imagen[i]].append(i)
-
+            
         armar_archivo_in(path_out, path_corto, path, ancho, alto, len(train_imgs_x_sujeto.keys()),
-                      max_imgs_x_sujeto, k)
+                      max_imgs_x_sujeto, k,len(datos_fold["train"],len(datos_fold["test"])
         
         armar_archivo_csv(path_out_train,path,train_imgs_x_sujeto)
         armar_archivo_csv(path_out_test,path,test_imgs_x_sujeto)

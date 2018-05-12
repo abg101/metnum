@@ -33,11 +33,11 @@ struct info_archivo
     std::string path_base;
     unsigned int ancho_imagen;
     unsigned int alto_imagen;
-    unsigned int p;
+    unsigned int cant_sujetos;
     unsigned int nimgp;
-    unsigned int total_imagenes_train;
+    unsigned int n_train;
+    unsigned int n_test;
     unsigned int k;
-    unsigned int ntest;
     DiccDatostrainXSujeto imgs_a_considerar_x_sujeto;
     std::vector<caso_test> casos_a_testear;
 };
@@ -59,10 +59,11 @@ std::ostream& operator<<(std::ostream& os, const info_archivo& obj)
     os<<"Path de la base de datos: "<<obj.path_base<<'\n';
     os<<"Ancho de las imagenes: "<<obj.ancho_imagen<<'\n';
     os<<"Alto de las imagenes: "<<obj.alto_imagen<<'\n';
-    os<<"Cantidad de sujetos: "<<obj.p<<'\n';
+    os<<"Cantidad de sujetos: "<<obj.cant_sujetos<<'\n';
+    os<<"Cantidad de imagenes a entrenar"<<obj.n_train<<'\n';
     os<<"Cantidad maxima de imagenes por sujeto: "<<obj.nimgp<<'\n';
     os<<"Cantidad de componentes principales(k): "<<obj.k<<'\n';
-    os<<"Cantidad de imagenes a testear: "<<obj.ntest<<'\n';
+    os<<"Cantidad de imagenes a testear: "<<obj.n_test<<'\n';
 
     os<<"-------------------\n";
     os<<"Imagenes de la base\n";
@@ -101,8 +102,10 @@ void leer_archivo_in(std::string path, info_archivo& res)
     fs >> res.path_base;
     fs >> res.alto_imagen; 
     fs >> res.ancho_imagen;
-    fs >> res.p;
+    fs >> res.cant_sujetos;
     fs >> res.nimgp;
+    fs >> res.n_train;
+    fs >> res.n_test;
     fs >> res.k;
     fs.close();
 }
@@ -126,39 +129,35 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
         return;
     }
 
-    res.total_imagenes_train = 0;
     std::string temp;
-    for(unsigned int i = 0;i < res.p;i++)
+    for(unsigned int i = 0;i < res.n_train;i++)
     {
         datos_sujeto ds;
         unsigned int s;
 
-        //Para saber el path_imagenes al que pertenecen las imagenes, vemos el path donde se entran dichas imagenes, por lo gral de la forma "../data/ImagenesCaras/s{0}/{1}.pgm"
-        // o "../data/ImagenesCarasRed/s{0}/{1}.pgm"
+        //Para saber el path_imagenes al que pertenecen las imagenes, vemos el path donde se entran dichas imagenes, por lo gral de la forma "../data/ImagenesCaras/s{0}/{1}.pgm,"
+        // o "../data/ImagenesCarasRed/s{0}/{1}.pgm,"
         fs1 >> temp;
         temp = temp.substr(0, temp.find_last_of("/")-1)
         ds.path_imagenes = temp.substr(temp.find_last_of("/"),temp.length()-1)
-        //Para saber el sujeto al que pertenecen las imagenes, vemos el path donde se entran dichas imagenes, por lo general de la forma "s[sujeto]/.."
-        //Nos interesa extraer [sujeto de ese string]
-        //Primero tomamos la parte del path que queremos, "s[sujeto]/", extraemos [sujeto] y lo convertimos a uint
-        s = std::stoul(ds.path_imagenes.substr(1, ds.path_imagenes.find_first_of("/")-1));
+        
+        fs1 >> temp;
+        s = std::stoul(temp.substr(0, ds.path_imagenes.find_first_of(",")-1));
 
-        unsigned int j = 0;
-
+/*
         while(j < res.nimgp && fs.peek() != '\n')
         {
-            unsigned int temp;
-            fs >> temp;
-            ds.imgs_entrenamiento.push_back(temp);
+            unsigned int tempp;
+            fs1 >> tempp;// ver
+            ds.imgs_entrenamiento.push_back(tempp);
             j++;
-            res.total_imagenes_train++;
         }
         res.imgs_a_considerar_x_sujeto[s] = ds;
+ */
     }
-    fs >> res.ntest;
-    res.casos_a_testear.resize(res.ntest);
+    res.casos_a_testear.resize(res.n_test);
 
-    for(unsigned int i = 0;i < res.ntest;i++)
+    for(unsigned int i = 0;i < res.n_test;i++)
     {
         caso_test ct;
         fs >> ct.path_imagen;
@@ -265,7 +264,7 @@ Matriz<double> leer_imagen(std::string path)
 // Devuelve una matriz con las imagenes de entrenamiento como vectores fila
 Matriz<double> armar_base_entrenamiento(const info_archivo& ia)
 {
-    Matriz<double> res(ia.total_imagenes_train, ia.alto_imagen * ia.ancho_imagen, 0);
+    Matriz<double> res(ia.n_train, ia.alto_imagen * ia.ancho_imagen, 0);
     int cant_img = 0;
 
     for(DiccDatostrainXSujeto::const_iterator it = ia.imgs_a_considerar_x_sujeto.cbegin();it != ia.imgs_a_considerar_x_sujeto.cend();++it)
@@ -285,7 +284,7 @@ Matriz<double> armar_base_entrenamiento(const info_archivo& ia)
 // Devuelve una matriz con las imagenes de test como vectores fila
 Matriz<double> armar_casos_tests(const info_archivo& ia)
 {
-    Matriz<double> res(ia.ntest, ia.alto_imagen * ia.ancho_imagen, 0);
+    Matriz<double> res(ia.n_test, ia.alto_imagen * ia.ancho_imagen, 0);
     int cant_img = 0;
     for(const caso_test& ct : ia.casos_a_testear)
     {
