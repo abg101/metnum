@@ -129,42 +129,49 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
         return;
     }
 
-    std::string temp;
-    for(unsigned int i = 0;i < res.n_train;i++)
-    {
+
+    std::string temp1;
+    std::string temp2;
+    for(unsigned int i = 0;i < res.cant_sujetos;i++)
+    {                
         datos_sujeto ds;
         unsigned int s;
 
+        fs1 >> temp1;
+        fs1 >> temp2;
+
+        unsigned int num_imagen = temp1.substr(temp1.find_last_of("/")+1,temp1.find_last_of(".")-1)
+
         //Para saber el path_imagenes al que pertenecen las imagenes, vemos el path donde se entran dichas imagenes, por lo gral de la forma "../data/ImagenesCaras/s{0}/{1}.pgm,"
         // o "../data/ImagenesCarasRed/s{0}/{1}.pgm,"
-        fs1 >> temp;
-        temp = temp.substr(0, temp.find_last_of("/")-1)
-        ds.path_imagenes = temp.substr(temp.find_last_of("/"),temp.length()-1)
-        
-        fs1 >> temp;
-        s = std::stoul(temp.substr(0, ds.path_imagenes.find_first_of(",")-1));
+        temp1 = temp1.substr(0, temp.find_last_of("/")-1)
+        ds.path_imagenes = temp1.substr(temp1.find_last_of("/"),temp1.length()-1)
 
-/*
-        while(j < res.nimgp && fs.peek() != '\n')
-        {
-            unsigned int tempp;
-            fs1 >> tempp;// ver
-            ds.imgs_entrenamiento.push_back(tempp);
+        unsigned int j = 0;
+        while(j < res.nimgp){
+            fs1 >> temp1;
+            fs1 >> temp2;            
+            s = std::stoul(temp2.substr(0, temp2.find_first_of(",")-1));
+
+            ds.imgs_entrenamiento.push_back(num_imagen);
             j++;
         }
         res.imgs_a_considerar_x_sujeto[s] = ds;
- */
     }
     res.casos_a_testear.resize(res.n_test);
-
+    fs1.close();
+    
     for(unsigned int i = 0;i < res.n_test;i++)
     {
         caso_test ct;
-        fs >> ct.path_imagen;
-        fs >> ct.sujeto;
+        fs2 >> temp1;
+        ct.path_imagen = temp1.substr(0, temp1.find_last_of(",")-1);
+
+        fs2 >> temp2;
+        ct.sujeto = temp1.substr(0, temp2.find_last_of(",")-1);
         res.casos_a_testear[i] = ct;
     }
-
+    fs2.close();
 }
 
 
