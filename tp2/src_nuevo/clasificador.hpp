@@ -14,25 +14,25 @@ typedef std::map<unsigned int, double> DiccNatADouble;
 
 struct medidas_info
 {
-    double hit_rate_general;
+    double accuracy_general;
     double precision_general;
     double recall_general;
-    DiccNatADouble hitrate_x_sujeto;
+    DiccNatADouble accuracy_x_sujeto;
     DiccNatADouble precision_x_sujeto;
     DiccNatADouble recall_x_sujeto;
 };
 
 std::ostream& operator<<(std::ostream& os, medidas_info& obj)
 {
-    os<<"Hitrate general\n";
-    os<<obj.hit_rate_general<<'\n';
+    os<<"Accuracy general\n";
+    os<<obj.accuracy_general<<'\n';
     os<<"Precision general\n";
     os<<obj.precision_general<<'\n';
     os<<"Recall general\n";
     os<<obj.recall_general<<'\n';
 
-    os<<"Hitrate por sujeto\n";
-    for(DiccNatADouble::const_iterator it = obj.hitrate_x_sujeto.cbegin();it != obj.hitrate_x_sujeto.cend();++it)
+    os<<"Accuracy por sujeto\n";
+    for(DiccNatADouble::const_iterator it = obj.accuracy_x_sujeto.cbegin();it != obj.accuracy_x_sujeto.cend();++it)
         os<<it->first<<": "<<it->second<<'\n';
     
     os<<"Precision por sujeto\n";
@@ -149,8 +149,13 @@ medidas_info Clasificador::clasificar_y_medir(const Matriz<double>& tests, std::
         total_x_cat[sujetos_tests[i]]++;
     }
 
-    // Calculo hitrate, precision y recall general
-    info.hit_rate_general = double(aciertos)/double(total);
+    // Calculo accuracy, precision y recall general
+    info.accuracy_general = 0;
+    for(DiccNatADouble::const_iterator i = verdaderos_pos_cat.cbegin();i != verdaderos_pos_cat.cend();++i)
+        if(i->second > 0)
+            info.precision_general += (i->second + verdaderos_neg_cat[i->first])/(i->second + falsos_pos_cat[i->first] + verdaderos_neg_cat[i->first] + falsos_neg_catî->first);
+
+    info.accuracy_general /= double(total_x_cat.size());
 
     info.precision_general = 0;
     for(DiccNatADouble::const_iterator i = verdaderos_pos_cat.cbegin();i != verdaderos_pos_cat.cend();++i)
@@ -166,9 +171,18 @@ medidas_info Clasificador::clasificar_y_medir(const Matriz<double>& tests, std::
 
     info.recall_general /= double(total_x_cat.size());
 
-    // Calculo hitrate, precision y recall por categoria
+    // Calculo accuracy, precision y recall por categoria
     for(DiccNatADouble::const_iterator it = total_x_cat.cbegin();it != total_x_cat.cend();++it)
-        info.hitrate_x_sujeto[it->first] = verdaderos_pos_cat[it->first] / it->second;        
+    {
+        double v_pos = verdaderos_pos_cat[it->first];
+        double f_pos = falsos_pos_cat[it->first];
+        double v_neg = verdaderos_neg_cat[it->first];
+        double f_neg = falsos_neg_cat[it->first];
+        if((v_pos + f_pos + v_neg + f_neg) > 0)
+            info.accuracy_x_sujeto[it->first] = (v_pos + v_neg) / (v_pos + f_pos + v_neg + f_neg);
+        else
+            info.accuracy_x_sujeto[it->first] = 0;
+    }        
 
     for(DiccNatADouble::const_iterator it = total_x_cat.cbegin();it != total_x_cat.cend();++it)
     {
