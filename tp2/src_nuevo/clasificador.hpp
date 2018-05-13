@@ -53,14 +53,14 @@ class Clasificador
     public:
         Clasificador(const Matriz<double>&, const DiccNatANat&);
 
-        std::vector<unsigned int> clasificar(unsigned int k, const Matriz<double>& casos_tests, bool kNN_peso) const; 
-        medidas_info clasificar_y_medir(const Matriz<double>&, std::vector<unsigned int>, unsigned int k, bool kNN_peso) const;
+        std::vector<unsigned int> clasificar(unsigned int k, const Matriz<double>& casos_tests, bool kNN_distancia) const; 
+        medidas_info clasificar_y_medir(const Matriz<double>&, std::vector<unsigned int>, unsigned int k, bool kNN_distancia) const;
         void asignar_base_de_datos(const Matriz<double>&, const DiccNatANat&);
 
 
     private:
         unsigned int kNN(unsigned int k, const Matriz<double>& caso_test) const;
-        unsigned int kNN_con_peso(unsigned int k, const Matriz<double>& caso_test) const;
+        unsigned int kNN_con_distancia(unsigned int k, const Matriz<double>& caso_test) const;
 
         Matriz<double> base_datos;
         DiccNatANat sujeto_x_imagen;
@@ -75,17 +75,17 @@ void Clasificador::asignar_base_de_datos(const Matriz<double>& datos, const Dicc
 };
 
 // Dada una matriz de imagen casos_test, devuelve un vector con las predicciones de clases hecha por kNN
-std::vector<unsigned int> Clasificador::clasificar(unsigned int k, const Matriz<double>& casos_tests, bool kNN_peso) const
+std::vector<unsigned int> Clasificador::clasificar(unsigned int k, const Matriz<double>& casos_tests, bool kNN_distancia) const
 {
     std::vector<unsigned int> res(casos_tests.filas(), 0);
     for(int i = 0;i < casos_tests.filas();i++)
     {
         Matriz<double> imagen_a_testear(casos_tests.copy_fil(i));
 
-        if(!kNN_peso)
+        if(!kNN_distancia)
             res[i] = kNN(k, imagen_a_testear);
         else
-            res[i] = kNN_con_peso(k, imagen_a_testear);
+            res[i] = kNN_con_distancia(k, imagen_a_testear);
     }   
     return res;
 };
@@ -94,8 +94,8 @@ std::vector<unsigned int> Clasificador::clasificar(unsigned int k, const Matriz<
 // tests es la matriz con las imagenes a clasificar
 // sujetos_tests contiene los sujetos a los que corresponde cada imagen de tests, lo usamos para medir como clasificamos
 // k es el valor de vecinos a comparar en kNN
-// kNN_peso es si se va a usar kNN_con_peso o kNN comun
-medidas_info Clasificador::clasificar_y_medir(const Matriz<double>& tests, std::vector<unsigned int> sujetos_tests, unsigned int k, bool kNN_peso) const
+// kNN_distancia es si se va a usar kNN_con_distancia o kNN comun
+medidas_info Clasificador::clasificar_y_medir(const Matriz<double>& tests, std::vector<unsigned int> sujetos_tests, unsigned int k, bool kNN_distancia) const
 {
     medidas_info info;
 
@@ -104,11 +104,12 @@ medidas_info Clasificador::clasificar_y_medir(const Matriz<double>& tests, std::
 
     DiccNatADouble total_x_cat;
     DiccNatADouble verdaderos_pos_cat;
+    DiccNatADouble verdaderos_neg_cat;
     DiccNatADouble falsos_pos_cat;
     DiccNatADouble falsos_neg_cat;
 
     // Clasificamos las imagenes de tests
-    std::vector<unsigned int> sujetos_predichos(clasificar(k, tests, kNN_peso));
+    std::vector<unsigned int> sujetos_predichos(clasificar(k, tests, kNN_distancia));
 
     for(int i = 0; i < tests.filas();i++)
     {
@@ -128,6 +129,15 @@ medidas_info Clasificador::clasificar_y_medir(const Matriz<double>& tests, std::
 
             if(falsos_pos_cat.count(sujetos_predichos[i]) == 0)
                 falsos_pos_cat[sujetos_predichos[i]] = 0;
+
+            for(int j = 0; j < tests.filas();j++){
+                if(sujetos_tests[j] != sujetos_predichos[i] && sujetos_tests[j] != sujetos_tests[i] ){
+                    if(verdaderos_neg_cat.count(sujetos_tests[j])){
+                        verdaderos_neg_cat[sujetos_tests[j]] = 0;
+                    }
+                    verdaderos_neg_cat[sujetos_tests[j]]++;
+                }
+            }
 
             falsos_neg_cat[sujetos_tests[i]]++;
             falsos_pos_cat[sujetos_predichos[i]]++;
@@ -249,13 +259,13 @@ unsigned int Clasificador::kNN(unsigned int k, const Matriz<double>& caso_test) 
 
 };
 
-// Metodo kNN con pesos en base a la distnacia
+// Metodo kNN con distancia en base a la distnacia
 // Primero busca los k vecinos mas cercanos usando norma2
 // Luego realiza la votacion para ver a que clase corresponde el caso de test, 
 // tomando en cuenta la clase a la que pertenecen y la distancia con respecto al caso_test
 // Falta agregar que ocurre en caso de empate
 // Por ahora, en caso de empate, gana el que este primero en la lista de votos
-unsigned int Clasificador::kNN_con_peso(unsigned int k, const Matriz<double>& caso_test) const
+unsigned int Clasificador::kNN_con_distancia(unsigned int k, const Matriz<double>& caso_test) const
 {
     std::vector<double> min(k,std::numeric_limits<double>::max());
     std::vector<unsigned int> res(k, 0);
