@@ -130,9 +130,36 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
         return;
     }
 
+	std::string line;
+	std::string path;
+    std::string temp;
+	while(std::getline(fs1, line))
+	{
+		std::stringstream lineStream(line);
+		std::getline(lineStream, path, ',');
+		std::getline(lineStream, temp, ',');//Revisar esto, en realidad terminaria en \n o \0 ?
+		int sujeto = stoi(temp);
+		res.imgs_a_considerar_x_sujeto[sujeto].push_back(path);
+	}
 
-    std::string temp1;
-    std::string temp2;
+    fs1.close();
+
+
+    res.casos_a_testear.resize(res.n_test);
+    fs1.close();
+	int i = 0;
+    while(std::getline(fs2, line))
+    {
+        caso_test ct;
+		std::stringstream lineStream(line);
+		std::getline(lineStream, ct.path_imagen, ',');
+		std::getline(lineStream, temp, ',');//Revisar esto, en realidad terminaria en \n o \0 ?
+		ct.sujeto = stoi(temp);
+        res.casos_a_testear[i] = ct;
+		i++;
+    }
+    fs2.close();
+/*
     for(unsigned int i = 0;i < res.cant_sujetos;i++)
     {                
         datos_sujeto ds;
@@ -173,6 +200,7 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
         res.casos_a_testear[i] = ct;
     }
     fs2.close();
+*/
 }
 
 
@@ -277,7 +305,7 @@ Matriz<double> armar_base_entrenamiento(const info_archivo& ia)
 
     for(DiccDatostrainXSujeto::const_iterator itSujeto = ia.imgs_a_considerar_x_sujeto.cbegin();itSujeto != ia.imgs_a_considerar_x_sujeto.cend();++itSujeto)
     {
-        for(std::string path:imagen : (itSujeto->second))
+        for(std::string path_imagen : (itSujeto->second))
         {
             //std::string path_imagen(*itImg); 
             Matriz<double> img = leer_imagen(path_imagen);
