@@ -538,58 +538,66 @@ void escribir_autovalores(const Matriz<double>& datos, const info_archivo& info,
 
 int main(int argc, char* argv[]){
     //Filtramos los datos de entrada
-    if (argc < 3)
+    if (argc < 9)
     {
         std::cout<<"Parametros de entrada insuficientes"<<'\n';
         return 1;
     }
-    
-    std::string input(argv[1]);
-    std::string output(argv[2]);
-    std::string output_medidas(output + ".medidas");
-    Modo m = PCA;
+
+
+    std::string in_train(argv[4]);
+    std::string in_test(argv[6]);
+    std::string out_res(argv[8]);
+    //std::string output_medidas(output + ".medidas");
+
+    Modo m = kNN;
+    std::string mod_s(argv[2]);
+    unsigned int modo_s = std::stoul(mod_s);
+
     unsigned int valor_knn = 1;
     bool con_distancia = false;
+
+    if(modo_s == 1) //"kNN"
+        m = kNN;
+    else if(modo_s == 2) //"PCA" 
+        m = PCA;
+    else if(modo_s == 3) //"kNN_distancia"
+    {
+        m = kNN_distancia;
+        con_distancia = true;
+    }
+    else if(modo_s == 4)//"PCA_distancia"
+    {
+        m = PCA_distancia;
+        con_distancia = true;
+    }
+    else if(modo_s == 5)//"ES_CARA"
+        m = ES_CARA;
+    else
+    {
+        std::cout<<"ERROR:Parametro de operacion incorrecto\n";
+        return 1;
+    }
 
     // Vemos que metodo para clasificar vamos a usar
     // kNN, kNN con distancia, PCA + kNN o PCA + kNN con distancia
     // Ademas necesitamos el valor k de kNN
-    if(argc >= 5)
+    if(argc >= 10)
     {
-        std::string modo_s(argv[3]);
-        std::string k_kNN(argv[4]);
-    
+        std::string k_kNN(argv[9]); //donde vaya a estar el parámetro para el K de kNN
         valor_knn = std::stoul(k_kNN);
+
         if(valor_knn == 0)
         {
             std::cout<<"ERROR: Valor k para kNN tiene que ser distinto de 0.\n";
             return 1;
         }
 
-        if(modo_s == "kNN")
-            m = kNN;
-        else if(modo_s == "kNN_distancia")
-        {
-            m = kNN_distancia;
-            con_distancia = true;
-        }
-        else if(modo_s == "PCA")
-            m = PCA;
-        else if(modo_s == "PCA_distancia")
-        {
-            m = PCA_distancia;
-            con_distancia = true;
-        }
-        else if(modo_s == "ES_CARA")
-            m = ES_CARA;
-        else
-        {
-            std::cout<<"ERROR:Parametro de operacion incorrecto\n";
-            return 1;
-        }
+
     }
 
-    // Si fue proporcionado, leemos el path del output de las medidas
+    /*
+    // Si fue proporcionado, leemos el path del out_res de las medidas
     if(argc >= 6)
     {
         output_medidas = std::string(argv[5]);
@@ -600,15 +608,17 @@ int main(int argc, char* argv[]){
             std::remove(output_medidas.c_str()); 
         }
     }
+    */
+    
     //Seteamos el seed de random
     srandom(0);
 
-    //Si existe el archivo output, lo borramos
-    std::ifstream test_out(output.c_str());
+    //Si existe el archivo out_res, lo borramos
+    std::ifstream test_out(out_res.c_str());
     if(test_out.good())
     {
       test_out.close();
-      std::remove(output.c_str()); 
+      std::remove(out_res.c_str()); 
     }
 
     //Cargo los datos del archivo input
@@ -625,7 +635,7 @@ int main(int argc, char* argv[]){
     std::vector<unsigned int> s_test(obtener_sujetos_test(info));
    
     // Escribimos los autovalores de la matriz con la que hacemos el cambio de variables
-    escribir_autovalores(train, info, output);
+    escribir_autovalores(train, info, out_res);
 
     // Vemos si la primer imagen de test es una cara o no
     // Todavian no funciona bien ni esta terminado

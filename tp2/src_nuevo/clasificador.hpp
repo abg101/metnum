@@ -99,7 +99,6 @@ medidas_info Clasificador::clasificar_y_medir(const Matriz<double>& tests, std::
 {
     medidas_info info;
 
-    unsigned int aciertos = 0;
     unsigned int total = tests.filas();
 
     DiccNatADouble total_x_cat;
@@ -115,12 +114,20 @@ medidas_info Clasificador::clasificar_y_medir(const Matriz<double>& tests, std::
     {
         if(sujetos_predichos[i] == sujetos_tests[i])
         {
-            aciertos++;
 
             if(verdaderos_pos_cat.count(sujetos_predichos[i]) == 0)
                 verdaderos_pos_cat[sujetos_predichos[i]] = 0;
 
             verdaderos_pos_cat[sujetos_predichos[i]]++;
+
+            for(int j = 0; j < tests.filas();j++){
+                if(sujetos_tests[j] != sujetos_tests[i] ){
+                    if(verdaderos_neg_cat.count(sujetos_tests[j])){
+                        verdaderos_neg_cat[sujetos_tests[j]] = 0;
+                    }
+                    verdaderos_neg_cat[sujetos_tests[j]]++;
+                }
+            }
         }
         else
         {
