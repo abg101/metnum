@@ -14,12 +14,13 @@
 
 const int CANT_POTENCIA = 10000;
 
-struct datos_sujeto
+/*struct datos_sujeto
 {
     std::string path_imagenes;
     std::vector<unsigned int> imgs_entrenamiento;
-};
+};*/
 
+typedef std::vector<std::string> datos_sujeto;
 struct caso_test
 {
     std::string path_imagen;
@@ -274,11 +275,11 @@ Matriz<double> armar_base_entrenamiento(const info_archivo& ia)
     Matriz<double> res(ia.n_train, ia.alto_imagen * ia.ancho_imagen, 0);
     int cant_img = 0;
 
-    for(DiccDatostrainXSujeto::const_iterator it = ia.imgs_a_considerar_x_sujeto.cbegin();it != ia.imgs_a_considerar_x_sujeto.cend();++it)
+    for(DiccDatostrainXSujeto::const_iterator itSujeto = ia.imgs_a_considerar_x_sujeto.cbegin();itSujeto != ia.imgs_a_considerar_x_sujeto.cend();++itSujeto)
     {
-        for(unsigned int i : (it->second).imgs_entrenamiento)
+        for(std::string path:imagen : (itSujeto->second))
         {
-            std::string path_imagen = ia.path_base + (it->second).path_imagenes + std::to_string(i) + ".pgm";
+            //std::string path_imagen(*itImg); 
             Matriz<double> img = leer_imagen(path_imagen);
             res.set_fil(cant_img, img);
             cant_img++;
