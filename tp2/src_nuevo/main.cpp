@@ -131,9 +131,12 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
         unsigned int j = 0;
         while(temp3 != s){
             ds.imgs_entrenamiento.push_back(num_imagen);
+            
             res.n_train++;
             aux_nimgp++;
-
+            
+            s = std::stoul(temp2.substr(0, temp2.find_first_of(",")-1));
+            
             //posicion antes de leer la linea
             int len = fs.tellg();
             
@@ -145,6 +148,7 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
         }
         // Vuelvo la posicion de lectura hacia atras, antes de leer la primer linea
         fs1.seekg(len, std::ios_base::beg);
+        
         res.nimgp = max(res.nimgp,aux_nimgp);
         res.imgs_a_considerar_x_sujeto[s] = ds;
         res.cant_sujetos++;
