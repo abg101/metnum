@@ -599,7 +599,7 @@ int main(int argc, char* argv[]){
     }
     
     // Si fue proporcionado, leemos el path del out_res de las medidas
-    if(argc >= 11)
+    if(argc >= 12)
     {
         output_medidas = std::string(argv[5]);
         std::ifstream test_out(output_medidas.c_str());
