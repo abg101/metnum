@@ -87,28 +87,6 @@ std::ostream& operator<<(std::ostream& os, const info_archivo& obj)
     return os;
 }
 
-// Leemos el archivo de input, el .in
-void leer_archivo_in(std::string path, info_archivo& res)
-{
-    std::fstream fs;
-    fs.open(path.c_str(),std::fstream::in);
-    
-    if(!fs.good())
-    {
-        std::cout<<"Fallo lectura archivo .in";
-        return;
-    }
-
-    fs >> res.path_base;
-    fs >> res.alto_imagen; 
-    fs >> res.ancho_imagen;
-    fs >> res.cant_sujetos;
-    fs >> res.nimgp;
-    fs >> res.n_train;
-    fs >> res.n_test;
-    fs >> res.k;
-    fs.close();
-}
 
 void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res){
     std::fstream fs1;
@@ -129,13 +107,16 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
         return;
     }
 
-
     std::string temp1;
     std::string temp2;
-    for(unsigned int i = 0;i < res.cant_sujetos;i++)
+    res.cant_sujetos = 0;
+    unsigned int aux_nimgp = 0;
+    res.nimgp = 0;
+    while(!(fs1.eof()))
     {                
         datos_sujeto ds;
-        unsigned int s;
+        unsigned int s = 0;
+        unsigned int temp3 = 0;
 
         fs1 >> temp1;
         fs1 >> temp2;
@@ -148,15 +129,25 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
         ds.path_imagenes = temp1.substr(temp1.find_last_of("/"),temp1.length()-1)
 
         unsigned int j = 0;
-        while(j < res.nimgp){
+        while(temp3 != s){
+            ds.imgs_entrenamiento.push_back(num_imagen);
+            res.n_train++;
+            aux_nimgp++;
+
+            //posicion antes de leer la linea
+            int len = fs.tellg();
+            
             fs1 >> temp1;
             fs1 >> temp2;            
-            s = std::stoul(temp2.substr(0, temp2.find_first_of(",")-1));
 
-            ds.imgs_entrenamiento.push_back(num_imagen);
-            j++;
+            res.n_train++;
+            temp3 = std::stoul(temp2.substr(0, temp2.find_first_of(",")-1));
         }
+        // Vuelvo la posicion de lectura hacia atras, antes de leer la primer linea
+        fs1.seekg(len, std::ios_base::beg);
+        res.nimgp = max(res.nimgp,aux_nimgp);
         res.imgs_a_considerar_x_sujeto[s] = ds;
+        res.cant_sujetos++;
     }
     res.casos_a_testear.resize(res.n_test);
     fs1.close();
@@ -170,6 +161,8 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
         fs2 >> temp2;
         ct.sujeto = temp1.substr(0, temp2.find_last_of(",")-1);
         res.casos_a_testear[i] = ct;
+
+        res.n_test++;
     }
     fs2.close();
 }
@@ -639,12 +632,11 @@ int main(int argc, char* argv[]){
         }else{
             std::cout<<"ERROR:Parametro de operacion incorrecto\n";
             return 1;
-    }
         }
+    }
 //    leer_archivo_in(input, info);
-    leer_archivos_csv(in_train,info);
-    leer_archivos_csv(in_test,info);
-      
+    leer_archivos_csv(in_train,in_test,info);
+
     //Cambio la cantidad de digitos con las que nos muestra los doubles en pantalla
     std::cout<<std::fixed;std::setprecision(50);   
   
