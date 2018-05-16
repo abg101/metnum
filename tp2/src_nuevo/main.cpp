@@ -623,7 +623,28 @@ int main(int argc, char* argv[]){
 
     //Cargo los datos del archivo input
     info_archivo info;
-    leer_archivo_in(input, info);  
+    info.path_base = '../data/ImagenesCaras/';
+    info.alto_imagen = 112;
+    info.ancho_imagen = 92;
+    if(argc >= 11){
+        tipo = sys.argv[10].lower();
+        if(tipo == 'big'){
+            info.path_base = '../data/ImagenesCaras/'; //se puede hacer esto?
+            info.alto_imagen = 112; 
+            info.ancho_imagen = 92;
+        }else if(tipo == 'red'){
+            info.path_base = '../data/ImagenesCarasRed/'; //se puede hacer esto?
+            info.alto_imagen = 28; 
+            info.ancho_imagen = 23;
+        }else{
+            std::cout<<"ERROR:Parametro de operacion incorrecto\n";
+            return 1;
+    }
+        }
+//    leer_archivo_in(input, info);
+    leer_archivos_csv(in_train,info);
+    leer_archivos_csv(in_test,info);
+      
     //Cambio la cantidad de digitos con las que nos muestra los doubles en pantalla
     std::cout<<std::fixed;std::setprecision(50);   
   

@@ -116,7 +116,7 @@ if __name__ == "__main__":
             test_imgs_x_sujeto[sujeto_x_imagen[i]].append(i)
             
         armar_archivo_in(path_out, path_corto, path, ancho, alto, len(train_imgs_x_sujeto.keys()),
-                      max_imgs_x_sujeto, k,len(datos_fold["train"],len(datos_fold["test"])
+                      max_imgs_x_sujeto, k,len(datos_fold["train"]),len(datos_fold["test"]))
         
         armar_archivo_csv(path_out_train,path,train_imgs_x_sujeto)
         armar_archivo_csv(path_out_test,path,test_imgs_x_sujeto)
