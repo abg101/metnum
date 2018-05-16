@@ -11,6 +11,7 @@
 #include <cmath>
 #include <ctime>
 #include "clasificador.hpp"
+#include <algorithm>// max y transform
 
 const int CANT_POTENCIA = 10000;
 
@@ -121,24 +122,24 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
         fs1 >> temp1;
         fs1 >> temp2;
 
-        unsigned int num_imagen = temp1.substr(temp1.find_last_of("/")+1,temp1.find_last_of(".")-1);
+        unsigned int num_imagen = std::stoul(temp1.substr(temp1.find_last_of("/")+1, temp1.find_last_of(".")-1));
 
         //Para saber el path_imagenes al que pertenecen las imagenes, vemos el path donde se entran dichas imagenes, por lo gral de la forma "../data/ImagenesCaras/s{0}/{1}.pgm,"
         // o "../data/ImagenesCarasRed/s{0}/{1}.pgm,"
-        temp1 = temp1.substr(0, temp.find_last_of("/")-1);
+        temp1 = temp1.substr(0, temp1.find_last_of("/")-1);
         ds.path_imagenes = temp1.substr(temp1.find_last_of("/"),temp1.length()-1);
 
-        unsigned int j = 0;
+		int len; 
         while(temp3 != s){
             ds.imgs_entrenamiento.push_back(num_imagen);
-            
+           
             res.n_train++;
             aux_nimgp++;
             
             s = std::stoul(temp2.substr(0, temp2.find_first_of(",")-1));
             
             //posicion antes de leer la linea
-            int len = fs.tellg();
+            len = fs1.tellg();
             
             fs1 >> temp1;
             fs1 >> temp2;            
@@ -149,13 +150,14 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
         // Vuelvo la posicion de lectura hacia atras, antes de leer la primer linea
         fs1.seekg(len, std::ios_base::beg);
         
-        res.nimgp = max(res.nimgp,aux_nimgp);
+        res.nimgp = std::max(res.nimgp,aux_nimgp);
         res.imgs_a_considerar_x_sujeto[s] = ds;
         res.cant_sujetos++;
     }    
     fs1.close();
 
     res.casos_a_testear.resize(41 * res.nimgp); //lo defino lo mas grande posible
+	unsigned int i = 0;
     while(!(fs2.eof()))
     {
         caso_test ct;
@@ -163,10 +165,11 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
         ct.path_imagen = temp1.substr(0, temp1.find_last_of(",")-1);
 
         fs2 >> temp2;
-        ct.sujeto = temp1.substr(0, temp2.find_last_of(",")-1);
+        ct.sujeto = std::stoul(temp1.substr(0, temp2.find_last_of(",")-1));
         res.casos_a_testear[i] = ct;
 
         res.n_test++;
+		i++;
     }
     res.casos_a_testear.resize(res.n_test);
 
@@ -622,17 +625,18 @@ int main(int argc, char* argv[]){
 
     //Cargo los datos del archivo input
     info_archivo info;
-    info.path_base = '../data/ImagenesCaras/';
+    info.path_base = "../data/ImagenesCaras/";
     info.alto_imagen = 112;
     info.ancho_imagen = 92;
     if(argc >= 11){
-        tipo = sys.argv[10].lower();
-        if(tipo == 'big'){
-            info.path_base = '../data/ImagenesCaras/'; //se puede hacer esto?
+		std::string tipo(argv[10]);
+		std::transform(tipo.begin(), tipo.end(), tipo.begin(), ::tolower);
+        if(tipo == "big"){
+            info.path_base = "../data/ImagenesCaras/"; //se puede hacer esto?
             info.alto_imagen = 112; 
             info.ancho_imagen = 92;
-        }else if(tipo == 'red'){
-            info.path_base = '../data/ImagenesCarasRed/'; //se puede hacer esto?
+        }else if(tipo == "red"){
+            info.path_base = "../data/ImagenesCarasRed/"; //se puede hacer esto?
             info.alto_imagen = 28; 
             info.ancho_imagen = 23;
         }else{
