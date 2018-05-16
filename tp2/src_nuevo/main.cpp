@@ -121,12 +121,12 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
         fs1 >> temp1;
         fs1 >> temp2;
 
-        unsigned int num_imagen = temp1.substr(temp1.find_last_of("/")+1,temp1.find_last_of(".")-1)
+        unsigned int num_imagen = temp1.substr(temp1.find_last_of("/")+1,temp1.find_last_of(".")-1);
 
         //Para saber el path_imagenes al que pertenecen las imagenes, vemos el path donde se entran dichas imagenes, por lo gral de la forma "../data/ImagenesCaras/s{0}/{1}.pgm,"
         // o "../data/ImagenesCarasRed/s{0}/{1}.pgm,"
-        temp1 = temp1.substr(0, temp.find_last_of("/")-1)
-        ds.path_imagenes = temp1.substr(temp1.find_last_of("/"),temp1.length()-1)
+        temp1 = temp1.substr(0, temp.find_last_of("/")-1);
+        ds.path_imagenes = temp1.substr(temp1.find_last_of("/"),temp1.length()-1);
 
         unsigned int j = 0;
         while(temp3 != s){
@@ -153,10 +153,11 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
         res.imgs_a_considerar_x_sujeto[s] = ds;
         res.cant_sujetos++;
     }
+    //VER COMO SETEAR n_test-----------------------------------------------------------
     res.casos_a_testear.resize(res.n_test);
     fs1.close();
     
-    for(unsigned int i = 0;i < res.n_test;i++)
+    while(!(fs2.eof()))
     {
         caso_test ct;
         fs2 >> temp1;
