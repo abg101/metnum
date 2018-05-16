@@ -159,8 +159,10 @@ medidas_info Clasificador::clasificar_y_medir(const Matriz<double>& tests, std::
     // Calculo accuracy, precision y recall general
     info.accuracy_general = 0;
     for(DiccNatADouble::const_iterator i = verdaderos_pos_cat.cbegin();i != verdaderos_pos_cat.cend();++i)
-        if(i->second > 0)
-            info.precision_general += (i->second + verdaderos_neg_cat[i->first])/(i->second + falsos_pos_cat[i->first] + verdaderos_neg_cat[i->first] + falsos_neg_catî->first);
+		if(i->second > 0)
+			info.precision_general +=
+				(i->second + verdaderos_neg_cat[i->first]) /
+				(i->second + falsos_pos_cat[i->first] + verdaderos_neg_cat[i->first] + falsos_neg_cat[i->first]);
 
     info.accuracy_general /= double(total_x_cat.size());
 
