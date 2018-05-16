@@ -547,7 +547,7 @@ int main(int argc, char* argv[]){
     std::string in_train(argv[4]);
     std::string in_test(argv[6]);
     std::string out_res(argv[8]);
-    //std::string output_medidas(output + ".medidas");
+    std::string output_medidas(out_res + ".medidas");
 
     Modo m = kNN;
     std::string mod_s(argv[2]);
@@ -594,10 +594,9 @@ int main(int argc, char* argv[]){
 
 
     }
-
-    /*
+    
     // Si fue proporcionado, leemos el path del out_res de las medidas
-    if(argc >= 6)
+    if(argc >= 11)
     {
         output_medidas = std::string(argv[5]);
         std::ifstream test_out(output_medidas.c_str());
@@ -607,7 +606,6 @@ int main(int argc, char* argv[]){
             std::remove(output_medidas.c_str()); 
         }
     }
-    */
     
     //Seteamos el seed de random
     srandom(0);
@@ -640,7 +638,7 @@ int main(int argc, char* argv[]){
             return 1;
         }
     }
-//    leer_archivo_in(input, info);
+
     leer_archivos_csv(in_train,in_test,info);
 
     //Cambio la cantidad de digitos con las que nos muestra los doubles en pantalla
@@ -657,7 +655,6 @@ int main(int argc, char* argv[]){
     escribir_autovalores(train, info, out_res);
 
     // Vemos si la primer imagen de test es una cara o no
-    // Todavian no funciona bien ni esta terminado
     if(m == ES_CARA)
     {
         Matriz<double> med = media(train);
