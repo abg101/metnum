@@ -152,11 +152,10 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
         res.nimgp = max(res.nimgp,aux_nimgp);
         res.imgs_a_considerar_x_sujeto[s] = ds;
         res.cant_sujetos++;
-    }
-    //VER COMO SETEAR n_test-----------------------------------------------------------
-    res.casos_a_testear.resize(res.n_test);
+    }    
     fs1.close();
-    
+
+    res.casos_a_testear.resize(41 * res.nimgp); //lo defino lo mas grande posible
     while(!(fs2.eof()))
     {
         caso_test ct;
@@ -169,6 +168,8 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
 
         res.n_test++;
     }
+    res.casos_a_testear.resize(res.n_test);
+
     fs2.close();
 }
 
