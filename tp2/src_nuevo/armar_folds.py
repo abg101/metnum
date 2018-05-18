@@ -33,19 +33,6 @@ def armar_archivo_csv(path_archivo, path_datos, imgs):
                     f.write(path_test.format(i, j % 10, i))
 
 
-def armar_archivo_in(path_archivo, path_datos_corto, path_datos, ancho, alto, cant_sujetos, max_imgs_train, k,n_train,n_test):
-    path_test = path_datos + " {2}\n"
-    with open(path_archivo, mode='w') as f:
-        f.write(path_datos_corto)
-        f.write(" {} ".format(alto))
-        f.write("{} ".format(ancho))
-        f.write("{} ".format(cant_sujetos))
-        f.write("{} ".format(max_imgs_train))
-        f.write("{} ".format(n_train))
-        f.write("{} ".format(n_test))
-        f.write("{}\n".format(k))
-
-
 def armar_sujeto_x_imagen(sujetos_ignorados=None):
     res = dict()
     for i in range(1, total_sujetos + 1):
@@ -95,12 +82,6 @@ if __name__ == "__main__":
         datos_fold["test"] = [indices[j] for j in range(0, len(indices)) if i*tam_x_fold <= j < (i+1)*tam_x_fold]
         datos_fold["train"] = [j for j in indices if j not in datos_fold["test"]]
 
-        # Contamos la cantidad maxima de imagenes por sujeto
-        contar_imgs_x_sujeto = [0] * (total_sujetos+1)
-        for j in datos_fold["train"]:
-            contar_imgs_x_sujeto[sujeto_x_imagen[j]] += 1
-        max_imgs_x_sujeto = max(contar_imgs_x_sujeto)
-
         # Armamos un dict que mapee un sujeto con las imagenes de train que le correponden
         train_imgs_x_sujeto = dict()
         for i in datos_fold["train"]:
@@ -114,9 +95,6 @@ if __name__ == "__main__":
             if sujeto_x_imagen[i] not in test_imgs_x_sujeto:
                 test_imgs_x_sujeto[sujeto_x_imagen[i]] = []
             test_imgs_x_sujeto[sujeto_x_imagen[i]].append(i)
-            
-        armar_archivo_in(path_out, path_corto, path, ancho, alto, len(train_imgs_x_sujeto.keys()),
-                      max_imgs_x_sujeto, k,len(datos_fold["train"]),len(datos_fold["test"]))
         
         armar_archivo_csv(path_out_train,path,train_imgs_x_sujeto)
         armar_archivo_csv(path_out_test,path,test_imgs_x_sujeto)

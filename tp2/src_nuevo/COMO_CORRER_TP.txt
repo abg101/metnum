@@ -1,9 +1,9 @@
 [] marca los parametros obligatorios
 () marca los parametros opcionales
 
-./tp2 	-m [Modo de uso] -i [archivo de entrada train] -q [archivo de entrada test] -o [archivo de salida]  (k de kNN o k de PCA, depende de modo) (tamaño imagenes)(archivo de salida de mediciones)
+./tp2 -m [Modo de uso] -i [archivo de entrada train] -q [archivo de entrada test] -o [archivo de salida]  (k de kNN o k de PCA, depende de modo) (tamaño imagenes)(archivo de salida de mediciones)
 
-## Modo de uso: Debe ser alguno de los siguientes valores: 0 (kNN),1 (PCA),2 (kNN_distancia), 4 (PCA_distancia), 5 (ES_CARA). 
+## Modo de uso: Debe ser alguno de los siguientes valores: 0 (kNN),1 (PCA),2 (kNN_distancia), 3 (PCA_distancia), 4 (ES_CARA). 
 ## archivos de entrada train: Son los .csv armados en el formato definido en el enunciado
 ## archivos de entrada test: Son los .csv	""
 ## archivo de salida: el nombre del archivo de salida con la clasificación de los datos de test de <test_set>

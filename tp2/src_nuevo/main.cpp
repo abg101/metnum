@@ -630,11 +630,11 @@ int main(int argc, char* argv[]){
 		std::string tipo(argv[10]);
 		std::transform(tipo.begin(), tipo.end(), tipo.begin(), ::tolower);
         if(tipo == "big"){
-            info.path_base = "../data/ImagenesCaras/"; //se puede hacer esto?
+            info.path_base = "../data/ImagenesCaras/"; 
             info.alto_imagen = 112; 
             info.ancho_imagen = 92;
         }else if(tipo == "red"){
-            info.path_base = "../data/ImagenesCarasRed/"; //se puede hacer esto?
+            info.path_base = "../data/ImagenesCarasRed/";
             info.alto_imagen = 28; 
             info.ancho_imagen = 23;
         }else{
