@@ -5,7 +5,7 @@ from random import shuffle
 # python3 armar_folds.py [k de kfold] [version base de datos] [k de pca] [path output]
 # k de kfold debe estar entre 2 y 10
 # version base de datos es el string "big" o "red"
-# k de PCA, debe ser mayor a 0
+# k de PCA, si es 0 entonces es sin PCA, si es mayor a 0 es con PCA
 # path output es la carpeta donde se van a escribir los archivos
 
 
@@ -71,31 +71,59 @@ if __name__ == "__main__":
     shuffle(indices)
 
     tam_x_fold = len(indices)/k_folds
-    for i in range(0, k_folds):
-        path_out = path_arc + "{0}_K{1}_k{2}_fold{3}.in".format(tipo, k_folds, k, str(i+1))
-        
-        path_out_train = path_arc + "/csv_train/" + "{0}_K{1}_k{2}_fold{3}.csv".format(tipo, k_folds, k, str(i+1))
-        path_out_test = path_arc + "/csv_test/" + "{0}_K{1}_k{2}_fold{3}.csv".format(tipo, k_folds, k, str(i+1))
-        
-        # Dividimos los indices de las imagenes en train y en test, para este fold
-        datos_fold = dict()
-        datos_fold["test"] = [indices[j] for j in range(0, len(indices)) if i*tam_x_fold <= j < (i+1)*tam_x_fold]
-        datos_fold["train"] = [j for j in indices if j not in datos_fold["test"]]
+    if k > 0:
+        for i in range(0, k_folds):
+            path_out = path_arc + "{0}_K{1}_k{2}_fold{3}.in".format(tipo, k_folds, k, str(i+1))
+            
+            path_out_train = path_arc + "/csv_train/" + "{0}_K{1}_k{2}_fold{3}.csv".format(tipo, k_folds, k, str(i+1))
+            path_out_test = path_arc + "/csv_test/" + "{0}_K{1}_k{2}_fold{3}.csv".format(tipo, k_folds, k, str(i+1))
+            
+            # Dividimos los indices de las imagenes en train y en test, para este fold
+            datos_fold = dict()
+            datos_fold["test"] = [indices[j] for j in range(0, len(indices)) if i*tam_x_fold <= j < (i+1)*tam_x_fold]
+            datos_fold["train"] = [j for j in indices if j not in datos_fold["test"]]
 
-        # Armamos un dict que mapee un sujeto con las imagenes de train que le correponden
-        train_imgs_x_sujeto = dict()
-        for i in datos_fold["train"]:
-            if sujeto_x_imagen[i] not in train_imgs_x_sujeto:
-                train_imgs_x_sujeto[sujeto_x_imagen[i]] = []
-            train_imgs_x_sujeto[sujeto_x_imagen[i]].append(i)
-        
-        # Armamos un dict que mapee un sujeto con las imagenes de test que le correponden
-        test_imgs_x_sujeto = dict()
-        for i in datos_fold["test"]:
-            if sujeto_x_imagen[i] not in test_imgs_x_sujeto:
-                test_imgs_x_sujeto[sujeto_x_imagen[i]] = []
-            test_imgs_x_sujeto[sujeto_x_imagen[i]].append(i)
-        
-        armar_archivo_csv(path_out_train,path,train_imgs_x_sujeto)
-        armar_archivo_csv(path_out_test,path,test_imgs_x_sujeto)
+            # Armamos un dict que mapee un sujeto con las imagenes de train que le correponden
+            train_imgs_x_sujeto = dict()
+            for i in datos_fold["train"]:
+                if sujeto_x_imagen[i] not in train_imgs_x_sujeto:
+                    train_imgs_x_sujeto[sujeto_x_imagen[i]] = []
+                train_imgs_x_sujeto[sujeto_x_imagen[i]].append(i)
+            
+            # Armamos un dict que mapee un sujeto con las imagenes de test que le correponden
+            test_imgs_x_sujeto = dict()
+            for i in datos_fold["test"]:
+                if sujeto_x_imagen[i] not in test_imgs_x_sujeto:
+                    test_imgs_x_sujeto[sujeto_x_imagen[i]] = []
+                test_imgs_x_sujeto[sujeto_x_imagen[i]].append(i)
+            
+            armar_archivo_csv(path_out_train,path,train_imgs_x_sujeto)
+            armar_archivo_csv(path_out_test,path,test_imgs_x_sujeto)
+    else:
+        for i in range(0, k_folds):
+            path_out = path_arc + "{0}_K{1}_fold{2}.in".format(tipo, k_folds, str(i+1))
+            
+            path_out_train = path_arc + "/csv_train/" + "{0}_K{1}_fold{2}.csv".format(tipo, k_folds, str(i+1))
+            path_out_test = path_arc + "/csv_test/" + "{0}_K{1}_fold{2}.csv".format(tipo, k_folds, str(i+1))
+            
+            # Dividimos los indices de las imagenes en train y en test, para este fold
+            datos_fold = dict()
+            datos_fold["test"] = [indices[j] for j in range(0, len(indices)) if i*tam_x_fold <= j < (i+1)*tam_x_fold]
+            datos_fold["train"] = [j for j in indices if j not in datos_fold["test"]]
 
+            # Armamos un dict que mapee un sujeto con las imagenes de train que le correponden
+            train_imgs_x_sujeto = dict()
+            for i in datos_fold["train"]:
+                if sujeto_x_imagen[i] not in train_imgs_x_sujeto:
+                    train_imgs_x_sujeto[sujeto_x_imagen[i]] = []
+                train_imgs_x_sujeto[sujeto_x_imagen[i]].append(i)
+            
+            # Armamos un dict que mapee un sujeto con las imagenes de test que le correponden
+            test_imgs_x_sujeto = dict()
+            for i in datos_fold["test"]:
+                if sujeto_x_imagen[i] not in test_imgs_x_sujeto:
+                    test_imgs_x_sujeto[sujeto_x_imagen[i]] = []
+                test_imgs_x_sujeto[sujeto_x_imagen[i]].append(i)
+            
+            armar_archivo_csv(path_out_train,path,train_imgs_x_sujeto)
+            armar_archivo_csv(path_out_test,path,test_imgs_x_sujeto)        
