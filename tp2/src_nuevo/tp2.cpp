@@ -12,6 +12,7 @@
 #include <ctime>
 #include "clasificador.hpp"
 #include <algorithm>// max y transform
+#include "ppmloader/ppmloader.h"
 
 const int CANT_POTENCIA = 10000;
 
