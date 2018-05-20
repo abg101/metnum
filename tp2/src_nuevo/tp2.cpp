@@ -116,7 +116,7 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
     res.cant_sujetos = 0;
     unsigned int aux_nimgp = 0;
     res.nimgp = 0;
-    while(!(fs1.eof()))
+    for(unsigned int i = 0;i < 41;i++)
     {                
         datos_sujeto ds;
         unsigned int s = 0;
@@ -132,14 +132,14 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
         temp1 = temp1.substr(0, temp1.find_last_of("/")-1);
         ds.path_imagenes = temp1.substr(temp1.find_last_of("/"),temp1.length()-1);
 
-		int len; 
-        while(temp3 != s){
+        int len; 
+        while(temp3 == s && !(fs1.eof())){
             ds.imgs_entrenamiento.push_back(num_imagen);
            
             res.n_train++;
             aux_nimgp++;
             
-            s = std::stoul(temp2.substr(0, temp2.find_first_of(",")-1));
+            s = std::stoul(temp2.substr(0, temp2.find_first_of(",")));
             
             //posicion antes de leer la linea
             len = fs1.tellg();
@@ -148,7 +148,7 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
             fs1 >> temp2;            
 
             res.n_train++;
-            temp3 = std::stoul(temp2.substr(0, temp2.find_first_of(",")-1));
+            temp3 = std::stoul(temp2.substr(0, temp2.find_first_of(",")));
         }
         // Vuelvo la posicion de lectura hacia atras, antes de leer la primer linea
         fs1.seekg(len, std::ios_base::beg);
@@ -158,24 +158,24 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
         res.cant_sujetos++;
     }    
     fs1.close();
-
+    
     res.casos_a_testear.resize(41 * res.nimgp); //lo defino lo mas grande posible
 	unsigned int i = 0;
-    while(!(fs2.eof()))
+    while(i < res.casos_a_testear.size() && !(fs2.eof()))
     {
         caso_test ct;
         fs2 >> temp1;
-        ct.path_imagen = temp1.substr(0, temp1.find_last_of(",")-1);
-
+        ct.path_imagen = temp1.substr(0, temp1.find_last_of(","));
+        cout << " teemp1 : " << ct.path_imagen << endl;
         fs2 >> temp2;
-        ct.sujeto = std::stoul(temp1.substr(0, temp2.find_last_of(",")-1));
+        ct.sujeto = std::stoul(temp2.substr(0, temp2.find_first_of(",")));
         res.casos_a_testear[i] = ct;
-
+        cout << "ciclo 2:  " << i << endl;
         res.n_test++;
 		i++;
     }
     res.casos_a_testear.resize(res.n_test);
-
+    cout << "salio del ciclo 2:  " <<  endl;
     fs2.close();
 }
 

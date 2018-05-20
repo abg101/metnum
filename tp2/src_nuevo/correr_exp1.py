@@ -5,7 +5,7 @@ knn = [1, 3, 5, 7]
 Kfold = 5
 k_PCA = [1] + list(range(5, 105, 5))
 tipo = ["big", "red"]
-modo = ["kNN", "PCA", "kNN_distancia", "PCA_distancia"] ''' 4 (ES_CARA)'''
+modo = ["kNN", "PCA", "kNN_distancia", "PCA_distancia"] ' 4 (ES_CARA)'
 
 comando = "./tp2 -m {0} -i {1} -q {2} -o {3} {4} {5} {6}"
 path_in_train_PCA = "experimentos/datos\ de\ entrada_{0}/csv_train/{0}_K{1}_k{2}_fold{3}.csv"
@@ -18,7 +18,7 @@ path_in_test = "experimentos/datos\ de\ entrada_{0}/csv_test/{0}_K{1}_fold{2}.cs
 path_out_res = "experimentos/experimento\ 1/datos\ de\ salida_{0}/{0}_K{1}_fold{2}.csv"
 path_medidas = "experimentos/experimento\ 1/mediciones_{0}/knn_{1}/{2}/{0}_K{3}_fold{4}.csv.medidas"
 
-if os.system("python metnum.py build") != 0: 'FALTA CAMBIAR ESTO'
+if os.system("make") != 0: 'no se si es así'
     print("Fallo al compilar")
     sys.exit(1)
 
