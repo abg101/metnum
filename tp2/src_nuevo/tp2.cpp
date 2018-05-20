@@ -14,6 +14,8 @@
 #include <algorithm>// max y transform
 #include "ppmloader/ppmloader.h"
 
+using namespace std;
+
 const int CANT_POTENCIA = 10000;
 
 struct datos_sujeto
@@ -108,7 +110,7 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
         std::cout<<"Fallo lectura archivo 2 .csv";
         return;
     }
-
+    
     std::string temp1;
     std::string temp2;
     res.cant_sujetos = 0;
@@ -122,7 +124,7 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
 
         fs1 >> temp1;
         fs1 >> temp2;
-
+       
         unsigned int num_imagen = std::stoul(temp1.substr(temp1.find_last_of("/")+1, temp1.find_last_of(".")-1));
 
         //Para saber el path_imagenes al que pertenecen las imagenes, vemos el path donde se entran dichas imagenes, por lo gral de la forma "../data/ImagenesCaras/s{0}/{1}.pgm,"
@@ -194,82 +196,25 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
 // P5 [Ancho] [Alto] [Valor max]
 // [Datos, idem al anterior]
 //
-Matriz<double> leer_imagen(std::string path)
+Matriz<double> leer_imagen(std::string path, int ancho, int alto)
 {
-    std::fstream fs;
-
-    fs.open(path.c_str(),std::fstream::in);
-
-    if(!fs.good())
-    {
-        std::cout<<"Fallo lectura de la imagen "<<path<<'\n';
-        assert(1 == 2); //Hago esto para el programa termine de inmediato
-        Matriz<double> res(1, 1, 1);
-        return res;
-    }
-    // Vemos como esta formado el header de la imagen
-    // Para ver como lo leemos
-
-    // Guardamos la posicion original de lectura 
-    int len = fs.tellg();
-    std::string primer_linea;
-
-    // Leo primer linea
-    getline(fs, primer_linea);
-
-    // Vuelvo la posicion de lectura hacia atras, antes de leer la primer linea
-    fs.seekg(len, std::ios_base::beg);
-
-    unsigned int alto = 0; 
-    unsigned int ancho = 0;
-    if(primer_linea.size() <= 3) //Si la primer linea es solo "P5", leemos la imagen de esta forma
-    {
-        fs.ignore(std::numeric_limits<std::streamsize>::max(),'\n');//ignoro la primer linea, contiene "P5", basicamente dice que formato es   
-        if(fs.peek() == '#') 
-            fs.ignore(std::numeric_limits<std::streamsize>::max(),'\n');//ignoro la segunda linea, contiene comentario   
-         
-        fs >> ancho;
-        fs >> alto;
-        
-        //ignoro el final de la linea de ancho y alto
-        fs.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
-        //ignoro la cuarta linea, contiene el valor max de la imagen
-        fs.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
-    }
-    else//Si la primer linea es "P5" mas algunos argumentos, leemos la imagen de esta forma
-    {
-        char ignorar_caracter;
-            
-            // Ignoro los primeros dos caracteres que dicen P5
-        fs>>ignorar_caracter;
-        fs>>ignorar_caracter;
-            
-        // Leo tamaño de la imagen
-        fs >> ancho;
-        fs >> alto;
-
-        // Ignoro el valor max de la imagen
-        fs.ignore(std::numeric_limits<std::streamsize>::max(),'\n');  
-    }
+    
+    uchar* imagen;
+    PPM_LOADER_PIXEL_TYPE pt = PPM_LOADER_PIXEL_TYPE_INVALID;
+    LoadPPMFile(&imagen, &ancho, &alto, &pt, path.c_str());
 
     //Leo pixeles de la imagen, cada pixel es un valor entre 0 y 255
     Matriz<double> temp(ancho*alto, 1, 0);
 
     for(unsigned int i = 0;i < ancho*alto;i++)
     {
-        unsigned char c;//Leo los char como bytes, por eso uso unsigned char
-        fs >>std::noskipws>> c;//noskipsws indica que no se ignoren espacios en blanco, ya que estos son valores de un pixel
-        
-        //Si por algun motivo llegamos al final del archivo, corto el loop. No se si esto puede ocurrir normalmente o solo en caso de error
-        if(fs.eof())       
-            break;
 
-        temp[i][0] = double(c);
+        temp[i][0] = double(imagen[i]);
     }
-    fs.close();
         
     return temp;
 }
+
 
 // Devuelve una matriz con las imagenes de entrenamiento como vectores fila
 Matriz<double> armar_base_entrenamiento(const info_archivo& ia)
@@ -282,7 +227,7 @@ Matriz<double> armar_base_entrenamiento(const info_archivo& ia)
         for(unsigned int i : (it->second).imgs_entrenamiento)
         {
             std::string path_imagen = ia.path_base + (it->second).path_imagenes + std::to_string(i) + ".pgm";
-            Matriz<double> img = leer_imagen(path_imagen);
+            Matriz<double> img = leer_imagen(path_imagen,ia.ancho_imagen, ia.alto_imagen);
             res.set_fil(cant_img, img);
             cant_img++;
         }
@@ -298,7 +243,7 @@ Matriz<double> armar_casos_tests(const info_archivo& ia)
     int cant_img = 0;
     for(const caso_test& ct : ia.casos_a_testear)
     {
-        res.set_fil(cant_img, leer_imagen(ct.path_imagen));
+        res.set_fil(cant_img, leer_imagen(ct.path_imagen, ia.ancho_imagen, ia.alto_imagen));
         cant_img++;
     }
 
@@ -553,6 +498,7 @@ int main(int argc, char* argv[]){
     std::string out_res(argv[8]);
     std::string output_medidas(out_res + ".medidas");
 
+
     Modo m = kNN;
     std::string mod_s(argv[2]);
     unsigned int modo_s = std::stoul(mod_s);
@@ -645,7 +591,7 @@ int main(int argc, char* argv[]){
     }
 
     leer_archivos_csv(in_train,in_test,info);
-
+   
     //Cambio la cantidad de digitos con las que nos muestra los doubles en pantalla
     std::cout<<std::fixed;std::setprecision(50);   
   
