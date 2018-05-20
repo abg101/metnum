@@ -14,4 +14,4 @@ testX.expected:
 		...
 		<v15>
 
-Aclaración: Para los archivos de entrada se asume que las fotos de tamaño completo se encuentran en un directorio llamado "full/" y las de tamaño reducido en uno llamado "reduced/".
+Aclaración: Para los archivos de entrada se asume que las fotos de tamaño completo se encuentran en un directorio llamado "../data/ImagenesCaras/" y las de tamaño reducido en uno llamado "../data/ImagenesCarasRed/".
