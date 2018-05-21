@@ -135,7 +135,7 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
         // o "../data/ImagenesCarasRed/s{0}/{1}.pgm,"
         temp1 = temp1.substr(0, temp1.find_last_of("/"));
         ds.path_imagenes = temp1.substr(temp1.find_last_of("/")+1,temp1.length()+1) + "/";
-
+        
         int len; 
         while(temp3 == s && !(fs1.eof())){
             ds.imgs_entrenamiento.push_back(num_imagen);
@@ -150,6 +150,7 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
             res.n_train++;
             aux_nimgp++;
 
+            num_imagen = std::stoul(temp1.substr(temp1.find_last_of("/")+1, temp1.find_last_of(".")-1));
             temp3 = std::stoul(temp2.substr(0, temp2.find_first_of(",")));
             //para no restar en la ultima iteracion
             if(fs1.eof()){  
@@ -614,6 +615,35 @@ int main(int argc, char* argv[]){
     DiccNatANat s_train(obtener_sujetos_train(info));
     std::vector<unsigned int> s_test(obtener_sujetos_test(info));
    
+    cout<<"Path de la base de datos: "<<info.path_base<< endl;
+    cout<<"Ancho de las imagenes: "<<info.ancho_imagen<< endl;
+    cout<<"Alto de las imagenes: "<<info.alto_imagen<< endl;
+    cout<<"Cantidad de sujetos: "<<info.cant_sujetos<< endl;
+    cout<<"Cantidad de imagenes a entrenar"<<info.n_train<< endl;
+    cout<<"Cantidad maxima de imagenes por sujeto: "<<info.nimgp<< endl;
+    cout<<"Cantidad de componentes principales(k): "<<info.k<< endl;
+    cout<<"Cantidad de imagenes a testear: "<<info.n_test<< endl;
+
+    cout<<"-------------------\n" << endl;
+    cout<<"Imagenes de la base\n" << endl;
+    cout<<"-------------------\n" << endl;
+
+    for(DiccDatostrainXSujeto::const_iterator it = info.imgs_a_considerar_x_sujeto.cbegin();it != info.imgs_a_considerar_x_sujeto.cend();++it)
+    {
+        cout<<(it->second).path_imagenes<<" " << endl;
+        for(unsigned int j : (it->second).imgs_entrenamiento)
+            cout<<j<<" " << endl;
+        cout<<"\n" << endl;
+    }
+
+    cout<<"-------------------\n" << endl;
+    cout<<"Imagenes a testear \n" << endl;
+    cout<<"-------------------\n" << endl;
+
+    for(const caso_test& i : info.casos_a_testear)
+        cout<<i.path_imagen<<" | Sujeto "<<i.sujeto<<'\n' << endl;
+
+
     // Escribimos los autovalores de la matriz con la que hacemos el cambio de variables
     escribir_autovalores(train, info, out_res);
 
