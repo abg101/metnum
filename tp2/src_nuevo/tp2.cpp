@@ -114,31 +114,31 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
     std::string temp1;
     std::string temp2;
     res.cant_sujetos = 0;
-    unsigned int aux_nimgp = 0;
     res.nimgp = 0;
+    res.n_train = 0;
+    bool termine = false;
     for(unsigned int i = 0;i < 41;i++)
     {                
         datos_sujeto ds;
         unsigned int s = 0;
         unsigned int temp3 = 0;
-
+        unsigned int aux_nimgp = 1;
+    
         fs1 >> temp1;
         fs1 >> temp2;
-       
+    
+        res.n_train++;
+   
         unsigned int num_imagen = std::stoul(temp1.substr(temp1.find_last_of("/")+1, temp1.find_last_of(".")-1));
 
         //Para saber el path_imagenes al que pertenecen las imagenes, vemos el path donde se entran dichas imagenes, por lo gral de la forma "../data/ImagenesCaras/s{0}/{1}.pgm,"
         // o "../data/ImagenesCarasRed/s{0}/{1}.pgm,"
-        temp1 = temp1.substr(0, temp1.find_last_of("/")-1);
-        ds.path_imagenes = temp1.substr(temp1.find_last_of("/"),temp1.length()-1);
+        temp1 = temp1.substr(0, temp1.find_last_of("/"));
+        ds.path_imagenes = temp1.substr(temp1.find_last_of("/")+1,temp1.length()+1) + "/";
 
         int len; 
         while(temp3 == s && !(fs1.eof())){
             ds.imgs_entrenamiento.push_back(num_imagen);
-           
-            res.n_train++;
-            aux_nimgp++;
-            
             s = std::stoul(temp2.substr(0, temp2.find_first_of(",")));
             
             //posicion antes de leer la linea
@@ -148,11 +148,22 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
             fs1 >> temp2;            
 
             res.n_train++;
+            aux_nimgp++;
+
             temp3 = std::stoul(temp2.substr(0, temp2.find_first_of(",")));
+            //para no restar en la ultima iteracion
+            if(fs1.eof()){  
+                termine = true;
+            }
         }
         // Vuelvo la posicion de lectura hacia atras, antes de leer la primer linea
         fs1.seekg(len, std::ios_base::beg);
         
+        if(!(termine)){
+            res.n_train--;
+            aux_nimgp--;
+        }
+
         res.nimgp = std::max(res.nimgp,aux_nimgp);
         res.imgs_a_considerar_x_sujeto[s] = ds;
         res.cant_sujetos++;
@@ -160,22 +171,23 @@ void leer_archivos_csv(std::string path_1, std::string path_2, info_archivo& res
     fs1.close();
     
     res.casos_a_testear.resize(41 * res.nimgp); //lo defino lo mas grande posible
-	unsigned int i = 0;
+	res.n_test = 0;
+    unsigned int i = 0;
     while(i < res.casos_a_testear.size() && !(fs2.eof()))
     {
         caso_test ct;
         fs2 >> temp1;
         ct.path_imagen = temp1.substr(0, temp1.find_last_of(","));
-        cout << " teemp1 : " << ct.path_imagen << endl;
+ 
         fs2 >> temp2;
         ct.sujeto = std::stoul(temp2.substr(0, temp2.find_first_of(",")));
+ 
         res.casos_a_testear[i] = ct;
-        cout << "ciclo 2:  " << i << endl;
         res.n_test++;
 		i++;
     }
     res.casos_a_testear.resize(res.n_test);
-    cout << "salio del ciclo 2:  " <<  endl;
+
     fs2.close();
 }
 
@@ -226,6 +238,9 @@ Matriz<double> armar_base_entrenamiento(const info_archivo& ia)
     {
         for(unsigned int i : (it->second).imgs_entrenamiento)
         {
+                    cout << "ia.path_base:   " << ia.path_base << endl;
+                    cout << "(it->second).path_imagenes:   " << (it->second).path_imagenes << endl;
+                    cout << "std::to_string(i):   " << std::to_string(i) << endl;
             std::string path_imagen = ia.path_base + (it->second).path_imagenes + std::to_string(i) + ".pgm";
             Matriz<double> img = leer_imagen(path_imagen,ia.ancho_imagen, ia.alto_imagen);
             res.set_fil(cant_img, img);
@@ -570,18 +585,18 @@ int main(int argc, char* argv[]){
 
     //Cargo los datos del archivo input
     info_archivo info;
-    info.path_base = "../data/ImagenesCaras/";
+    info.path_base = "data/ImagenesCaras/";
     info.alto_imagen = 112;
     info.ancho_imagen = 92;
     if(argc >= 11){
 		std::string tipo(argv[10]);
 		std::transform(tipo.begin(), tipo.end(), tipo.begin(), ::tolower);
         if(tipo == "big"){
-            info.path_base = "../data/ImagenesCaras/"; 
+            info.path_base = "data/ImagenesCaras/"; 
             info.alto_imagen = 112; 
             info.ancho_imagen = 92;
         }else if(tipo == "red"){
-            info.path_base = "../data/ImagenesCarasRed/";
+            info.path_base = "data/ImagenesCarasRed/";
             info.alto_imagen = 28; 
             info.ancho_imagen = 23;
         }else{

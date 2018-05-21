@@ -9,11 +9,11 @@ from random import shuffle
 # path output es la carpeta donde se van a escribir los archivos
 
 
-path_img_comun_corto = "../data/ImagenesCaras/"
-path_img_chicas_corto = "../data/ImagenesCarasRed/"
+path_img_comun_corto = "data/ImagenesCaras/"
+path_img_chicas_corto = "data/ImagenesCarasRed/"
 
-path_img_comun = "../data/ImagenesCaras/s{0}/{1}.pgm"
-path_img_chicas = "../data/ImagenesCarasRed/s{0}/{1}.pgm"
+path_img_comun = "data/ImagenesCaras/s{0}/{1}.pgm"
+path_img_chicas = "data/ImagenesCarasRed/s{0}/{1}.pgm"
 
 ancho_comun = 92
 alto_comun = 112
