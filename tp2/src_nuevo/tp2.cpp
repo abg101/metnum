@@ -238,9 +238,6 @@ Matriz<double> armar_base_entrenamiento(const info_archivo& ia)
     {
         for(unsigned int i : (it->second).imgs_entrenamiento)
         {
-                    cout << "ia.path_base:   " << ia.path_base << endl;
-                    cout << "(it->second).path_imagenes:   " << (it->second).path_imagenes << endl;
-                    cout << "std::to_string(i):   " << std::to_string(i) << endl;
             std::string path_imagen = ia.path_base + (it->second).path_imagenes + std::to_string(i) + ".pgm";
             Matriz<double> img = leer_imagen(path_imagen,ia.ancho_imagen, ia.alto_imagen);
             res.set_fil(cant_img, img);
@@ -513,12 +510,13 @@ int main(int argc, char* argv[]){
     std::string out_res(argv[8]);
     std::string output_medidas(out_res + ".medidas");
 
+    //Cargo los datos del archivo input
+    info_archivo info;
 
     Modo m = kNN;
     std::string mod_s(argv[2]);
     unsigned int modo_s = std::stoul(mod_s);
 
-    unsigned int valor_knn = 1;
     bool con_distancia = false;
 
     if(modo_s == 1) //"kNN"
@@ -546,12 +544,13 @@ int main(int argc, char* argv[]){
     // Vemos que metodo para clasificar vamos a usar
     // kNN, kNN con distancia, PCA + kNN o PCA + kNN con distancia
     // Ademas necesitamos el valor k de kNN
+    info.k = 1;
     if(argc >= 10)
     {
         std::string k_kNN(argv[9]); //donde vaya a estar el parámetro para el K de kNN
-        valor_knn = std::stoul(k_kNN);
+        info.k = std::stoul(k_kNN);
 
-        if(valor_knn == 0)
+        if(info.k == 0)
         {
             std::cout<<"ERROR: Valor k para kNN tiene que ser distinto de 0.\n";
             return 1;
@@ -583,8 +582,6 @@ int main(int argc, char* argv[]){
       std::remove(out_res.c_str()); 
     }
 
-    //Cargo los datos del archivo input
-    info_archivo info;
     info.path_base = "data/ImagenesCaras/";
     info.alto_imagen = 112;
     info.ancho_imagen = 92;
@@ -625,7 +622,7 @@ int main(int argc, char* argv[]){
     {
         Matriz<double> med = media(train);
         int n = train.filas();
-        unsigned int norma_cara = valor_knn;
+        unsigned int norma_cara = info.k;
         for(int i = 0;i < test.filas();i++)
             std::cout<<es_cara(test.copy_fil(i), med, n, train, norma_cara)<<'\n';
         return 0;
@@ -654,7 +651,7 @@ int main(int argc, char* argv[]){
     clock_t clasif = clock();
     // Clasificamos las imagenes de test usando las de train y obtenemos mediciones
     Clasificador c(train, s_train);
-    medidas_info r = c.clasificar_y_medir(test, s_test, valor_knn, con_distancia);
+    medidas_info r = c.clasificar_y_medir(test, s_test, info.k, con_distancia);
     clasif = ((clock() - clasif));
     total = total + clasif;
 
