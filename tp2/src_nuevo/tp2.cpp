@@ -42,6 +42,7 @@ struct info_archivo
     unsigned int n_train;
     unsigned int n_test;
     unsigned int k;
+    unsigned int alpha;
     DiccDatostrainXSujeto imgs_a_considerar_x_sujeto;
     std::vector<caso_test> casos_a_testear;
 };
@@ -480,7 +481,7 @@ bool es_cara(const Matriz<double>& img, const Matriz<double>& media, int n, cons
 // Escribe en el archivo de output los autovalores de la matriz de covarianza de datos
 void escribir_autovalores(const Matriz<double>& datos, const info_archivo& info,const std::string& output)
 {
-    Matriz<double> autoval_pca = pca_autovalores(datos, info.k);
+    Matriz<double> autoval_pca = pca_autovalores(datos, info.alpha);
 
     std::fstream f;
     f.precision(10);
@@ -560,9 +561,25 @@ int main(int argc, char* argv[]){
 
 
     }
+
+    info.alpha = 15;
+
+    if(argc >= 11)
+    {
+        std::string alpha(argv[10]); //donde vaya a estar el parámetro para el K de kNN
+        info.alpha = std::stoul(alpha);
+
+        if(info.alpha == 0)
+        {
+            std::cout<<"ERROR: Valor alpha para PCA tiene que ser distinto de 0.\n";
+            return 1;
+        }
+
+
+    }   
     
     // Si fue proporcionado, leemos el path del out_res de las medidas
-    if(argc >= 12)
+    if(argc >= 13)
     {
         output_medidas = std::string(argv[5]);
         std::ifstream test_out(output_medidas.c_str());
@@ -587,8 +604,8 @@ int main(int argc, char* argv[]){
     info.path_base = "data/ImagenesCaras/";
     info.alto_imagen = 112;
     info.ancho_imagen = 92;
-    if(argc >= 11){
-		std::string tipo(argv[10]);
+    if(argc >= 12){
+		std::string tipo(argv[11]);
 		std::transform(tipo.begin(), tipo.end(), tipo.begin(), ::tolower);
         if(tipo == "big"){
             info.path_base = "data/ImagenesCaras/"; 
