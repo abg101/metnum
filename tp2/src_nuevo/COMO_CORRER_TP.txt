@@ -1,7 +1,7 @@
 [] marca los parametros obligatorios
 () marca los parametros opcionales
 
-./tp2 -m [Modo de uso] -i [archivo de entrada train] -q [archivo de entrada test] -o [archivo de salida]  (k de kNN o k de PCA, depende de modo) (tamaño imagenes)(archivo de salida de mediciones)
+./tp2 -m [Modo de uso] -i [archivo de entrada train] -q [archivo de entrada test] -o [archivo de salida]  (k de kNN) (alpha de PCA, depende de modo) (tamaño imagenes)(archivo de salida de mediciones)
 
 ## Modo de uso: Debe ser alguno de los siguientes valores: 0 (kNN),1 (PCA),2 (kNN_distancia), 3 (PCA_distancia), 4 (ES_CARA). 
 ## archivos de entrada train: Son los .csv armados en el formato definido en el enunciado
@@ -10,7 +10,7 @@
 ## tamaño imagenes: es si el tamaño de las imagenes es big o reducido, es decir 112x92 o 28x23
 #    Los dos kNN estan de debug. 
 #    PCA hace PCA + kNN canonico y PCA_distancia hace PCA + kNN distancia.
-## k de kNN o k de PCA: Debe ser un numero positivo mayor a 0. Cuando Modo de Uso es ES_CARA, este k representa al k de PCA.
-#    Cuando Modo de Uso es otro valor, representa al k de kNN.
+## k de kNN 
+## alpha de PCA: Debe ser un numero positivo mayor a 0. Cuando Modo de Uso es ES_CARA, este alpha representa al alpha de PCA.
 ## Archivo de salida de mediciones: Es el archivo donde escribimos las mediciones tomadas. Por defecto, toma el valor de 
 archivo de salida y le agrega ".mediciones" al final.

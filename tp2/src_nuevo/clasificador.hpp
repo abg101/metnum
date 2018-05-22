@@ -9,6 +9,8 @@
 #include <algorithm>
 #include <utility>
 
+using namespace std;
+
 typedef std::unordered_map<unsigned int, unsigned int> DiccNatANat;
 typedef std::map<unsigned int, double> DiccNatADouble;
 
@@ -20,6 +22,8 @@ struct medidas_info
     DiccNatADouble accuracy_x_sujeto;
     DiccNatADouble precision_x_sujeto;
     DiccNatADouble recall_x_sujeto;
+    vector<unsigned int> sujetos_predichos;
+
 };
 
 std::ostream& operator<<(std::ostream& os, medidas_info& obj)
@@ -109,6 +113,7 @@ medidas_info Clasificador::clasificar_y_medir(const Matriz<double>& tests, std::
 
     // Clasificamos las imagenes de tests
     std::vector<unsigned int> sujetos_predichos(clasificar(k, tests, kNN_distancia));
+    info.sujetos_predichos = sujetos_predichos;
 
     for(int i = 0; i < tests.filas();i++)
     {

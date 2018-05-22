@@ -499,6 +499,17 @@ void escribir_autovalores(const Matriz<double>& datos, const info_archivo& info,
     f.close();
 }
 
+void escribir_output(string &out_res, info_archivo &info, vector<unsigned int> &sujetos_predichos){
+
+    ofstream file;
+    file.open(out_res.c_str());
+    for (int i = 0; i < sujetos_predichos.size(); ++i)
+    {
+        file << (info.casos_a_testear[i]).path_imagen << " , " << sujetos_predichos[i] << endl;
+    }
+    file.close();
+}
+
 int main(int argc, char* argv[]){
     //Filtramos los datos de entrada
     if (argc < 9)
@@ -673,6 +684,8 @@ int main(int argc, char* argv[]){
     medidas_info r = c.clasificar_y_medir(test, s_test, info.k, con_distancia);
     clasif = ((clock() - clasif));
     total = total + clasif;
+
+    escribir_output(out_res, info, r.sujetos_predichos);
 
     // Escribimos las mediciones en un archivo
     std::fstream f;
