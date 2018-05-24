@@ -1,6 +1,6 @@
 CPP = g++
-FLAGS = -std=c++11 -O2 -g -ggdb
-DEPS = matriz_aux.hpp normas_aux.hpp metodos_reduc.hpp clasificador.hpp ppmloader/ppmloader.h
+FLAGS = -std=c++11 -O2 -g
+DEPS = matriz_aux.hpp normas_aux.hpp metodos_reduc.hpp clasificador.hpp ppmloader/ppmloader.h IOUtils.hpp preprocesamiento.hpp
 OBJ = tp2.o ppmloader/ppmloader.o
 
 all: tp2
