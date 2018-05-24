@@ -75,8 +75,8 @@ if __name__ == "__main__":
         for i in range(0, k_folds):
             path_out = path_arc + "{0}_K{1}_k{2}_fold{3}.in".format(tipo, k_folds, k, str(i+1))
             
-            path_out_train = path_arc + "/csv_train/" + "{0}_K{1}_k{2}_fold{3}.csv".format(tipo, k_folds, k, str(i+1))
-            path_out_test = path_arc + "/csv_test/" + "{0}_K{1}_k{2}_fold{3}.csv".format(tipo, k_folds, k, str(i+1))
+            path_out_train = path_arc +  "train_{0}_K{1}_k{2}_fold{3}.csv".format(tipo, k_folds, k, str(i+1))
+            path_out_test = path_arc + "test_{0}_K{1}_k{2}_fold{3}.csv".format(tipo, k_folds, k, str(i+1))
             
             # Dividimos los indices de las imagenes en train y en test, para este fold
             datos_fold = dict()
