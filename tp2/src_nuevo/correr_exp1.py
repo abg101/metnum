@@ -14,9 +14,9 @@ comando_sin_pca = "./tp2 -m {0} -i {1} -q {2} -o {3} -k {4} -t {5} -r {6} -e"
 #"train_{0}_size{3}_K{1}_fold{2}.csv".format(tipo, k_folds, str(i+1), str(train_size))
 
 path_out_res_PCA = "experimentos/experimento_1/datos_de_salida_{0}/knn_{3}/pca_{5}/{0}_size{1}_K{2}_knn{3}_alpha{5}_fold{4}.csv"
-path_medidas_PCA = "experimentos/experimento_1/mediciones_{0}/knn_{5}/pca_{5}/{0}_size{1}_K{2}_knn{3}_alpha{5}_fold{4}.csv.medidas"
+path_medidas_PCA = "experimentos/experimento_1/mediciones_{0}/knn_{3}/pca_{5}/{0}_size{1}_K{2}_knn{3}_alpha{5}_fold{4}.csv.medidas"
 
-path_in_train = "experimentos/experimento_1/datos_de_entrada_{0}/csv_train/train_{0}_size_{1}_K{2}_fold{3}.csv" 
+path_in_train = "experimentos/experimento_1/datos_de_entrada_{0}/csv_train/train_{0}_size{1}_K{2}_fold{3}.csv" 
 path_in_test = "experimentos/experimento_1/datos_de_entrada_{0}/csv_test/test_{0}_size{1}_K{2}_fold{3}.csv"
 
 path_out_res = "experimentos/experimento_1/datos_de_salida_{0}/knn_{3}/{0}_size{1}_K{2}_knn{3}_fold{4}.csv"
@@ -36,7 +36,7 @@ for i in tipo:
                                 actual_out_res = path_out_res_PCA.format(i, train_size, kfold, k, fold, alpha)
                                 actual_medidas = path_medidas_PCA.format(i, train_size, kfold, k, fold, alpha)
 
-                                comando_final = comando.format(modo.index(m),actual_in_train,actual_in_test, actual_out_res, str(k), str(alpha),i, actual_medidas)
+                                comando_final = comando.format(modo.index(m),actual_in_train,actual_in_test, actual_out_res, str(k), str(alpha),str(i), actual_medidas)
 
                                 print("Ejecutando " + comando_final)
                                 exit = os.system(comando_final)
@@ -56,7 +56,7 @@ for i in tipo:
                             actual_out_res = path_out_res.format(i, train_size, kfold, k, fold)
                             actual_medidas = path_medidas.format(i, train_size, kfold, k, fold)
 
-                            comando_final = comando_sin_pca.format(modo.index(m),actual_in_train,actual_in_test, actual_out_res, str(k), i, actual_medidas)
+                            comando_final = comando_sin_pca.format(modo.index(m),actual_in_train,actual_in_test, actual_out_res, str(k), str(i), actual_medidas)
 
                             print("Ejecutando " + comando_final)
                             exit = os.system(comando_final)
