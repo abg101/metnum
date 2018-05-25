@@ -103,6 +103,7 @@ medidas_info Clasificador::clasificar_y_medir(const Matriz<double>& tests, std::
 {
     medidas_info info;
 
+    unsigned int aciertos = 0;
     unsigned int total = tests.filas();
 
     DiccNatADouble total_x_cat;
@@ -119,7 +120,7 @@ medidas_info Clasificador::clasificar_y_medir(const Matriz<double>& tests, std::
     {
         if(sujetos_predichos[i] == sujetos_tests[i])
         {
-
+            aciertos++;
             if(verdaderos_pos_cat.count(sujetos_predichos[i]) == 0)
                 verdaderos_pos_cat[sujetos_predichos[i]] = 0;
 
@@ -160,16 +161,16 @@ medidas_info Clasificador::clasificar_y_medir(const Matriz<double>& tests, std::
 
         total_x_cat[sujetos_tests[i]]++;
     }
+    info.accuracy_general = 0;
+    info.accuracy_general = double(aciertos) / double(total);
 
     // Calculo accuracy, precision y recall general
-    info.accuracy_general = 0;
     for(DiccNatADouble::const_iterator i = verdaderos_pos_cat.cbegin();i != verdaderos_pos_cat.cend();++i)
 		if(i->second > 0)
 			info.precision_general +=
 				(i->second + verdaderos_neg_cat[i->first]) /
 				(i->second + falsos_pos_cat[i->first] + verdaderos_neg_cat[i->first] + falsos_neg_cat[i->first]);
-
-    info.accuracy_general /= double(total_x_cat.size());
+   
 
     info.precision_general = 0;
     for(DiccNatADouble::const_iterator i = verdaderos_pos_cat.cbegin();i != verdaderos_pos_cat.cend();++i)
@@ -196,7 +197,7 @@ medidas_info Clasificador::clasificar_y_medir(const Matriz<double>& tests, std::
             info.accuracy_x_sujeto[it->first] = (v_pos + v_neg) / (v_pos + f_pos + v_neg + f_neg);
         else
             info.accuracy_x_sujeto[it->first] = 0;
-    }        
+    }      
 
     for(DiccNatADouble::const_iterator it = total_x_cat.cbegin();it != total_x_cat.cend();++it)
     {
