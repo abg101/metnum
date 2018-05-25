@@ -1,0 +1,38 @@
+Tiempo(en ticks):
+140343
+Accuracy general
+0.3636363636
+Precision general
+0.4444444444
+Recall general
+0.3888888889
+Accuracy por sujeto
+3: 0.5
+4: 0.3333333333
+19: 1
+22: 0.6666666667
+23: 0.5
+24: 1
+32: 0.5
+36: 1
+38: 0.5
+Precision por sujeto
+3: 0
+4: 0
+19: 1
+22: 1
+23: 0
+24: 1
+32: 0
+36: 1
+38: 0
+Recall por sujeto
+3: 0
+4: 0
+19: 1
+22: 0.5
+23: 0
+24: 1
+32: 0
+36: 1
+38: 0
