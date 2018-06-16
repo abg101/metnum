@@ -1,0 +1,9 @@
+\select@language {spanish}
+\contentsline {section}{\numberline {1}Introducci\IeC {\'o}n}{3}
+\contentsline {section}{\numberline {2}Desarrollo}{4}
+\contentsline {section}{\numberline {3}Resultados y discusi\IeC {\'o}n}{5}
+\contentsline {section}{\numberline {4}Conclusi\IeC {\'o}n}{6}
+\contentsline {section}{\numberline {5}Referencias}{7}
+\contentsline {section}{\numberline {6}Ap\IeC {\'e}ndice}{8}
+\contentsline {subsection}{\numberline {6.1}A: Enunciado}{8}
+\contentsline {subsection}{\numberline {6.2}B: C\IeC {\'o}digo}{13}
