@@ -5,11 +5,11 @@
 #include <iomanip>
 #include <cstdio>
 #include <limits>
-#include "metodos_reduc.hpp"
 #include <cmath>
 #include <ctime>
 #include <algorithm>// max y transform
-#include "IOUtils.hpp"
+#include <matriz.hpp>
+#include <matriz_aux.hpp>
 
 using namespace std;
 
@@ -39,9 +39,27 @@ void show_matrix(double *A, int n) {
     }
 }
 
+//http://www1.eafit.edu.co/cursonumerico/capitulo3/sesion_1/documentos/eliminacion_gausiana.pdf
 int main(int argc, char* argv[]){
+    Matriz<double> A(3,4,0);
+    Matriz<double> temp1(4, 1, 0);
+    Matriz<double> temp2(4, 1, 0);
+    Matriz<double> temp3(4, 1, 0); 
    
-
+    temp1[0][0] = 1;
+    temp1[1][0] = 2;
+    temp1[2][0] = 3;
+    temp1[3][0] = 1;
+    temp2[0][0] = 4;
+    temp2[1][0] = 5;
+    temp2[2][0] = 6;
+    temp2[3][0] = -2;
+    temp3[0][0] = 7;
+    temp3[1][0] = 8;
+    temp3[2][0] = 10;
+    temp3[3][0] = 5;
+    
+//FALTA
     
 
     return 0;
