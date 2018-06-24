@@ -5,14 +5,14 @@
 #include <iomanip>
 #include <cstdio>
 #include <limits>
+#include "metodos_reduc.hpp"
 #include <cmath>
 #include <ctime>
 #include <algorithm>// max y transform
-#include <matriz.hpp>
-#include <matriz_aux.hpp>
+#include "IOUtils.hpp"
 
 using namespace std;
-
+/*
 double *cholesky(double *A, int n) {
     double *L = new double[n*n];
     if (L == NULL)
@@ -30,14 +30,16 @@ double *cholesky(double *A, int n) {
  
     return L;
 }
- 
-void show_matrix(double *A, int n) {
+*/ 
+
+/*void show_matrix(double *A, int n,int m) {
     for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++)
+        for (int j = 0; j < m; j++)
             printf("%2.5f ", A[i * n + j]);
         printf("\n");
     }
 }
+*/
 
 //http://www1.eafit.edu.co/cursonumerico/capitulo3/sesion_1/documentos/eliminacion_gausiana.pdf
 int main(int argc, char* argv[]){
@@ -59,8 +61,22 @@ int main(int argc, char* argv[]){
     temp3[2][0] = 10;
     temp3[3][0] = 5;
     
-//FALTA
-    
+    A.set_fil(0,temp1);
+    A.set_fil(2,temp2);
+    A.set_fil(3,temp3);
+
+    cout << "A:       " << endl;
+    cout << A[0][0] << A[0][1]<< A[0][2]<< A[0][3]<< endl;
+    cout << A[1][0] << A[1][1]<< A[1][2]<< A[1][3]<< endl;
+    cout << A[2][0] << A[2][1]<< A[2][2]<< A[2][3]<< endl;
+
+    Matriz<double> res = resolver_sistema(A);
+
+    cout << "res:       " << endl;
+    cout << res[0][0] << res[0][1]<< res[0][2]<< res[0][3]<< endl;
+    cout << res[1][0] << res[1][1]<< res[1][2]<< res[1][3]<< endl;
+    cout << res[2][0] << res[2][1]<< res[2][2]<< res[2][3]<< endl;    
 
     return 0;
+
 }

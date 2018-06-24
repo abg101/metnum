@@ -1,4 +1,5 @@
 #include "matriz_aux.hpp"
+#include "metodos_reduc.hpp"
 
 using namespace std;
 
