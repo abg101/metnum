@@ -1,12 +1,9 @@
-#include "matriz.hpp"
+#include "matriz_aux.hpp"
 #include <cassert>
-Matriz<int> resolverEN(Matriz<int> A, vector<int> b)
+Matriz<double> resolverEN(Matriz<double> A, Matriz<double> b)
 {
-	//assert(A.rango() < A.columnas()); //TODO: implementar rango o asumirlo completo 
-	Matriz<int> At = A.traspuesta();
-	int n = A.columnas();
-	Matriz<int> x = Matriz(n,1);
-	
-	x = (A*L.traspuesta())/(At*b);
+	//assert(A.rango() < A.columnas()); //como es SDP es inversible 
+	Matriz<double> At = A.traspuesta();
+	Matriz<double> x = resolver_gauss(At*(A),At*(b));
 	return x;
 }
