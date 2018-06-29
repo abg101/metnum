@@ -60,7 +60,7 @@ Matriz<int> simularRayo(Matriz<int> imagen, int n, int m, int fe, int ce, int fs
 	int columnas = imagen.columnas();
 	int df = filas/n;
 	int dc = columnas/m;
-	int t = 0;
+	int t = 0;					//ESTO NO HACE FALTA? VER
 	Matriz<int> D = Matriz(n,m,0);
 	
 	// Lo siguiente es una chanchada para poder simplificarme la vida usando
@@ -79,8 +79,8 @@ Matriz<int> simularRayo(Matriz<int> imagen, int n, int m, int fe, int ce, int fs
 
 	//Polinomio pi = polyfit([f_ini, f_fin], [c_ini, c_fin], 1); 
 	//Polinomio pj = polyfit([c_ini, c_fin], [f_ini, f_fin], 1); 
-	Recta pi(fe, ce, fs, cs); 	//FALTA
-	Recta pj(ce, fe, cs, fs); 	//FALTA	
+	Recta pi(fe, ce, fs, cs); 	//REVISAR
+	Recta pj(ce, fe, cs, fs); 		
 
 	int i1 = pj.evaluar(1);//en cpp seria 0 y col-1, no?
 	int i2 = pj.evaluar(columnas);
@@ -97,6 +97,7 @@ Matriz<int> simularRayo(Matriz<int> imagen, int n, int m, int fe, int ce, int fs
 		int j_max = std::max(1, std::min(columnas-1, std::ceil(std::max(j1,j2))));
 		for(int j = j_min; j < j_max; j++)
 		{
+			//NO FALTA CALCULAR EL t??
 			int n_i = std::min(n, std::trunc((double)i/df) + 1);
 			int m_j = std::min(m, std::trunc((double)i/dc) + 1);
 			D[n_i][m_j] = D[n_i][m_j] + 1; 
@@ -105,14 +106,15 @@ Matriz<int> simularRayo(Matriz<int> imagen, int n, int m, int fe, int ce, int fs
 	return D;
 }
 
-Matriz<int> generarRayos(Matriz<int> imagen, int k, int n, int m)
+Matriz<int> generarRayos(Matriz<int> imagen, int m, int n)
 {
+	//nuestra matriz es de nxn y se emiten m rayos
 	srand(time(NULL));//TODO: trasladar esto a un lugar donde sea llamado una sola vez
 	int filas = imagen.filas();
 	int columnas = imagen.columnas();
-	Matriz<int> rayos(k, n*m+1);
-	p = std::trunc(k/20);
-	for(int i = 0; i < k; i++)
+	Matriz<int> rayos(m, n*n+1,0);
+	p = std::trunc(m/20);
+	for(int i = 0; i < m; i++)
 	{
 		int entra = randomEntre(0,3);
 		int sale = (entra + randomEntre(0,3) + 1) % 4;
@@ -124,7 +126,7 @@ Matriz<int> generarRayos(Matriz<int> imagen, int k, int n, int m)
 		int fs = std::get<0>(posSalida);
 		int cs = std::get<1>(posSalida);
 
-		simularRayo(imagen, n, m, fe, ce, fs, cs);
+		simularRayo(imagen, n, n, fe, ce, fs, cs);
 
 	    //agrego el rayo simulado a mis datos TODO
 
