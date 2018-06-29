@@ -7,12 +7,11 @@
 #include <cstdio>
 #include <limits>
 #include <algorithm>
-#include "preprocesamiento.hpp"
 #include <getopt.h>
 
 using namespace std;
 
-struct datos_sujeto
+/*struct datos_sujeto
 {
     std::string path_imagenes;
     std::vector<unsigned int> imgs_entrenamiento;
@@ -487,6 +486,6 @@ void IOUtils::escribir_medidas(info_archivo &info, medidas_info &r, clock_t tota
     f<<r;
     f.close();
 }
-
+*/
 
 #endif

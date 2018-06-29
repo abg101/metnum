@@ -5,7 +5,7 @@
 #include <iomanip>
 #include <cstdio>
 #include <limits>
-#include "metodos_reduc.hpp"
+#include "matriz_aux.hpp"
 #include <cmath>
 #include <ctime>
 #include <algorithm>// max y transform
@@ -75,7 +75,7 @@ int main(int argc, char* argv[]){
     cout << "res:       " << endl;
     cout << res[0][0] << res[0][1]<< res[0][2]<< res[0][3]<< endl;
     cout << res[1][0] << res[1][1]<< res[1][2]<< res[1][3]<< endl;
-    cout << res[2][0] << res[2][1]<< res[2][2]<< res[2][3]<< endl;    
+    cout << res[2][0] << res[2][1]<< res[2][2]<< res[2][3]<< endl;   
 
     return 0;
 

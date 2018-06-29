@@ -50,7 +50,7 @@ class Matriz
 
         T mult_fila(int,const Matriz&) const;
         T mult_columna(int,const Matriz&) const;
-        T mult_fila(int,const Matriz&,int) const;
+        T mult_fila(int,const Matriz&m,int) const;
         T mult_columna(int,const Matriz&,int) const;
 
 
