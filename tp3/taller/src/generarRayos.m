@@ -6,12 +6,12 @@ function R = generarRayos(arch_img, n, m, k, arch_ray)
 %   Simula k emisiones de rayos sobre la imagen del archivo arch_img,
 %   discretizada en n filas y m columnas.
 %   El resultado R es una matriz de k filas, una por cada rayo generado
-%   y de (m*n)+1 columnas. Cada fila contiene la informaci�n
-%   correspondiente a cada rayo; el primer elemento es el tiempo que tard�
+%   y de (m*n)+1 columnas. Cada fila contiene la información
+%   correspondiente a cada rayo; el primer elemento es el tiempo que tardó
 %   el rayo en recorrer la imagen y el resto de los elementos es la
-%   cantidad de pixeles que recorri� el rayo en cada una de las n*m celdas
-%   de la discretizaci�n.
-%   Esta matriz se devuelve y, si el parametro arch_ray est� presente, 
+%   cantidad de pixeles que recorrió el rayo en cada una de las n*m celdas
+%   de la discretización.
+%   Esta matriz se devuelve y, si el parametro arch_ray está presente, 
 %   se almacenan los rayos en el archivo arch_ray.
 
     I = leerImagen(arch_img);

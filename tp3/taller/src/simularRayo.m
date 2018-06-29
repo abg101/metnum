@@ -2,12 +2,12 @@ function [t, D] = simularRayo(I, n, m, f_ini, c_ini, f_fin, c_fin, dibujar)
 %SIMULARRAYO Simula la emision de un rayo tomogr�fico sobre una imagen.
     % [t, D] = simularRayo(I, n, m, f_ini, c_ini, f_fin, c_fin, [dibujar])
     %
-    % Simula un rayo del tom�grafo a trav�s de la imagen I, discretizada en
+    % Simula un rayo del tomógrafo a través de la imagen I, discretizada en
     % n filas y m columnas. El rayo tiene como punto inicial el punto
     % (f_ini, c_ini) y como punto final el punto (f_ini, c_ini).
-    % Retorna: el tiempo total t de la emisi�n del rayo y las distancias
-    % recorridas D(i,j) en cada punto de la discretizaci�n.
-    % El par�metro dibujar es opcional y si vale 1 se dibuja el rayo sobre
+    % Retorna: el tiempo total t de la emisión del rayo y las distancias
+    % recorridas D(i,j) en cada punto de la discretización.
+    % El parámetro dibujar es opcional y si vale 1 se dibuja el rayo sobre
     % la imagen.
     
     [f, c] = size(I);

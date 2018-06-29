@@ -4,7 +4,9 @@ Matriz<int> resolverEN(Matriz<int> A, vector<int> b)
 {
 	//assert(A.rango() < A.columnas()); //TODO: implementar rango o asumirlo completo 
 	Matriz<int> At = A.traspuesta();
-	Matriz<int> lower = cholesky(At*A);
-	Matriz<int> x = (L*L.traspuesta())/(At*b);
+	int n = A.columnas();
+	Matriz<int> x = Matriz(n,1);
+	
+	x = (A*L.traspuesta())/(At*b);
 	return x;
 }

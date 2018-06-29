@@ -61,8 +61,7 @@ Matriz<int> simularRayo(Matriz<int> imagen, int n, int m, int fe, int ce, int fs
 	int df = filas/n;
 	int dc = columnas/m;
 	int t = 0;
-	Matriz<int> distancias(n, m);
-	//TODO: llenar de ceros
+	Matriz<int> D = Matriz(n,m,0);
 	
 	// Lo siguiente es una chanchada para poder simplificarme la vida usando
     // polyfit m�s adelante
@@ -80,8 +79,8 @@ Matriz<int> simularRayo(Matriz<int> imagen, int n, int m, int fe, int ce, int fs
 
 	//Polinomio pi = polyfit([f_ini, f_fin], [c_ini, c_fin], 1); 
 	//Polinomio pj = polyfit([c_ini, c_fin], [f_ini, f_fin], 1); 
-	Recta pi(fe, ce, fs, cs);
-	Recta pj(ce, fe, cs, fs);
+	Recta pi(fe, ce, fs, cs); 	//FALTA
+	Recta pj(ce, fe, cs, fs); 	//FALTA	
 
 	int i1 = pj.evaluar(1);//en cpp seria 0 y col-1, no?
 	int i2 = pj.evaluar(columnas);
