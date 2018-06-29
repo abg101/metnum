@@ -99,10 +99,10 @@ Matriz<int> simularRayo(Matriz<int> imagen, int n, int m, int fe, int ce, int fs
 		{
 			int n_i = std::min(n, std::trunc((double)i/df) + 1);
 			int m_j = std::min(m, std::trunc((double)i/dc) + 1);
-			distancias[n_i][m_j] = D[n_i][m_j] + 1; 
+			D[n_i][m_j] = D[n_i][m_j] + 1; 
 		}
 	}
-	return distancias;
+	return D;
 }
 
 Matriz<int> generarRayos(Matriz<int> imagen, int k, int n, int m)
