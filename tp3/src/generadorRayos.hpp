@@ -44,7 +44,7 @@ function [f, c] = randPos(lado, filas, columnas)
 }
 
 
-Matriz<int> simularRayo(Matriz<int> imagen, int n, int m, int fe, int ce, int fs, int cs)
+Matriz<double> simularRayo(Matriz<double> imagen, int n, int m, int fe, int ce, int fs, int cs)
 {
     // [t, D] = simularRayo(I, n, m, f_ini, c_ini, f_fin, c_fin, [dibujar])
     //
@@ -60,25 +60,11 @@ Matriz<int> simularRayo(Matriz<int> imagen, int n, int m, int fe, int ce, int fs
 	int columnas = imagen.columnas();
 	int df = filas/n;
 	int dc = columnas/m;
-	int t = 0;					//ESTO NO HACE FALTA? VER
-	Matriz<int> D = Matriz(n,m,0);
+	//int t = 0;					//ESTO NO HACE FALTA? VER
+	Matriz<double> D = Matriz(n,m,0);
 	
-	// Lo siguiente es una chanchada para poder simplificarme la vida usando
-    // polyfit m�s adelante
-    //if f_ini == f_fin
-    //    f_ini = f_ini - 0.5;
-    //    f_fin = f_fin + 0.5;
-    //end
-    //if c_ini == c_fin
-    //    c_ini = c_ini - 0.5;
-    //    c_fin = c_fin + 0.5;
-    //end
-
-	//TODO implementar polnomio? Solo quiero la recta
 	//Calculo la recta que representa el rayo (y su inversa)
 
-	//Polinomio pi = polyfit([f_ini, f_fin], [c_ini, c_fin], 1); 
-	//Polinomio pj = polyfit([c_ini, c_fin], [f_ini, f_fin], 1); 
 	Recta pi(fe, ce, fs, cs); 	//REVISAR
 	Recta pj(ce, fe, cs, fs); 		
 
@@ -89,13 +75,13 @@ Matriz<int> simularRayo(Matriz<int> imagen, int n, int m, int fe, int ce, int fs
 
 	// recorro cada fila (entre i_min e i_max) y veo que columnas toca el rayo
 
-	for(int i = i_min; i < i_max; i++)
+	for(int i = i_min; i <= i_max; i++)
 	{
 		j1 = pi.evaluar(i-1);
 		j2 = pi.evaluar(i);
 		int j_min = std::max(1, std::min(columnas-1, std::ceil(std::min(j1,j2))));
 		int j_max = std::max(1, std::min(columnas-1, std::ceil(std::max(j1,j2))));
-		for(int j = j_min; j < j_max; j++)
+		for(int j = j_min; j <= j_max; j++)
 		{
 			//NO FALTA CALCULAR EL t??
 			int n_i = std::min(n, std::trunc((double)i/df) + 1);
@@ -106,7 +92,7 @@ Matriz<int> simularRayo(Matriz<int> imagen, int n, int m, int fe, int ce, int fs
 	return D;
 }
 
-Matriz<int> generarRayos(Matriz<int> imagen, int m, int n)
+Matriz<double> generarRayos(Matriz<double> imagen, int m, int n)
 {
 	//nuestra matriz es de nxn y se emiten m rayos
 	srand(time(NULL));//TODO: trasladar esto a un lugar donde sea llamado una sola vez
@@ -126,7 +112,11 @@ Matriz<int> generarRayos(Matriz<int> imagen, int m, int n)
 		int fs = std::get<0>(posSalida);
 		int cs = std::get<1>(posSalida);
 
-		simularRayo(imagen, n, n, fe, ce, fs, cs);
+		Matriz<double> sim =	simularRayo(imagen, n, n, fe, ce, fs, cs);
+
+		Matriz<double> rayo = sim.copy_fil(i);
+	    rayo = rayo.traspuesta();
+	    rayos.set_fil(i,rayo);
 
 	    //agrego el rayo simulado a mis datos TODO
 

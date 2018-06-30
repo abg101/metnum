@@ -13,36 +13,7 @@
 #include "cuadradosMinimos.hpp"
 
 using namespace std;
-/*
-double *cholesky(double *A, int n) {
-    double *L = new double[n*n];
-    if (L == NULL)
-        exit(EXIT_FAILURE);
- 
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < (i+1); j++) {
-            double s = 0;
-            for (int k = 0; k < j; k++)
-                s += L[i * n + k] * L[j * n + k];
-            L[i * n + j] = (i == j) ?
-                           sqrt(A[i * n + i] - s) :
-                           (1.0 / L[j * n + j] * (A[i * n + j] - s));
-        }
- 
-    return L;
-}
-*/ 
 
-/*void show_matrix(double *A, int n,int m) {
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < m; j++)
-            printf("%2.5f ", A[i * n + j]);
-        printf("\n");
-    }
-}
-*/
-
-//http://www1.eafit.edu.co/cursonumerico/capitulo3/sesion_1/documentos/eliminacion_gausiana.pdf
 int main(int argc, char* argv[]){
     Matriz<double> A(3,3,0);
     Matriz<double> b(3,1,0);
@@ -125,6 +96,31 @@ int main(int argc, char* argv[]){
     cout << "|" << res2[0][0] << "|" << endl;
     cout << "|" << res2[1][0] << "|" << endl;
 
+    temp1[0][0] = 2;
+    temp1[1][0] = 4;
+    temp1[2][0] = 6;
+    temp2[0][0] = 7;
+    temp2[1][0] = 1;
+    temp2[2][0] = 2;
+    temp3[0][0] = 3;
+    temp3[1][0] = 1;
+    temp3[2][0] = 2;
+
+    //prueba para la funcion generar rayo
+    Matriz<double> L(3,3,0);
+    L.set_fil(0,temp1);
+    L.set_fil(1,temp2);
+    L.set_fil(2,temp3);
+
+    Matriz<double> P = A;
+    for(int i =0 ; i < 3;i++){
+        Matriz<double> fila = L.copy_fil(i);
+        fila = fila.traspuesta();
+        P.set_fil(i,fila);
+    }
+    cout << "|" << P[0][0] << " " << P[0][1]<< " " << P[0][2] << " |" <<  endl;
+    cout << "|" << P[1][0] << " " << P[1][1] << " "<< P[1][2] << " |" << endl;
+    cout << "|" << P[2][0] << " " << P[2][1] << " "<< P[2][2] << " |" << endl;
     return 0;
 
 }
