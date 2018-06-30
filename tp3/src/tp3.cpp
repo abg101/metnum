@@ -15,6 +15,11 @@
 using namespace std;
 
 int main(int argc, char* argv[]){
+	IOUtils io;
+	info_archivo info;
+	io.parse(argc,argv,info);
+	Matriz<double> ejemplo = io.leer_imagen(info.path);
+
     Matriz<double> A(3,3,0);
     Matriz<double> b(3,1,0);
     Matriz<double> temp1(3, 1, 0);

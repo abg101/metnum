@@ -2,9 +2,11 @@
 #define IOUTILS_H_
 
 #include "ppmloader/ppmloader.h"
+#include "matriz.hpp"
 #include <iostream>
 #include <fstream>
 #include <cstdio>
+#include <cmath>
 #include <limits>
 #include <algorithm>
 #include <getopt.h>
@@ -39,31 +41,16 @@ enum Modo{
     PCA_distancia,
     ES_CARA
 };
+*/
 
 struct info_archivo
 {
-    string path_base;
-    string in_train;
-    string in_test;
-    string out_res;
-    string output_medidas;
-    Modo m;
-    unsigned int ancho_imagen;
-    unsigned int alto_imagen;
-    unsigned int cant_sujetos;
-    unsigned int n_train;
-    unsigned int n_test;
-
-    string size;
-    bool experimentacion;
-    bool con_distancia;
-
-    unsigned int k;
-    unsigned int alpha;
-    DiccDatostrainXSujeto imgs_a_considerar_x_sujeto;
-    vector<caso_test> casos_a_testear;
+	std::string path;
+    //unsigned int ancho;
+    //unsigned int alto;
 };
 
+/*
 //Para mostrar/escribir la info de un archivo.in
 std::ostream& operator<<(std::ostream& os, const info_archivo& obj)
 {
@@ -105,21 +92,23 @@ std::ostream& operator<<(std::ostream& os, const info_archivo& obj)
 
     return os;
 }
+*/
 
 class IOUtils {
 public:
 	IOUtils();
 	~IOUtils();
 	int parse(int arc, char** argv, info_archivo& info);
-	void leer_archivos_csv(string path_1, string path_2, info_archivo& info);
-	Matriz<double> leer_imagen(std::string path, int ancho, int alto);
-	Matriz<double> armar_base_entrenamiento(const info_archivo& ia);
-	DiccNatANat obtener_sujetos_train(const info_archivo& ia);
-	std::vector<unsigned int> obtener_sujetos_test(const info_archivo& ia);
-	Matriz<double> armar_casos_tests(const info_archivo& ia);
-	void escribir_autovalores(const Matriz<double>& datos, const info_archivo& info,const std::string& output);
-	void escribir_output(string &out_res, info_archivo &info, vector<unsigned int> &sujetos_predichos);
-	void escribir_medidas(info_archivo &info, medidas_info &r, clock_t total);
+	//void leer_archivos_csv(string path_1, string path_2, info_archivo& info);
+	Matriz<double> leer_imagen(std::string path );
+	void escribir_imagen(std::string path, Matriz<double> imagen);
+	//Matriz<double> armar_base_entrenamiento(const info_archivo& ia);
+	//DiccNatANat obtener_sujetos_train(const info_archivo& ia);
+	//std::vector<unsigned int> obtener_sujetos_test(const info_archivo& ia);
+	//Matriz<double> armar_casos_tests(const info_archivo& ia);
+	//void escribir_autovalores(const Matriz<double>& datos, const info_archivo& info,const std::string& output);
+	//void escribir_output(string &out_res, info_archivo &info, vector<unsigned int> &sujetos_predichos);
+	//void escribir_medidas(info_archivo &info, medidas_info &r, clock_t total);
 };
 
 IOUtils::IOUtils(){
@@ -131,11 +120,14 @@ IOUtils::~IOUtils(){
 
 int IOUtils::parse(int argc, char** argv, info_archivo& info){
 
-    if (argc < 9)
+    if (argc < 2)
     {
         std::cout<<"Parametros de entrada insuficientes"<<'\n';
         return 1;
     }
+	info.path = argv[1];
+	return 0;
+	/*
 
     //Cargo los datos del archivo input
     info.k = 1;
@@ -268,9 +260,47 @@ int IOUtils::parse(int argc, char** argv, info_archivo& info){
             std::cout<<"ERROR:Parametro de operacion incorrecto\n";
             return 1;
         }
-
+*/
 }    
+Matriz<double> IOUtils::leer_imagen(std::string path)
+{
+    uchar* imagen;
+	int alto, ancho;
+    PPM_LOADER_PIXEL_TYPE pt = PPM_LOADER_PIXEL_TYPE_INVALID;
+    LoadPPMFile(&imagen, &ancho, &alto, &pt, path.c_str());
 
+    //Pixeles en RGB de una imagen en escala de grises, 
+	// R = G = B = intensidad de gris
+    Matriz<double> temp(ancho*alto, 1, 0);
+
+    for(unsigned int i = 0;i < ancho*alto; i++)
+    {
+        temp[i][0] = double(imagen[i*3]);
+    }
+
+    delete [] imagen;    
+    return temp;
+}
+
+
+void IOUtils::escribir_imagen(std::string path, Matriz<double> imagen)
+{
+	char comments[10];
+	sprintf(comments, "%s", "TP3");
+	int col = imagen.columnas();
+	int fil = imagen.filas();
+	uchar* data = new uchar[fil*col*3];
+	for(int i = 0; i < fil*col*3; i++)
+	{
+		data[i] = data[i+1] = data[i+2] = uchar(imagen[i][0]);
+	}
+	bool ret = SavePPMFile(path.c_str(),data,col,fil,PPM_LOADER_PIXEL_TYPE_RGB_8B, comments);
+	if (!ret)
+	{
+		std::cout << "ERROR: couldn't save Image to ppm file" << std::endl;
+	}
+}
+/*
 void IOUtils::leer_archivos_csv(string path_1, string path_2, info_archivo& info){
     fstream fs1;
     fs1.open(path_1.c_str(),std::fstream::in);
@@ -339,7 +369,7 @@ void IOUtils::leer_archivos_csv(string path_1, string path_2, info_archivo& info
     fs2.close();
 }
 
-
+*/
 // Lee una imagen de formato .pgm
 // Esta imagenes se las puede interpretar como archivos de texto armados de las siguientes maneras:
 //
@@ -354,27 +384,7 @@ void IOUtils::leer_archivos_csv(string path_1, string path_2, info_archivo& info
 // P5 [Ancho] [Alto] [Valor max]
 // [Datos, idem al anterior]
 //
-Matriz<double> IOUtils::leer_imagen(std::string path, int ancho, int alto)
-{
-    
-    uchar* imagen;
-    PPM_LOADER_PIXEL_TYPE pt = PPM_LOADER_PIXEL_TYPE_INVALID;
-    LoadPPMFile(&imagen, &ancho, &alto, &pt, path.c_str());
-
-    //Leo pixeles de la imagen, cada pixel es un valor entre 0 y 255
-    Matriz<double> temp(ancho*alto, 1, 0);
-
-    for(unsigned int i = 0;i < ancho*alto;i++)
-    {
-
-        temp[i][0] = double(imagen[i]);
-    }
-
-    delete [] imagen;    
-    return temp;
-}
-
-
+/*
 // Devuelve una matriz con las imagenes de entrenamiento como vectores fila
 Matriz<double> IOUtils::armar_base_entrenamiento(const info_archivo& ia)
 {
