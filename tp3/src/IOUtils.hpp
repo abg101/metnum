@@ -271,11 +271,16 @@ Matriz<double> IOUtils::leer_imagen(std::string path)
 
     //Pixeles en RGB de una imagen en escala de grises, 
 	// R = G = B = intensidad de gris
-    Matriz<double> temp(ancho*alto, 1, 0);
+	
+	int l = std::max(ancho, alto);
+    Matriz<double> temp(l, l, 0);
 
-    for(unsigned int i = 0;i < ancho*alto; i++)
+    for(unsigned int i = 0;i < l; i++)
     {
-        temp[i][0] = double(imagen[i*3]);
+		for(unsigned int j; j < l; j++)
+		{
+        	temp[i][j] = double(imagen[j*3]);
+		}
     }
 
     delete [] imagen;    
@@ -290,9 +295,12 @@ void IOUtils::escribir_imagen(std::string path, Matriz<double> imagen)
 	int col = imagen.columnas();
 	int fil = imagen.filas();
 	uchar* data = new uchar[fil*col*3];
-	for(int i = 0; i < fil*col*3; i++)
+	for(int i = 0; i < fil; i++)
 	{
-		data[i] = data[i+1] = data[i+2] = uchar(imagen[i][0]);
+		for(int j = 0; j < col*3; j++)
+		{
+			data[(i*col)+j] = data[(i*col)+j+1] = data[(i*col)+j+2] = uchar(imagen[i][j]);
+		}
 	}
 	bool ret = SavePPMFile(path.c_str(),data,col,fil,PPM_LOADER_PIXEL_TYPE_RGB_8B, comments);
 	if (!ret)
