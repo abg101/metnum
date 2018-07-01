@@ -11,14 +11,25 @@
 #include <algorithm>// max y transform
 #include "IOUtils.hpp"
 #include "cuadradosMinimos.hpp"
-
+#include "generadorRayos.hpp"
 using namespace std;
 
 int main(int argc, char* argv[]){
+	//Paso 1: Leer imagen
 	IOUtils io;
 	info_archivo info;
 	io.parse(argc,argv,info);
-	Matriz<double> ejemplo = io.leer_imagen(info.path);
+	Matriz<double> imagen = io.leer_imagen(info.path);
+
+
+	//Paso 2: Simular el proceso tomografico
+	//uso imagen.columnas porque la discretizo al leerla (ya es cuadrada)
+	Matriz<double> D = generarRayos(imagen, info.cantidadRayos, imagen.columnas()); 
+
+	//Paso 3: Ruido aleatorio
+	//?
+	
+	//Paso 4: Reconstruir el cuerpo original
 
     Matriz<double> A(3,3,0);
     Matriz<double> b(3,1,0);

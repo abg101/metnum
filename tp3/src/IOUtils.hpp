@@ -46,6 +46,7 @@ enum Modo{
 struct info_archivo
 {
 	std::string path;
+	int cantidadRayos;
     //unsigned int ancho;
     //unsigned int alto;
 };
@@ -120,147 +121,13 @@ IOUtils::~IOUtils(){
 
 int IOUtils::parse(int argc, char** argv, info_archivo& info){
 
-    if (argc < 2)
+    if (argc < 3)
     {
         std::cout<<"Parametros de entrada insuficientes"<<'\n';
         return 1;
     }
 	info.path = argv[1];
 	return 0;
-	/*
-
-    //Cargo los datos del archivo input
-    info.k = 1;
-    info.alpha = 15;
-    info.m = kNN;
-    int modo_s;
-    info.size = "big";
-    info.experimentacion = false;
-
-   	char option;
-    while ((option = getopt(argc, argv, "m:i:q:o:k:a:t:r:e")) != -1) {
-
-        switch (option) {
-            case 'm':{
-            	    info.con_distancia = false;
-            	    modo_s = stoi(optarg);
-    				if(modo_s == 0) //"kNN"
-                         info.m = kNN;
-                     else if(modo_s == 1) //"PCA" 
-                         info.m = PCA;
-                     else if(modo_s == 2) //"kNN_distancia"
-                     {
-                         info.m = kNN_distancia;
-                         info.con_distancia = true;
-                     }
-                     else if(modo_s == 3)//"PCA_distancia"
-                     {
-                         info.m = PCA_distancia;
-                         info.con_distancia = true;
-                     }
-                     else if(modo_s == 4)//"ES_CARA"
-                         info.m = ES_CARA;
-                     else
-                    {
-                         std::cout<<"ERROR:Parametro de operacion incorrecto\n";
-                         return 1;
-                     }
-                     break;
-            }
-            case 'i':{
-            	info.in_train = optarg;
-            	break;
-            }
-            case 'q':{
-            	info.in_test = optarg;
-            	break;
-            }
-            case 'o':{
-            	info.out_res = optarg;
-            	info.output_medidas = info.out_res + ".medidas";
-            	break;
-            }
-            case 'k':{
-            	info.k = stoi(optarg);
-
-        		if(info.k == 0)
-        		{
-            		std::cout<<"ERROR: Valor k para kNN tiene que ser distinto de 0.\n";
-            		return 1;
-       			 }
-            	break;
-            }
-            case 'a':{
-            	info.alpha = stoi(optarg);
-            	if(info.alpha == 0)
-        		{
-           			std::cout<<"ERROR: Valor alpha para PCA tiene que ser distinto de 0.\n";
-            		return 1;
-        		}
-            	break;
-            }         
-            case 't':{
-            	info.size = optarg;
-            	break;
-            }
-            case 'r':{
-            	info.output_medidas = optarg;
-            	break;
-            }
-            case 'e':{
-            	info.experimentacion = true;
-            	break;
-            }
-
-            default: { // si las opciones son inválidas
-           
-                exit(1);
-                break;
-            }
-        }
-
-    }
-
-
-    // Vemos que metodo para clasificar vamos a usar
-    // kNN, kNN con distancia, PCA + kNN o PCA + kNN con distancia   
-    
-    // Si fue proporcionado, leemos el path del out_res de las medidas
-
-    std::ifstream test_output_medida(info.output_medidas.c_str());
-    if(test_output_medida.good())
-    {
-        test_output_medida.close();
-        std::remove(info.output_medidas.c_str()); 
-    }
-
-
-    //Si existe el archivo out_res, lo borramos
-    std::ifstream test_out_res(info.out_res.c_str());
-    if(test_out_res.good())
-    {
-      (test_out_res).close();
-      std::remove(info.out_res.c_str()); 
-    }
-
-    info.path_base = "data/ImagenesCaras/";
-    info.alto_imagen = 112;
-    info.ancho_imagen = 92;
-
-		//std::transform(size.begin(), size.end(), size.begin(), ::tolower);
-        if(info.size == "big"){
-            info.path_base = "data/ImagenesCaras/"; 
-            info.alto_imagen = 112; 
-            info.ancho_imagen = 92;
-        }else if(info.size == "red"){
-            info.path_base = "data/ImagenesCarasRed/";
-            info.alto_imagen = 28; 
-            info.ancho_imagen = 23;
-        }else{
-            std::cout<<"ERROR:Parametro de operacion incorrecto\n";
-            return 1;
-        }
-*/
 }    
 Matriz<double> IOUtils::leer_imagen(std::string path)
 {
