@@ -46,7 +46,8 @@ enum Modo{
 
 struct info_archivo
 {
-	std::string path;
+	std::string inPath;
+	std::string outPath;
 	int cantidadRayos;
     //unsigned int ancho;
     //unsigned int alto;
@@ -72,27 +73,6 @@ std::ostream& operator<<(std::ostream& os, const info_archivo& obj)
     os<<"size "<<obj.size<<'\n';
     os<<"experimentacion "<< obj.experimentacion <<'\n';
     os<<"Con distnacia "<<obj.con_distancia<<'\n';
-
-    os<<"-------------------\n";
-    os<<"Imagenes de la base\n";
-    os<<"-------------------\n";
-
-    for(DiccDatostrainXSujeto::const_iterator it = obj.imgs_a_considerar_x_sujeto.cbegin();it != obj.imgs_a_considerar_x_sujeto.cend();++it)
-    {
-        os<<(it->second).path_imagenes<<" ";
-        for(unsigned int j : (it->second).imgs_entrenamiento)
-            os<<j<<" ";
-        os<<'\n';
-    }
-
-    os<<"-------------------\n";
-    os<<"Imagenes a testear \n";
-    os<<"-------------------\n";
-
-    for(const caso_test& i : obj.casos_a_testear)
-        os<<i.path_imagen<<" | Sujeto "<<i.sujeto<<'\n';
-
-    return os;
 }
 */
 
@@ -101,7 +81,6 @@ public:
 	IOUtils();
 	~IOUtils();
 	int parse(int arc, char** argv, info_archivo& info);
-	//void leer_archivos_csv(string path_1, string path_2, info_archivo& info);
 	Matriz<double> leer_imagen(std::string path );
 	void escribir_imagen(std::string path, Matriz<double> imagen);
 	//Matriz<double> armar_base_entrenamiento(const info_archivo& ia);
@@ -122,13 +101,14 @@ IOUtils::~IOUtils(){
 
 int IOUtils::parse(int argc, char** argv, info_archivo& info){
 
-    if (argc < 3)
+    if (argc < 4)
     {
         std::cout<<"Parametros de entrada insuficientes"<<'\n';
         return 1;
     }
-	info.path = argv[1];
-	info.cantidadRayos = std::atoi(argv[2]);
+	info.cantidadRayos = std::atoi(argv[1]);
+	info.inPath = argv[2];
+	info.outPath = argv[3];
 	return 0;
 }   
 

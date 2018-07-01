@@ -12,6 +12,7 @@
 #include "IOUtils.hpp"
 #include "cuadradosMinimos.hpp"
 #include "generadorRayos.hpp"
+#include "ruido.hpp"
 using namespace std;
 
 int main(int argc, char* argv[]){
@@ -19,7 +20,7 @@ int main(int argc, char* argv[]){
 	IOUtils io;
 	info_archivo info;
 	io.parse(argc,argv,info);
-	Matriz<double> imagen = io.leer_imagen(info.path);
+	Matriz<double> imagen = io.leer_imagen(info.inPath);
 
 
 	//Paso 2: Simular el proceso tomografico
@@ -30,11 +31,13 @@ int main(int argc, char* argv[]){
 	Matriz<double> D = std::get<1>(tiemposRayos);
 
 	//Paso 3: Ruido aleatorio
-	//?
 	
+	Matriz<double> tiempoConRuido = generarRuido(tiempos);
+
 	//Paso 4: Reconstruir el cuerpo original
 	
-	Matriz<double> reconstruccion = resolverEN(D, tiempos);
+	Matriz<double> reconstruccion = resolverEN(D, tiempoConRuido);
+	io.escribir_imagen(info.outPath, reconstruccion);
 
     Matriz<double> A(3,3,0);
     Matriz<double> b(3,1,0);
