@@ -1,0 +1,39 @@
+Hola a todos.
+
+Les subimos al campus unos ejemplos en Matlab/Octave sobre como simular un rayo y otro de manipulación de imágenes .dcm.
+
+ [simular_rayo]
+ [ejemplos_dicom] 
+
+Tengan en cuenta que es solamente un ejemplo y no es la única forma de generar rayos. En particular, hay formas más eficiente de estimar rectas y los puntos por donde pasa sin usar la función polyfit.
+
+Otro dato a tener en cuenta es que la imágenes .dcm tienen 16 bit por píxel. Si quieren visualizarlas directamente tendrían que pasar a una imagen de 8 bit por píxel que es lo tradicional. 
+
+También, para facilitarle las tareas de input/output e c++ les pasamos un script que lee imagenes (png o pgm de 16bits) y escribe un .csv con los valores.
+
+[convesor_csv]
+
+Cualquier problemita con los fuentes avisen por favor.
+
+Saludos,
+Pachi
+
+Hola a todos.
+
+Lamentablemente en el Octave que está en los laboratorios, hay una versión vieja de las librerías de imágenes y no es posible correr las funciones para leer y escribir archivos .dcm (DICOM). Si acceden a una computadora con Matlab, no van a tener problemas.
+
+Igualmente, para poder manejarse más fácil con este tipo de imágenes, les agregamos al conversor la posibilidad de que levante imágenes .dcm y las convierta a .csv.
+[convesor_csv]. Si alguno quiere trabajar con el formato .pgm de 16 bits, puede modificar fácilmente el script de python para que guarde en pgm, agregando algo parecido a lo siguiente:
+   img_grey.save('elegir_nombre.pgm')
+luego de la línea 55 del archivo csv_converter.py
+Este script redimensiona las imágenes para que sean cuadradas.
+Tengan en cuenta que estas imágenes tienen 16 bit por píxel y cada uno se guarda como enteros entre -2^15 y 2^15 donde los valores negativos indican ausencia de información.
+
+Luego el script csv_visualizer.py permite visualizar la imágenes guardadas en .csv
+
+Además, les subimos un zip con varias imágenes que fueron convertidas de .dcm a .csv para que se las puedan descargar del campus.
+[datasetdicom_csv]
+
+
+Saludos,
+Pachi
