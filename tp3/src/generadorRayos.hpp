@@ -94,13 +94,14 @@ tuple< double, Matriz<double> > simularRayo(Matriz<double> imagen, int n, int m,
 	return std::make_tuple(t, D);
 }
 
-Matriz<double> generarRayos(Matriz<double> imagen, int m, int n)
+tuple< Matriz<double>, Matriz<double> > generarRayos(Matriz<double> imagen, int m, int n)
 {
 	//nuestra matriz es de nxn y se emiten m rayos
 	srand(time(NULL));
 	int filas = imagen.filas();
 	int columnas = imagen.columnas();
 	Matriz<double> rayos(m, n*n+1,0);
+	Matriz<double> tiempos(m, 1);
 	int p = std::trunc(m/20);
 	for(int i = 0; i < m; i++)
 	{
@@ -121,11 +122,11 @@ Matriz<double> generarRayos(Matriz<double> imagen, int m, int n)
 		Matriz<double> rayo = sim.copy_fil(i);
 	    rayo = rayo.traspuesta();
 	    rayos.set_fil(i,rayo);
-
+		tiempos[i][1] = t;
 	    //agrego el rayo simulado a mis datos TODO
 
 	}
-	return rayos;
+	return make_tuple(tiempos, rayos);
 }
 
 

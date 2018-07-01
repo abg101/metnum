@@ -4,6 +4,7 @@
 #include "ppmloader/ppmloader.h"
 #include "matriz.hpp"
 #include <iostream>
+#include <cstdlib>
 #include <fstream>
 #include <cstdio>
 #include <cmath>
@@ -127,8 +128,10 @@ int IOUtils::parse(int argc, char** argv, info_archivo& info){
         return 1;
     }
 	info.path = argv[1];
+	info.cantidadRayos = std::atoi(argv[2]);
 	return 0;
-}    
+}   
+
 Matriz<double> IOUtils::leer_imagen(std::string path)
 {
     uchar* imagen;
@@ -139,7 +142,7 @@ Matriz<double> IOUtils::leer_imagen(std::string path)
     //Pixeles en RGB de una imagen en escala de grises, 
 	// R = G = B = intensidad de gris
 	
-	int l = std::max(ancho, alto);
+	int l = std::min(ancho, alto);
     Matriz<double> temp(l, l, 0);
 
     for(unsigned int i = 0;i < l; i++)

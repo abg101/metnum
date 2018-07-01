@@ -24,12 +24,17 @@ int main(int argc, char* argv[]){
 
 	//Paso 2: Simular el proceso tomografico
 	//uso imagen.columnas porque la discretizo al leerla (ya es cuadrada)
-	Matriz<double> D = generarRayos(imagen, info.cantidadRayos, imagen.columnas()); 
+	auto tiemposRayos = generarRayos(imagen, info.cantidadRayos, imagen.columnas()); 
+
+	Matriz<double> tiempos = std::get<0>(tiemposRayos);
+	Matriz<double> D = std::get<1>(tiemposRayos);
 
 	//Paso 3: Ruido aleatorio
 	//?
 	
 	//Paso 4: Reconstruir el cuerpo original
+	
+	Matriz<double> reconstruccion = resolverEN(D, tiempos);
 
     Matriz<double> A(3,3,0);
     Matriz<double> b(3,1,0);
