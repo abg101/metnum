@@ -3,7 +3,7 @@
 #include <tuple>
 #include "Recta.hpp"
 
-int randomEntre(int l, int u)
+int randomEntre(int l, int u)//TODO: revisar si esto lo hice bien
 {
 	int r = std::trunc(std::rand());
 	return (r % (l + u + 1)) + l;
@@ -16,26 +16,26 @@ tuple<int, int> randPos(int lado, int filas, int columnas)
 	{
 		case(0): // izquierdo
 		{
-			f = rand()*filas;
+			f = randomEntre(0, filas-1);
 			c = 0;
 			break;
 		}
 		case(1): // arriba
 		{
 			f = 0;
-			c = rand()*columnas;
+			c = randomEntre(0, columnas-1);
 			break;
 		}
 		case(2): // derecha
 		{
-			f = rand()*filas;
+			f = randomEntre(0,filas-1);
 			c = columnas;
 			break;
 		}
 		case(3): // abajo
 		{
 			f = filas;
-			c = rand()*columnas;
+			c = randomEntre(0,columnas-1);
 			break;
 		}
 		default: //lado no esta en un valor valido
@@ -106,7 +106,7 @@ tuple< Matriz<double>, Matriz<double> > generarRayos(Matriz<double> imagen, int 
 	for(int i = 0; i < m; i++)
 	{
 		int entra = randomEntre(0,3);
-		int sale = (entra + randomEntre(0,3) + 1) % 4;
+		int sale = (entra + randomEntre(0,3) + 1) % 4;//TODO: revisar, quiero un numero en [0...3] distinto de entra
 		auto posEntrada = randPos(entra, filas, columnas);
 		auto posSalida = randPos(sale, filas, columnas);
 
@@ -123,7 +123,6 @@ tuple< Matriz<double>, Matriz<double> > generarRayos(Matriz<double> imagen, int 
 	    rayo = rayo.traspuesta();
 	    rayos.set_fil(i,rayo);
 		tiempos[i][1] = t;
-	    //agrego el rayo simulado a mis datos TODO
 
 	}
 	return make_tuple(tiempos, rayos);
