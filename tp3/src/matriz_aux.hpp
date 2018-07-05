@@ -13,13 +13,14 @@
 
 Matriz<double> vectorizar(const Matriz<double>& a)
 {
+	//Devuelve la matriz como un vector columna
 	int dimensionVector = a.filas() * a.columnas();
-	Matriz<double> res(1, dimensionVector);
+	Matriz<double> res(dimensionVector, 1);
 	for(int i = 0; i < a.filas(); i++)
 	{
 		for(int j = 0; j < a.columnas(); j++)
 		{
-			res[0][(i*a.columnas())+j] = a[i][j];
+			res[(i*a.columnas())+j][0] = a[i][j];
 		}
 	}
 	return res;

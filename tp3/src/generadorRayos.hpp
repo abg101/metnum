@@ -86,8 +86,8 @@ tuple< double, Matriz<double> > simularRayo(Matriz<double> imagen, int n, int m,
 		for(int j = j_min; j <= j_max; j++)
 		{
 			t += imagen[i][j] + 1;
-			int n_i = std::min(n, (int) std::trunc((double)i/df) + 1);
-			int m_j = std::min(m, (int) std::trunc((double)i/dc) + 1);
+			int n_i = std::min(n, (int) std::trunc((double)i/df));
+			int m_j = std::min(m, (int) std::trunc((double)j/dc));
 			D[n_i][m_j] = D[n_i][m_j] + 1; 
 		}
 	}
@@ -95,16 +95,15 @@ tuple< double, Matriz<double> > simularRayo(Matriz<double> imagen, int n, int m,
 	return std::make_tuple(t, vectorizar(D));
 }
 
-tuple< Matriz<double>, Matriz<double> > generarRayos(Matriz<double> imagen, int m, int n)
+tuple< Matriz<double>, Matriz<double> > generarRayos(Matriz<double> imagen, int m, int n, int k)
 {
-	//nuestra matriz es de nxn y se emiten m rayos
 	srand(time(NULL));
 	int filas = imagen.filas();
 	int columnas = imagen.columnas();
-	Matriz<double> rayos(m, n*n+1,0);
-	Matriz<double> tiempos(m, 1);
+	Matriz<double> rayos(k, n*m,0);
+	Matriz<double> tiempos(k, 1);//TODO resvisar si necesito como columna o vector
 	int p = std::trunc(m/20);
-	for(int i = 0; i < m; i++)
+	for(int i = 0; i < k; i++)
 	{
 		//sale y entra resultan siempre distintos
 		int entra = randomEntre(0,3);
@@ -120,12 +119,12 @@ tuple< Matriz<double>, Matriz<double> > generarRayos(Matriz<double> imagen, int 
 
 		auto res = simularRayo(imagen, n, m, fe, ce, fs, cs);
 		double t = std::get<0>(res);
-		Matriz<double> sim = std::get<1>(res);
+		Matriz<double> simRayo = std::get<1>(res);
 			
-		Matriz<double> rayo = sim.copy_fil(i);
-	    rayo = rayo.traspuesta();
-	    rayos.set_fil(i,rayo);
-		tiempos[i][1] = t;
+		//Matriz<double> rayo = sim.copy_fil(i);
+	    //rayo = rayo.traspuesta();
+	    rayos.set_fil(i,simRayo);
+		tiempos[i][0] = t;
 
 	}
 	return make_tuple(tiempos, rayos);
