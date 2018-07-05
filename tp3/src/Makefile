@@ -1,6 +1,6 @@
 CPP = g++
 FLAGS = -std=c++11 -O2 -g
-DEPS = matriz_aux.hpp normas_aux.hpp ppmloader/ppmloader.h IOUtils.hpp
+DEPS = generadorRayos.hpp matriz_aux.hpp normas_aux.hpp ppmloader/ppmloader.h IOUtils.hpp
 OBJ = tp3.o ppmloader/ppmloader.o
 
 all: tp3

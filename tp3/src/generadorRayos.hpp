@@ -62,7 +62,7 @@ tuple< double, Matriz<double> > simularRayo(Matriz<double> imagen, int n, int m,
 	int columnas = imagen.columnas();
 	int df = filas/n;
 	int dc = columnas/m;
-	double t = 0;					//ESTO NO HACE FALTA? VER
+	double t = 0;
 	Matriz<double> D(n,m,0);
 	
 	//Calculo la recta que representa el rayo (y su inversa)
@@ -91,7 +91,8 @@ tuple< double, Matriz<double> > simularRayo(Matriz<double> imagen, int n, int m,
 			D[n_i][m_j] = D[n_i][m_j] + 1; 
 		}
 	}
-	return std::make_tuple(t, D);
+	
+	return std::make_tuple(t, vectorizar(D));
 }
 
 tuple< Matriz<double>, Matriz<double> > generarRayos(Matriz<double> imagen, int m, int n)
@@ -105,8 +106,10 @@ tuple< Matriz<double>, Matriz<double> > generarRayos(Matriz<double> imagen, int 
 	int p = std::trunc(m/20);
 	for(int i = 0; i < m; i++)
 	{
+		//sale y entra resultan siempre distintos
 		int entra = randomEntre(0,3);
-		int sale = (entra + randomEntre(0,3) + 1) % 4;//TODO: revisar, quiero un numero en [0...3] distinto de entra
+		int sale = (entra + randomEntre(0,2) + 1) % 4;
+	
 		auto posEntrada = randPos(entra, filas, columnas);
 		auto posSalida = randPos(sale, filas, columnas);
 
@@ -115,7 +118,7 @@ tuple< Matriz<double>, Matriz<double> > generarRayos(Matriz<double> imagen, int 
 		int fs = std::get<0>(posSalida);
 		int cs = std::get<1>(posSalida);
 
-		auto res = simularRayo(imagen, n, n, fe, ce, fs, cs);
+		auto res = simularRayo(imagen, n, m, fe, ce, fs, cs);
 		double t = std::get<0>(res);
 		Matriz<double> sim = std::get<1>(res);
 			

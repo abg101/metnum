@@ -10,6 +10,21 @@
 #include <stdlib.h>
 
 //Auxiliares de matrices
+
+Matriz<double> vectorizar(const Matriz<double>& a)
+{
+	int dimensionVector = a.filas() * a.columnas();
+	Matriz<double> res(1, dimensionVector);
+	for(int i = 0; i < a.filas(); i++)
+	{
+		for(int j = 0; j < a.columnas(); j++)
+		{
+			res[0][(i*a.columnas())+j] = a[i][j];
+		}
+	}
+	return res;
+}
+
 //Compara dos doubles, viendo que sean menores que un cierto multiplo de
 //una constante de error provista por la STL
 bool comp_doubles(double a, double b,double mul_tolerancia)
