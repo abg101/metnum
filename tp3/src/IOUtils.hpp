@@ -65,12 +65,11 @@ Matriz<double> IOUtils::leer_imagen()
     //Pixeles en RGB de una imagen en escala de grises, 
 	// R = G = B = intensidad de gris
 	
-	int l = std::min(ancho, alto);
-    Matriz<double> temp(l, l, 0);
+    Matriz<double> temp(alto, ancho);
 
-    for(unsigned int i = 0;i < l; i++)
+    for(unsigned int i = 0;i < alto; i++)
     {
-		for(unsigned int j; j < l; j++)
+		for(unsigned int j; j < ancho; j++)
 		{
         	temp[i][j] = double(imagen[j*3]);
 		}

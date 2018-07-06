@@ -37,9 +37,19 @@ int main(int argc, char* argv[]){
 
 	//Paso 4: Reconstruir el cuerpo original
 	
+	cout << "Tiempo con ruido:"<<tiempoConRuido;
+	cout << "D :" << D;
+
 	Matriz<double> reconstruccion = resolverEN(D, tiempoConRuido);
+	
+	cout << "Reconstruccion: \n" << reconstruccion;
+
 	io.escribir_imagen(reconstruccion);
 
+	
+
+
+	/*
     Matriz<double> A(3,3,0);
     Matriz<double> b(3,1,0);
     Matriz<double> temp1(3, 1, 0);
@@ -147,5 +157,5 @@ int main(int argc, char* argv[]){
     cout << "|" << P[1][0] << " " << P[1][1] << " "<< P[1][2] << " |" << endl;
     cout << "|" << P[2][0] << " " << P[2][1] << " "<< P[2][2] << " |" << endl;
     return 0;
-
+*/
 }
