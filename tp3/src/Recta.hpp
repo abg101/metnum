@@ -1,5 +1,6 @@
 #ifndef RECTA_HPP
 #define RECTA_HPP
+#include <cassert>
 class Recta
 {
 	public:
@@ -12,6 +13,7 @@ class Recta
 
 Recta::Recta(int x1, int y1, int x2, int y2)
 {
+	assert(x1 != x2);
 	coeficiente = (y1 - y2)/(x1 - x2);
 	independiente = y1 - (coeficiente*x1);
 }

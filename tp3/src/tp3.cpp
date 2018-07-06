@@ -17,15 +17,16 @@ using namespace std;
 
 int main(int argc, char* argv[]){
 	//Paso 1: Leer imagen
-	IOUtils io;
-	info_archivo info;
-	io.parse(argc,argv,info);
-	Matriz<double> imagen = io.leer_imagen(info.inPath);
+	IOUtils io(argc,argv);
+	//info_archivo info;
+	//io.parse(argc,argv,info);
+	Matriz<double> imagen = io.leer_imagen();
 
 
 	//Paso 2: Simular el proceso tomografico
 	//uso imagen.columnas porque la discretizo al leerla (ya es cuadrada)
-	auto tiemposRayos = generarRayos(imagen, imagen.filas(), imagen.columnas(), info.cantidadRayos); 
+	//auto tiemposRayos = generarRayos(imagen, imagen.filas(), imagen.columnas(), info.cantidadRayos); 
+	auto tiemposRayos = generarRayos(imagen, io.discretizadoFilas, io.discretizadoColumnas, io.cantidadRayos); 
 
 	Matriz<double> tiempos = std::get<0>(tiemposRayos);
 	Matriz<double> D = std::get<1>(tiemposRayos);
@@ -37,7 +38,7 @@ int main(int argc, char* argv[]){
 	//Paso 4: Reconstruir el cuerpo original
 	
 	Matriz<double> reconstruccion = resolverEN(D, tiempoConRuido);
-	io.escribir_imagen(info.outPath, reconstruccion);
+	io.escribir_imagen(reconstruccion);
 
     Matriz<double> A(3,3,0);
     Matriz<double> b(3,1,0);

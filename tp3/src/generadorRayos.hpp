@@ -1,12 +1,16 @@
 #include <cmath>
 #include <cstdlib>
 #include <tuple>
+#include <cassert>
 #include "Recta.hpp"
 
-int randomEntre(int l, int u)//TODO: revisar si esto lo hice bien
+int randomEntre(int l, int u)
 {
 	int r = std::trunc(std::rand());
-	return (r % (l + u + 1)) + l;
+	int res = (r % (u - l)) + l;
+	assert(res <= u);
+	assert(res >= l);
+	return res;
 }
 
 tuple<int, int> randPos(int lado, int filas, int columnas)
@@ -29,23 +33,24 @@ tuple<int, int> randPos(int lado, int filas, int columnas)
 		case(2): // derecha
 		{
 			f = randomEntre(0,filas-1);
-			c = columnas;
+			c = columnas-1;
 			break;
 		}
 		case(3): // abajo
 		{
-			f = filas;
+			f = filas-1;
 			c = randomEntre(0,columnas-1);
 			break;
 		}
 		default: //lado no esta en un valor valido
 			break;
 	}
+	assert(f < filas);
+	assert(c < columnas);
 	return std::make_tuple(f,c);
 }
 
 
-//Matriz<double> simularRayo(Matriz<double> imagen, int n, int m, int fe, int ce, int fs, int cs)
 tuple< double, Matriz<double> > simularRayo(Matriz<double> imagen, int n, int m, int fe, int ce, int fs, int cs)
 {
     // [t, D] = simularRayo(I, n, m, f_ini, c_ini, f_fin, c_fin, [dibujar])
@@ -86,8 +91,8 @@ tuple< double, Matriz<double> > simularRayo(Matriz<double> imagen, int n, int m,
 		for(int j = j_min; j <= j_max; j++)
 		{
 			t += imagen[i][j] + 1;
-			int n_i = std::min(n, (int) std::trunc((double)i/df));
-			int m_j = std::min(m, (int) std::trunc((double)j/dc));
+			int n_i = std::min(n-1, (int) std::trunc((double)i/df));
+			int m_j = std::min(m-1, (int) std::trunc((double)j/dc));
 			D[n_i][m_j] = D[n_i][m_j] + 1; 
 		}
 	}
