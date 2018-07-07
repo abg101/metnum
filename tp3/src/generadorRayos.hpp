@@ -75,10 +75,12 @@ tuple< double, Matriz<double> > simularRayo(Matriz<double> imagen, int n, int m,
 	Recta pi(fe, ce, fs, cs); 	//REVISAR
 	Recta pj(ce, fe, cs, fs); 		
 
-	int i1 = pj.evaluar(1);//en cpp seria 0 y col-1, no?
-	int i2 = pj.evaluar(columnas);
-    int i_min = std::max(1, std::min(filas-1, (int) std::ceil(std::min(i1,i2))));
-    int i_max = std::max(1, std::min(filas-1, (int) std::ceil(std::max(i1,i2))));
+	int i1 = pj.evaluar(0);//en cpp seria 0 y col-1, no?
+	int i2 = pj.evaluar(columnas-1);
+    int i_min = std::max(0, std::min(filas-1, std::min(i1,i2)));
+    //int i_min = std::max(1, std::min(filas-1, (int) std::ceil(std::min(i1,i2))));
+    int i_max = std::max(0, std::min(filas-1, std::max(i1,i2)));
+    //int i_max = std::max(1, std::min(filas-1, (int) std::ceil(std::max(i1,i2))));
 
 	// recorro cada fila (entre i_min e i_max) y veo que columnas toca el rayo
 
@@ -106,7 +108,7 @@ tuple< Matriz<double>, Matriz<double> > generarRayos(Matriz<double> imagen, int 
 	int filas = imagen.filas();
 	int columnas = imagen.columnas();
 	Matriz<double> rayos(k, n*m,0);
-	Matriz<double> tiempos(k, 1);//TODO resvisar si necesito como columna o vector
+	Matriz<double> tiempos(k, 1);
 	int p = std::trunc(m/20);
 	for(int i = 0; i < k; i++)
 	{
@@ -125,10 +127,8 @@ tuple< Matriz<double>, Matriz<double> > generarRayos(Matriz<double> imagen, int 
 		auto res = simularRayo(imagen, n, m, fe, ce, fs, cs);
 		double t = std::get<0>(res);
 		Matriz<double> simRayo = std::get<1>(res);
-			
-		//Matriz<double> rayo = sim.copy_fil(i);
-	    //rayo = rayo.traspuesta();
-	    rayos.set_fil(i,simRayo);
+	    
+		rayos.set_fil(i,simRayo);
 		tiempos[i][0] = t;
 
 	}

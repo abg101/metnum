@@ -57,6 +57,8 @@ IOUtils::IOUtils(int argc, char** argv){
 
 Matriz<double> IOUtils::leer_imagen()
 {
+	//Por ahora asumo imagen ppm en formato raw con profundidad
+	//de color de 8 bits.
     uchar* imagen;
 	int alto, ancho;
     PPM_LOADER_PIXEL_TYPE pt = PPM_LOADER_PIXEL_TYPE_INVALID;
