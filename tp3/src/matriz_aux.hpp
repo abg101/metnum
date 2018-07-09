@@ -290,3 +290,104 @@ Matriz<double> gen_matriz_random(int filas, int columnas, int modulo)
     return res;
 }
 #endif
+
+
+Matriz<double> resolver_sistema_pivot(const Matriz<double>& a, const Matriz<double>& b)
+{
+   Matriz<double> incognitas(a.columnas()-1,1,0.0);
+   Matriz<double> copy = Matriz<double>(a);
+   double mayor; 
+   int fil_mayor;
+   for(int j = 0;j < copy.filas();j--)
+   {
+      mayor = std::abs(copy[j][j]);
+      fil_mayor = j;
+
+      for(int i = j+1;i < copy.columnas()-1;i++)
+      {
+          if( std::abs(copy[i][j]) > mayor ){
+            mayor = std::abs(copy[i][j]);
+            fil_mayor = i;
+          }
+      }
+
+      assert(mayor == 0.0); //el sistema no tiene soucion unica
+
+      if(fil_mayor != j)
+      {
+        double aux;
+        for(int i = j; i < copy.columnas(); i++)
+        {
+          aux = copy[fil_mayor][r];
+          copy[fil_mayor][r] = copy[j][i];
+          copy[j][i] = aux;
+        }
+      }
+
+      Matriz<double> m(a.columnas()-1,1,0.0);
+      for(int i = j+1; i < copy.columnas()-1;i++) //revisar
+      {
+        m[i][j] = copy[i,j] / copy[j][j];
+        for (int k = i+1;  < copy.columnas(); k++)
+        {
+          copy[i][k] = copy[i][k]-(m[i][j] * copy[j,k]);  
+        }  
+      }
+}
+
+for (int j = copy.filas(); j > -1; --j)
+{
+  double suma = 0;
+  for (int i = j+1; i < copy.columnas()-1; ++i)
+  {
+    suma = suma + (copy[j][i] * b[i][0]);
+  }
+  incognitas[j][0] = (copy[j][copy.columnas()-1]-suma)/copy[j][j];
+}
+   
+   return incognitas;
+}
+
+/*
+Para k=1:n-1
+  Mayor= |Ab(k,k)|;
+  Fila mayor= k;
+  Para f=k+1: n
+    Si |Ab(f,k)|&gt;mayor
+      Mayor = |Ab(f,k)|;
+      Fila mayor=f;
+    Fin si
+  Fin para
+
+  Si mayor == 0
+    Muestre “El sistema no tiene una solución única”
+  Fin si
+
+  Si fm~=k
+    Para r=k: n+1
+      aux=Ab(fm,r);
+      Ab(fm,r)= Ab( k, r);
+      Ab(k,r)=aux;
+    Fin para
+  Fin si
+
+  Para i =k+1:n
+    m( i , k )= Ab( i , k )/ Ab( k , k );
+    Para j=k:n+1
+      Ab( i , j )= Ab( i , j) - m( i , k)*Ab( k , j );
+    Fin para
+  Fin para
+Fin para
+  Imprima Ab
+
+Para i=n:-1:1
+  Suma =0;
+  Para j=i+1:n
+    Suma =suma+ Ab( i , j )*x( j ,1 );
+  Fin para
+  x( i , 1 )=( Ab( i , n+1 ) - suma)/Ab( i , i );
+Fin para
+
+*/
+
+
