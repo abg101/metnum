@@ -249,6 +249,65 @@ Matriz<double> resolver_sistema_inf(const Matriz<double>& a, const Matriz<double
    return incognitas;
 }
 
+
+
+Matriz<double> resolver_sistema_pivot(const Matriz<double>& ab, const Matriz<double>& b)
+{
+   Matriz<double> incognitas(ab.columnas()-1,1,0.0);
+   Matriz<double> copy = Matriz<double>(ab);
+   double mayor; 
+   int fil_mayor;
+   for(int j = 0;j < copy.filas();j--)
+   {
+      mayor = std::abs(copy[j][j]);
+      fil_mayor = j;
+
+      for(int i = j+1;i < copy.columnas()-1;i++)
+      {
+          if( std::abs(copy[i][j]) > mayor ){
+            mayor = std::abs(copy[i][j]);
+            fil_mayor = i;
+          }
+      }
+
+     // assert(mayor == 0.0); //el sistema no tiene soucion unica
+
+      if(fil_mayor != j)
+      {
+        double aux;
+        for(int i = j; i < copy.columnas(); i++)
+        {
+          aux = copy[fil_mayor][i];
+          copy[fil_mayor][i] = copy[j][i];
+          copy[j][i] = aux;
+        }
+      }
+
+      Matriz<double> m(ab.columnas()-1,1,0.0);
+      for(int i = j+1; i < copy.columnas()-1;i++) //revisar
+      {
+        m[i][j] = copy[i][j] / copy[j][j];
+        for (int k = i+1; k < copy.columnas(); k++)
+        {
+          copy[i][k] = copy[i][k]-(m[i][j] * copy[j][k]);  
+        }  
+      }
+  }
+
+  for (int j = copy.filas(); j > -1; --j)
+  {
+    double suma = 0;
+    for (int i = j+1; i < copy.columnas()-1; ++i)
+    {
+      suma = suma + (copy[j][i] * b[i][0]);
+    }
+    incognitas[j][0] = (copy[j][copy.columnas()-1]-suma)/copy[j][j];
+  }
+   
+   return incognitas;
+}
+
+
 //Resuelve el sistema Ax=b, usando eliminacion gaussiana.
 //No asume nada sobre A
 //B es el vector resultados
@@ -256,7 +315,7 @@ Matriz<double> resolver_gauss(const Matriz<double>& a, const Matriz<double>& b)
 {
     Matriz<double> ab = augmentar(a,b);
     triangular_sup(ab);
-    return resolver_sistema(ab);
+    return resolver_sistema_pivot(ab,b);
 }
 
 //Resulve el sistema utilizando factorizacion LU
@@ -289,64 +348,8 @@ Matriz<double> gen_matriz_random(int filas, int columnas, int modulo)
             res[i][j] = double(rand() % modulo);
     return res;
 }
-#endif
 
 
-Matriz<double> resolver_sistema_pivot(const Matriz<double>& a, const Matriz<double>& b)
-{
-   Matriz<double> incognitas(a.columnas()-1,1,0.0);
-   Matriz<double> copy = Matriz<double>(a);
-   double mayor; 
-   int fil_mayor;
-   for(int j = 0;j < copy.filas();j--)
-   {
-      mayor = std::abs(copy[j][j]);
-      fil_mayor = j;
-
-      for(int i = j+1;i < copy.columnas()-1;i++)
-      {
-          if( std::abs(copy[i][j]) > mayor ){
-            mayor = std::abs(copy[i][j]);
-            fil_mayor = i;
-          }
-      }
-
-      assert(mayor == 0.0); //el sistema no tiene soucion unica
-
-      if(fil_mayor != j)
-      {
-        double aux;
-        for(int i = j; i < copy.columnas(); i++)
-        {
-          aux = copy[fil_mayor][r];
-          copy[fil_mayor][r] = copy[j][i];
-          copy[j][i] = aux;
-        }
-      }
-
-      Matriz<double> m(a.columnas()-1,1,0.0);
-      for(int i = j+1; i < copy.columnas()-1;i++) //revisar
-      {
-        m[i][j] = copy[i,j] / copy[j][j];
-        for (int k = i+1;  < copy.columnas(); k++)
-        {
-          copy[i][k] = copy[i][k]-(m[i][j] * copy[j,k]);  
-        }  
-      }
-}
-
-for (int j = copy.filas(); j > -1; --j)
-{
-  double suma = 0;
-  for (int i = j+1; i < copy.columnas()-1; ++i)
-  {
-    suma = suma + (copy[j][i] * b[i][0]);
-  }
-  incognitas[j][0] = (copy[j][copy.columnas()-1]-suma)/copy[j][j];
-}
-   
-   return incognitas;
-}
 
 /*
 Para k=1:n-1
@@ -391,3 +394,4 @@ Fin para
 */
 
 
+#endif

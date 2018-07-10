@@ -34,7 +34,7 @@ int main(int argc, char* argv[]){
 	
 	cout << "Tiempos:"<<tiempos;
 	cout << "Tiempo con ruido:"<<tiempoConRuido;
-	cout << "D :" << D;
+	//cout << "D :" << D;
 
 	Matriz<double> reconstruccion = resolverEN(D, tiempos);//TODO volver a tiemposConRuido
 	
