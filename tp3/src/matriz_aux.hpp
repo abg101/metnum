@@ -257,7 +257,7 @@ Matriz<double> resolver_sistema_pivot(const Matriz<double>& ab, const Matriz<dou
    Matriz<double> copy = Matriz<double>(ab);
    double mayor; 
    int fil_mayor;
-   for(int j = 0;j < copy.filas();j--)
+   for(int j = 0;j < copy.filas();j++)
    {
       mayor = std::abs(copy[j][j]);
       fil_mayor = j;
@@ -270,7 +270,7 @@ Matriz<double> resolver_sistema_pivot(const Matriz<double>& ab, const Matriz<dou
           }
       }
 
-     // assert(mayor == 0.0); //el sistema no tiene soucion unica
+//      assert(mayor == 0.0); //el sistema no tiene soucion unica
 
       if(fil_mayor != j)
       {
@@ -283,10 +283,11 @@ Matriz<double> resolver_sistema_pivot(const Matriz<double>& ab, const Matriz<dou
         }
       }
 
-      Matriz<double> m(ab.columnas()-1,1,0.0);
+      Matriz<double> m = id(copy.columnas()); //VER ESTO      
+//      Matriz<double> m(ab.columnas()-1,1,0.0);
       for(int i = j+1; i < copy.columnas()-1;i++) //revisar
       {
-        m[i][j] = copy[i][j] / copy[j][j];
+        m[i][j] = copy[i][j] / copy[j][j];  //invalid write of size 8
         for (int k = i+1; k < copy.columnas(); k++)
         {
           copy[i][k] = copy[i][k]-(m[i][j] * copy[j][k]);  
@@ -294,7 +295,7 @@ Matriz<double> resolver_sistema_pivot(const Matriz<double>& ab, const Matriz<dou
       }
   }
 
-  for (int j = copy.filas(); j > -1; --j)
+  for (int j = copy.filas()-1; j > -1; --j)
   {
     double suma = 0;
     for (int i = j+1; i < copy.columnas()-1; ++i)
