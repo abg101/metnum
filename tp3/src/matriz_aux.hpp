@@ -9,6 +9,11 @@
 #include <cmath>
 #include <stdlib.h>
 
+#include <fstream>
+#include <iomanip>
+#include <string>
+using namespace std;
+
 //Auxiliares de matrices
 
 Matriz<double> vectorizar(const Matriz<double>& a)
@@ -257,52 +262,61 @@ Matriz<double> resolver_sistema_pivot(const Matriz<double>& ab, const Matriz<dou
    Matriz<double> copy = Matriz<double>(ab);
    double mayor; 
    int fil_mayor;
-   for(int j = 0;j < copy.filas();j++)
+   for(int i = 0;i < copy.filas();i++)
    {
-      mayor = std::abs(copy[j][j]);
-      fil_mayor = j;
+/*    cout << "|" << copy[0][0] << " " << copy[0][1]<< " " << copy[0][2] << " |"<< copy[0][3]<< "|" << endl;
+    cout << "|" << copy[1][0] << " " << copy[1][1] << " "<< copy[1][2] << " |" << copy[1][3]<< "|" << endl;
+    cout << "|" << copy[2][0] << " " << copy[2][1] << " "<< copy[2][2] << " |" << copy[2][3]<< "|\n" << endl;
+*/
+      mayor = std::abs(copy[i][i]);
+      fil_mayor = i;
 
-      for(int i = j+1;i < copy.columnas()-1;i++)
+      for(int j = i+1;j < copy.columnas()-1;j++)
       {
-          if( std::abs(copy[i][j]) > mayor ){
-            mayor = std::abs(copy[i][j]);
-            fil_mayor = i;
+          if( std::abs(copy[j][i]) > mayor ){
+            mayor = std::abs(copy[j][i]);
+            fil_mayor = j;
           }
       }
 
 //      assert(mayor == 0.0); //el sistema no tiene soucion unica
 
-      if(fil_mayor != j)
+      if(fil_mayor != i)
       {
         double aux;
-        for(int i = j; i < copy.columnas(); i++)
+        for(int j = i; j < copy.columnas(); j++)
         {
-          aux = copy[fil_mayor][i];
-          copy[fil_mayor][i] = copy[j][i];
-          copy[j][i] = aux;
+          aux = copy[fil_mayor][j];
+          copy[fil_mayor][j] = copy[i][j];
+          copy[i][j] = aux;
         }
       }
 
       Matriz<double> m = id(copy.columnas()); //VER ESTO      
-//      Matriz<double> m(ab.columnas()-1,1,0.0);
-      for(int i = j+1; i < copy.columnas()-1;i++) //revisar
+      for(int j = i+1; j < copy.columnas()-1;j++) //revisar
       {
-        m[i][j] = copy[i][j] / copy[j][j];  //invalid write of size 8
-        for (int k = i+1; k < copy.columnas(); k++)
+        m[j][i] = copy[j][i] / copy[i][i];  
+//        cout << "|" << copy[j][i] << endl;
+        for (int k = j+1; k < copy.columnas(); k++)
         {
-          copy[i][k] = copy[i][k]-(m[i][j] * copy[j][k]);  
-        }  
+          copy[j][k] = copy[j][k]-(m[j][i] * copy[i][k]);  
+        }
+/*        cout << "segunda parte:\n"<< endl;
+    cout << "|" << copy[0][0] << " " << copy[0][1]<< " " << copy[0][2] << " |"<< copy[0][3]<< "|" << endl;
+    cout << "|" << copy[1][0] << " " << copy[1][1] << " "<< copy[1][2] << " |" << copy[1][3]<< "|" << endl;
+    cout << "|" << copy[2][0] << " " << copy[2][1] << " "<< copy[2][2] << " |" << copy[2][3]<< "|\n" << endl;
+  */
       }
   }
 
-  for (int j = copy.filas()-1; j > -1; --j)
+  for (int i = copy.filas()-1; i > -1; --i)
   {
     double suma = 0;
-    for (int i = j+1; i < copy.columnas()-1; ++i)
+    for (int j = i+1; j < copy.columnas()-1; ++j)
     {
-      suma = suma + (copy[j][i] * b[i][0]);
+      suma = suma + (copy[i][j] * b[j][0]);
     }
-    incognitas[j][0] = (copy[j][copy.columnas()-1]-suma)/copy[j][j];
+    incognitas[i][0] = (copy[i][copy.columnas()-1]-suma)/copy[i][i];
   }
    
    return incognitas;
@@ -315,7 +329,7 @@ Matriz<double> resolver_sistema_pivot(const Matriz<double>& ab, const Matriz<dou
 Matriz<double> resolver_gauss(const Matriz<double>& a, const Matriz<double>& b)
 {
     Matriz<double> ab = augmentar(a,b);
-    triangular_sup(ab);
+    //triangular_sup(ab);
     return resolver_sistema_pivot(ab,b);
 }
 
