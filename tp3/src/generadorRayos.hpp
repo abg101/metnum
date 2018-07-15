@@ -72,15 +72,13 @@ tuple< double, Matriz<double> > simularRayo(Matriz<double> imagen, int n, int m,
 	
 	//Calculo la recta que representa el rayo (y su inversa)
 
-	Recta pi(fe, ce, fs, cs); 	//REVISAR
+	Recta pi(fe, ce, fs, cs); 	
 	Recta pj(ce, fe, cs, fs); 		
 
-	int i1 = pj.evaluar(0);//en cpp seria 0 y col-1, no?
+	int i1 = pj.evaluar(0);
 	int i2 = pj.evaluar(columnas-1);
     int i_min = std::max(0, std::min(filas-1, std::min(i1,i2)));
-    //int i_min = std::max(1, std::min(filas-1, (int) std::ceil(std::min(i1,i2))));
     int i_max = std::max(0, std::min(filas-1, std::max(i1,i2)));
-    //int i_max = std::max(1, std::min(filas-1, (int) std::ceil(std::max(i1,i2))));
 
 	// recorro cada fila (entre i_min e i_max) y veo que columnas toca el rayo
 

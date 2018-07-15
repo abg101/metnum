@@ -3,7 +3,7 @@ import os
 
 knn = [1, 3, 5, 7]
 Kfolds = [1,2,3,5,7]
-alphas_PCA = [1] + list(range(5, 105, 5))
+alphas_PCA = [1] + list(range(5, 45, 5))
 tipo = ["big", "red"]
 modo = ["kNN", "PCA"] #' 4 (ES_CARA)'
 train_sizes = [20,50,75,100]
@@ -26,7 +26,7 @@ for i in tipo:
     for train_size in train_sizes:
         for kfold in Kfolds:
             for k in knn:
-                for fold in range(kfold, kfold+1): #intera sobre los folds para hacer crossvalidation.
+                for fold in range(1, kfold): #intera sobre los folds para hacer crossvalidation.
                     for m in modo:
                         if m == "PCA":
                             for alpha in alphas_PCA:
@@ -46,12 +46,11 @@ for i in tipo:
                                     print("Tipo imagen: " + i)
                                     print("Valor k de knn: " + str(k))
                                     print("Modo: " + str(m))
-                                    print("Valor alpha de PCA" + str(alpha))
+                                    print("Valor alpha de PCA" + str(j))
                                     print("Fold actual: " + str(fold))
                                     sys.exit(1)
-
                         else:
-                            actual_in_train = path_in_train.format(i, train_size, kfold, fold )
+                            actual_in_train =path_in_train.format(i, train_size, kfold, fold )
                             actual_in_test = path_in_test.format(i,train_size ,kfold, fold)
 
                             actual_out_res = path_out_res.format(i, train_size, kfold, k, fold)

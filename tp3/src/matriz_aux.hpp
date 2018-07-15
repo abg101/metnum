@@ -268,7 +268,7 @@ Matriz<double> resolver_sistema_inf(const Matriz<double>& a, const Matriz<double
 
 
 
-Matriz<double> resolver_sistema_pivot(const Matriz<double>& ab, const Matriz<double>& b)
+Matriz<double> resolver_sistema_pivot(const Matriz<double>& ab)
 {
    Matriz<double> incognitas(ab.columnas()-1,1,0.0);
    Matriz<double> copy = Matriz<double>(ab);
@@ -323,7 +323,7 @@ Matriz<double> resolver_sistema_pivot(const Matriz<double>& ab, const Matriz<dou
 Matriz<double> resolver_gauss(const Matriz<double>& a, const Matriz<double>& b)
 {
     Matriz<double> ab = augmentar(a,b);
-    return resolver_sistema_pivot(ab,b);
+    return resolver_sistema_pivot(ab);
 }
 
 //Resulve el sistema utilizando factorizacion LU
