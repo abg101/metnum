@@ -111,7 +111,7 @@ int tp2(IOUtils &utilidad, info_archivo &info){
         Matriz<double> med = media(train);
         int n = train.filas();
 
-        Matriz<double> autovec = pca_autovectores(train, med, info.k);
+        Matriz<double> autovec = pca_autovectores(train, med, info.alpha);
         // Aplico la transformacion dada por PCA sobre los datos de la base de train
         train = tc_matriz(autovec, train, med, n);  
 
