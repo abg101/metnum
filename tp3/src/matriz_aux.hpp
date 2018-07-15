@@ -129,6 +129,18 @@ Matriz<double> id(int n)
     return res;
 }
 
+//matriz m*n de unos en la diagonal
+Matriz<double> unos(int m,int n)
+{
+    assert(m > 0);
+    assert(n > 0);
+    Matriz<double> res(m,n,0);
+    for(int i = 0;i < res.filas();i++)
+        if(i < n)
+          res[i][i] = 1.0;
+    return res;
+}
+
 //Devuelve la matriz (A:b) de dimenensiones nx(m1+m2)
 Matriz<double> augmentar(const Matriz<double>& a, const Matriz<double>& b)
 {
@@ -264,10 +276,7 @@ Matriz<double> resolver_sistema_pivot(const Matriz<double>& ab, const Matriz<dou
    int fil_mayor;
    for(int i = 0;i < copy.filas();i++)
    {
-/*    cout << "|" << copy[0][0] << " " << copy[0][1]<< " " << copy[0][2] << " |"<< copy[0][3]<< "|" << endl;
-    cout << "|" << copy[1][0] << " " << copy[1][1] << " "<< copy[1][2] << " |" << copy[1][3]<< "|" << endl;
-    cout << "|" << copy[2][0] << " " << copy[2][1] << " "<< copy[2][2] << " |" << copy[2][3]<< "|\n" << endl;
-*/
+
       mayor = std::abs(copy[i][i]);
       fil_mayor = i;
 
@@ -278,7 +287,6 @@ Matriz<double> resolver_sistema_pivot(const Matriz<double>& ab, const Matriz<dou
             fil_mayor = j;
           }
       }
-
 //      assert(mayor == 0.0); //el sistema no tiene soucion unica
 
       if(fil_mayor != i)
@@ -292,34 +300,20 @@ Matriz<double> resolver_sistema_pivot(const Matriz<double>& ab, const Matriz<dou
         }
       }
 
-      Matriz<double> m = id(copy.columnas()); //VER ESTO      
+      Matriz<double> m = unos(copy.filas(),copy.columnas()); //VER ESTO      
       for(int j = i+1; j < copy.columnas()-1;j++) //revisar
       {
         m[j][i] = copy[j][i] / copy[i][i];  
-//        cout << "|" << copy[j][i] << endl;
-        for (int k = j+1; k < copy.columnas(); k++)
+        for (int k = i; k < copy.columnas(); k++)
         {
           copy[j][k] = copy[j][k]-(m[j][i] * copy[i][k]);  
         }
-/*        cout << "segunda parte:\n"<< endl;
-    cout << "|" << copy[0][0] << " " << copy[0][1]<< " " << copy[0][2] << " |"<< copy[0][3]<< "|" << endl;
-    cout << "|" << copy[1][0] << " " << copy[1][1] << " "<< copy[1][2] << " |" << copy[1][3]<< "|" << endl;
-    cout << "|" << copy[2][0] << " " << copy[2][1] << " "<< copy[2][2] << " |" << copy[2][3]<< "|\n" << endl;
-  */
+  
       }
   }
-
-  for (int i = copy.filas()-1; i > -1; --i)
-  {
-    double suma = 0;
-    for (int j = i+1; j < copy.columnas()-1; ++j)
-    {
-      suma = suma + (copy[i][j] * b[j][0]);
-    }
-    incognitas[i][0] = (copy[i][copy.columnas()-1]-suma)/copy[i][i];
-  }
-   
-   return incognitas;
+  
+  incognitas = resolver_sistema(copy);
+  return incognitas;
 }
 
 
@@ -329,7 +323,6 @@ Matriz<double> resolver_sistema_pivot(const Matriz<double>& ab, const Matriz<dou
 Matriz<double> resolver_gauss(const Matriz<double>& a, const Matriz<double>& b)
 {
     Matriz<double> ab = augmentar(a,b);
-    //triangular_sup(ab);
     return resolver_sistema_pivot(ab,b);
 }
 
