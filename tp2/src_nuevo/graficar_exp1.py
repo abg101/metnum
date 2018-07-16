@@ -25,7 +25,8 @@ mt = "{0} general según valor alpha de PCA"
 kf = ", usando kFold con K={0}"
 knnkf = ", con k={0} de Knn y K={1} de kFold"
 y_labels = ["Accuracy","Precisión", "Recall"]
-l = ["kNN sin PCA", "kNN con PCA"]
+lk = ["kNN para imagenes 92x112", "kNN para imagenes 23x28"]
+lp = ["PCA para imagenes 92x112", "PCA para imagenes 23x28"]
 m = ['r', 'b']
 ylim = 100
 
@@ -34,10 +35,6 @@ ylim = 100
 #knn con cross y sin pca, variando el k de knn:
 for K in Kfolds:
     
-    # Leemos los promedios de las imagenes de tamaño original y luego las graficamos
-
-    # kNN sin PCA
-
     datos_sinPCA_big = leer_promedios_sinPCA(carpeta_big_sinPCA, esquema_big_sinPCA,knn_valores, K)
     eje_accuracy_big = []
     eje_precision_big = []
@@ -48,22 +45,7 @@ for K in Kfolds:
         eje_precision_big.append(datos_sinPCA_big[i][2])
         eje_recall_big.append(datos_sinPCA_big[i][3])
 
-    # Agrupamos los datos y graficamos
-    todos_big = list()
-    
-    d = [eje_accuracy_big, eje_accuracy_sinPCA]
-    todos_big.append(d)
-
-    d = [eje_precision_big, eje_precision_sinPCA]
-    todos_big.append(d)
-
-    d = [eje_recall_big, eje_recall_sinPCA]
-    todos_big.append(d)
-
-    for i in range(0, len(d) + 1):
-        grafico_lineas(rango, todos_big[i], texto_eje_x_kNN, "{} general(en %)".format(y_labels[i]), mk.format(y_labels[i]) + kf.format(K), l, m, ylim, path="graf_big_{0}_knn{1}_{2}.png".format(y_labels[i],knn,K))
-
-    datos_sinPCA_red = leer_promedios_sinPCA(carpeta_big_sinPCA, esquema_big_sinPCA,knn_valores, K)
+    datos_sinPCA_red = leer_promedios_sinPCA(carpeta_red_sinPCA, esquema_red_sinPCA,knn_valores, K)
     eje_accuracy_red = []
     eje_precision_red = []
     eje_recall_red = []
@@ -74,60 +56,61 @@ for K in Kfolds:
         eje_recall_red.append(datos_sinPCA_red[i][3])
 
     # Agrupamos los datos y graficamos
-    todos_red = list()
+    todos = list()
     
-    d = [eje_accuracy_red, eje_accuracy_sinPCA]
-    todos_red.append(d)
+    d = [eje_accuracy_big, eje_accuracy_red]
+    todos.append(d)
 
-    d = [eje_precision_red, eje_precision_sinPCA]
-    todos_red.append(d)
+    d = [eje_precision_big, eje_precision_red]
+    todos.append(d)
 
-    d = [eje_recall_red, eje_recall_sinPCA]
-    todos_red.append(d)
+    d = [eje_recall_big, eje_recall_red]
+    todos.append(d)
 
     for i in range(0, len(d) + 1):
-        grafico_lineas(rango_red, todos[i], texto_eje_x_kNN, "{} general(en %)".format(y_labels[i]), mk.format(y_labels[i]) + kf.format(K), l, m, ylim, path="graf_red_{0}_knn{1}_{2}.png".format(y_labels[i],knn,K))
+        grafico_lineas(knn_valores, todos[i], texto_eje_x_kNN, "{} general(en %)".format(y_labels[i]), mk.format(y_labels[i]) + kf.format(K), lk, m, ylim, path="graf_{0}_knn_K{1}.png".format(y_labels[i],K))
 
 #knn sin cross y con pca, fijado el k de knn y variando los alpha:
 #knn con cross y con pca, fijado el k de knn y variando los alpha:
 
 for K in Kfolds:
-    knn = 1
+    knn = 1 #modificar por el optimo si no es.
     
-    # Leemos los promedios de las imagenes de tamaño original y luego las graficamos
+    datos_conPCA_big = leer_promedios_conPCA(carpeta_big_conPCA, esquema_big_conPCA,alphas,knn, K)
+    eje_accuracy_big = []
+    eje_precision_big = []
+    eje_recall_big = []
 
-    # kNN sin PCA
+    for i in sorted(datos_conPCA_big.keys()):
+        eje_accuracy_big.append(datos_conPCA_big[i][1])
+        eje_precision_big.append(datos_conPCA_big[i][2])
+        eje_recall_big.append(datos_conPCA_big[i][3])
 
-    datos_conPCA = leer_promedios_conPCA(carpeta_big_conPCA, esquema_big_conPCA,alphas,knn, K)
-    eje_accuracy = []
-    eje_precision = []
-    eje_recall = []
+    datos_conPCA_red = leer_promedios_conPCA(carpeta_red_conPCA, esquema_red_conPCA,alphas,knn, K)
+    eje_accuracy_red = []
+    eje_precision_red = []
+    eje_recall_red = []
 
-    for i in sorted(datos_conPCA.keys()):
-        eje_accuracy.append(datos_conPCA[i][1])
-        eje_precision.append(datos_conPCA[i][2])
-        eje_recall.append(datos_conPCA[i][3])
+    for i in sorted(datos_conPCA_red.keys()):
+        eje_accuracy_red.append(datos_conPCA_red[i][1])
+        eje_precision_red.append(datos_conPCA_red[i][2])
+        eje_recall_red.append(datos_conPCA_red[i][3])
 
     # Agrupamos los datos y graficamos
     todos = list()
     
-    d = [eje_accuracy, eje_accuracy_conPCA]
+    d = [eje_accuracy_big, eje_accuracy_red]
     todos.append(d)
 
-    d = [eje_precision, eje_precision_conPCA]
+    d = [eje_precision_big, eje_precision_red]
     todos.append(d)
 
-    d = [eje_recall, eje_recall_conPCA]
+    d = [eje_recall_big, eje_recall_red]
     todos.append(d)
 
     for i in range(0, len(d) + 1):
-        grafico_lineas(rango, todos[i], texto_eje_x_kNN, "{} general(en %)".format(y_labels[i]), mt.format(y_labels[i]) + knnkf.format(knn,K), l, m, ylim, path="graf_big_{0}_pca{1}_knn{2}_{3}.png".format(y_labels[i],alpha,knn,K))
+        grafico_lineas(alphas, todos[i], texto_eje_x_kNN, "{} general(en %)".format(y_labels[i]), mt.format(y_labels[i]) + knnkf.format(knn,K), lp, m, ylim, path="graf_{0}_pca_{1}.png".format(y_labels[i],K))
 
-
-
-
-    for i in range(0, len(d) + 1):
-        grafico_lineas(rango, todos[i], texto_eje_x_kNN, "{} general(en %)".format(y_labels[i]), mt.format(y_labels[i]) + knnkf.format(knn,K), l, m, ylim, path="graf_red_{0}_pca{1}_knn{2}_{3}.png".format(y_labels[i],alpha,knn,K))
 
 
 

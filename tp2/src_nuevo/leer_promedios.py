@@ -3,10 +3,10 @@ def leer_promedio(path):
         d = f.readlines()
         d = [i[:-1] for i in d]  # Le saco el newline a las lineas
         tiempo = float(d[1])
-        hitrate = 100*float(d[3])
+        accuracy = 100*float(d[3])
         precision = 100*float(d[5])
         recall = 100*float(d[7])
-    return tiempo, hitrate, precision, recall
+    return tiempo, accuracy, precision, recall
 
 
 def leer_promedios(path_carpeta, esquema_archivo, rango):
