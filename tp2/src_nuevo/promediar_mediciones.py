@@ -12,8 +12,8 @@ k_folds = int(sys.argv[1])
 #metodo = sys.argv[2] #knn - pca
 modos = ["big", "red"]
 knn = [1,3,5,7] #int(sys.argv[3])
-path_resumen_sinPCA = "experimentos/experimento_1/promedio_mediciones_{0}/knn_{4}/promedio_{0}_{1}_K{2}_fold{3}.txt"
-path_resumen_conPCA = "experimentos/experimento_1/promedio_mediciones_{0}/knn_{5}/pca_{3}/promedio_{0}_{1}_K{2}_alpha{3}_fold{4}.txt"
+path_resumen_sinPCA = "experimentos/experimento_1/promedio_mediciones_{0}/knn_{3}/promedio_{0}_{1}_K{2}.txt"
+path_resumen_conPCA = "experimentos/experimento_1/promedio_mediciones_{0}/knn_{4}/pca_{3}/promedio_{0}_{1}_K{2}_alpha{3}.txt"
 #sizes = [20,50,75,100]
 alphas = [0,1,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]
 for m in modos:    
@@ -77,51 +77,52 @@ for m in modos:
                         significado = float(l[1])
                         temp = Promedio_Recall_sujeto[clave]
                         Promedio_Recall_sujeto[clave] = temp + significado 
-                if a == 0:
-                    with open(path_resumen_sinPCA.format(m,"knn",k_folds,j,knn), mode='w') as fw:
-                        fw.write("Promedio de Tiempos(en ticks):\n")  
-                        fw.write("{}\n".format(Promedio_Tiempo[0]/k_folds))
-                        fw.write("Promedio Accuracy general:\n")  
-                        fw.write("{}\n".format(Promedio_Accuracy_general[0]/k_folds))
-                        fw.write("Promedio Precision general:\n")  
-                        fw.write("{}\n".format(Promedio_Precision_general[0]/k_folds))
-                        fw.write("Promedio Recall general:\n")  
-                        fw.write("{}\n".format(Promedio_Recall_general[0]/k_folds))
+            
+            if a == 0:
+                with open(path_resumen_sinPCA.format(m,"knn",k_folds,knn), mode='w') as fw:
+                    fw.write("Promedio de Tiempos(en ticks):\n")  
+                    fw.write("{}\n".format(Promedio_Tiempo[0]/k_folds))
+                    fw.write("Promedio Accuracy general:\n")  
+                    fw.write("{}\n".format(Promedio_Accuracy_general[0]/k_folds))
+                    fw.write("Promedio Precision general:\n")  
+                    fw.write("{}\n".format(Promedio_Precision_general[0]/k_folds))
+                    fw.write("Promedio Recall general:\n")  
+                    fw.write("{}\n".format(Promedio_Recall_general[0]/k_folds))
 
-                        fw.write("Promedio Accuracy por sujeto:\n")
-                        for k in Promedio_Accuracy_sujeto.keys():
-                            fw.write("{0}: {1}\n".format(k,Promedio_Accuracy_sujeto[k]/k_folds))
+                    fw.write("Promedio Accuracy por sujeto:\n")
+                    for k in Promedio_Accuracy_sujeto.keys():
+                        fw.write("{0}: {1}\n".format(k,Promedio_Accuracy_sujeto[k]/k_folds))
 
-                        fw.write("Promedio Precision por sujeto:\n")
-                        for k in Promedio_Precision_sujeto.keys():
-                            fw.write("{0}: {1}\n".format(k,Promedio_Precision_sujeto[k]/k_folds))
+                    fw.write("Promedio Precision por sujeto:\n")
+                    for k in Promedio_Precision_sujeto.keys():
+                        fw.write("{0}: {1}\n".format(k,Promedio_Precision_sujeto[k]/k_folds))
 
-                        fw.write("Promedio Recall por sujeto:\n")
-                        for k in Promedio_Recall_sujeto.keys():
-                            fw.write("{0}: {1}\n".format(k,Promedio_Recall_sujeto[k]/k_folds))
-                else:        
-                    with open(path_resumen_conPCA.format(m,"pca",k_folds, a,j,knn), mode='w') as fw:
-                        fw.write("Promedio de Tiempos(en ticks):\n")  
-                        fw.write("{}\n".format(Promedio_Tiempo[0]/k_folds))
-                        fw.write("Promedio Accuracy general:\n")  
-                        fw.write("{}\n".format(Promedio_Accuracy_general[0]/k_folds))
-                        fw.write("Promedio Precision general:\n")  
-                        fw.write("{}\n".format(Promedio_Precision_general[0]/k_folds))
-                        fw.write("Promedio Recall general:\n")  
-                        fw.write("{}\n".format(Promedio_Recall_general[0]/k_folds))
+                    fw.write("Promedio Recall por sujeto:\n")
+                    for k in Promedio_Recall_sujeto.keys():
+                        fw.write("{0}: {1}\n".format(k,Promedio_Recall_sujeto[k]/k_folds))
+            else:        
+                with open(path_resumen_conPCA.format(m,"pca",k_folds, a,knn), mode='w') as fw:
+                    fw.write("Promedio de Tiempos(en ticks):\n")  
+                    fw.write("{}\n".format(Promedio_Tiempo[0]/k_folds))
+                    fw.write("Promedio Accuracy general:\n")  
+                    fw.write("{}\n".format(Promedio_Accuracy_general[0]/k_folds))
+                    fw.write("Promedio Precision general:\n")  
+                    fw.write("{}\n".format(Promedio_Precision_general[0]/k_folds))
+                    fw.write("Promedio Recall general:\n")  
+                    fw.write("{}\n".format(Promedio_Recall_general[0]/k_folds))
 
-                        fw.write("Promedio Accuracy por sujeto:\n")
-                        for k in Promedio_Accuracy_sujeto.keys():
-                            fw.write("{0}: {1}\n".format(k,Promedio_Accuracy_sujeto[k]/k_folds))
+                    fw.write("Promedio Accuracy por sujeto:\n")
+                    for k in Promedio_Accuracy_sujeto.keys():
+                        fw.write("{0}: {1}\n".format(k,Promedio_Accuracy_sujeto[k]/k_folds))
 
-                        fw.write("Promedio Precision por sujeto:\n")
-                        for k in Promedio_Precision_sujeto.keys():
-                            fw.write("{0}: {1}\n".format(k,Promedio_Precision_sujeto[k]/k_folds))
+                    fw.write("Promedio Precision por sujeto:\n")
+                    for k in Promedio_Precision_sujeto.keys():
+                        fw.write("{0}: {1}\n".format(k,Promedio_Precision_sujeto[k]/k_folds))
 
-                        fw.write("Promedio Recall por sujeto:\n")
-                        for k in Promedio_Recall_sujeto.keys():
-                            fw.write("{0}: {1}\n".format(k,Promedio_Recall_sujeto[k]/k_folds))
-                    
+                    fw.write("Promedio Recall por sujeto:\n")
+                    for k in Promedio_Recall_sujeto.keys():
+                        fw.write("{0}: {1}\n".format(k,Promedio_Recall_sujeto[k]/k_folds))
+                
 
 """
                 #casos k5-k100
