@@ -109,7 +109,7 @@ for K in Kfolds:
     todos.append(d)
 
     for i in range(0, len(d) + 1):
-        grafico_lineas(alphas, todos[i], texto_eje_x_kNN, "{} general(en %)".format(y_labels[i]), mt.format(y_labels[i]) + knnkf.format(knn,K), lp, m, ylim, path="graf_{0}_pca_{1}.png".format(y_labels[i],K))
+        grafico_lineas(alphas, todos[i], texto_eje_x_PCA, "{} general(en %)".format(y_labels[i]), mt.format(y_labels[i]) + knnkf.format(knn,K), lp, m, ylim, path="graf_{0}_pca_{1}.png".format(y_labels[i],K))
 
 
 
