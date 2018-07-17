@@ -1,17 +1,17 @@
 from graficos import grafico_linea, grafico_lineas, grafico_lineas_varios 
 from leer_promedios import leer_promedios, leer_promedios_sinPCA, leer_promedios_conPCA
 
-carpeta_big_sinPCA = "experimentos/experimento_1/promedio_mediciones_big/knn_{0}/"
-carpeta_big_conPCA = "experimentos/experimento_1/promedio_mediciones_big/knn_{0}/"
+carpeta_big_sinPCA = "experimentos/experimento_1/promedio_mediciones_big/knn_{0}/K_{1}/"
+carpeta_big_conPCA = "experimentos/experimento_1/promedio_mediciones_big/knn_{0}/K_{1}/"
                 
-esquema_big_sinPCA = "promedio_bigsize{1}_K{0}_knn{2}.txt"
-esquema_big_conPCA = "promedio_bigsize{1}_K{0}_knn{2}_alpha{3}.txt"
+esquema_big_sinPCA = "promedio_bigsize100_K{0}_knn{1}.txt"
+esquema_big_conPCA = "promedio_bigsize100_K{0}_knn{1}_alpha{2}.txt"
 
-carpeta_red_sinPCA = "experimentos/experimento_1/promedio_mediciones_red/knn_{0}/"
-carpeta_red_conPCA = "experimentos/experimento_1/promedio_mediciones_red/knn_{0}/"
+carpeta_red_sinPCA = "experimentos/experimento_1/promedio_mediciones_red/knn_{0}/K_{1}/"
+carpeta_red_conPCA = "experimentos/experimento_1/promedio_mediciones_red/knn_{0}/K_{1}/"
                 
-esquema_red_sinPCA = "promedio_redsize{1}_K{0}_knn{2}.txt"
-esquema_red_conPCA = "promedio_redsize{1}_K{0}_knn{2}_alpha{3}.txt"
+esquema_red_sinPCA = "promedio_redsize100_K{0}_knn{1}.txt"
+esquema_red_conPCA = "promedio_redsize100_K{0}_knn{1}_alpha{2}.txt"
 
 rango = [1] + list(range(5, 45, 5))
 knn_valores = [1, 3, 5, 7]

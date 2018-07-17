@@ -19,14 +19,14 @@ def leer_promedios(path_carpeta, esquema_archivo, rango):
 def leer_promedios_sinPCA(path_carpeta, esquema_archivo, rango, K):
     res = dict()
     for i in rango:
-        path_archivo = path_carpeta.format(i) + esquema_archivo.format(K)
+        path_archivo = path_carpeta.format(i,K) + esquema_archivo.format(K,i)
         res[i] = leer_promedio(path_archivo)
     return res
 
 def leer_promedios_conPCA(path_carpeta, esquema_archivo, rango, knn, K):
     res = dict()
     for i in rango:
-        path_archivo = path_carpeta.format(knn,i) + esquema_archivo.format(K, i)
+        path_archivo = path_carpeta.format(knn,K) + esquema_archivo.format(K, knn, i)
         res[i] = leer_promedio(path_archivo)
     return res
 
