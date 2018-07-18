@@ -6,7 +6,7 @@ Kfolds = [1,2,3,5,7]
 alphas_PCA = [1] + list(range(5, 45, 5))
 tipo = ["big", "red"]
 modo = ["kNN", "PCA"] #' 4 (ES_CARA)'
-train_sizes = [20,50,75,100]
+train_sizes = [100]
 
 
 comando = "./tp2 -m {0} -i {1} -q {2} -o {3} -k {4} -a {5} -t {6} -r {7} -e"
@@ -26,7 +26,7 @@ for i in tipo:
     for train_size in train_sizes:
         for kfold in Kfolds:
             for k in knn:
-                for fold in range(1, kfold): #intera sobre los folds para hacer crossvalidation.
+                for fold in range(1, kfold+1): #intera sobre los folds para hacer crossvalidation.
                     for m in modo:
                         if m == "PCA":
                             for alpha in alphas_PCA:
