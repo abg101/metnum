@@ -46,7 +46,7 @@ for i in tipo:
                                     print("Tipo imagen: " + i)
                                     print("Valor k de knn: " + str(k))
                                     print("Modo: " + str(m))
-                                    print("Valor alpha de PCA" + str(j))
+                                    print("Valor alpha de PCA" + str(alpha))
                                     print("Fold actual: " + str(fold))
                                     sys.exit(1)
                         else:
