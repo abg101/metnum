@@ -45,16 +45,26 @@ for K in Kfolds:
         eje_precision_big.append(datos_sinPCA_big[i][2])
         eje_recall_big.append(datos_sinPCA_big[i][3])
 
+    datos_sinPCA_red = leer_promedios_sinPCA(carpeta_red_sinPCA, esquema_red_sinPCA,knn_valores, K)
+    eje_accuracy_red = []
+    eje_precision_red = []
+    eje_recall_red = []
+
+    for i in sorted(datos_sinPCA_red.keys()):
+        eje_accuracy_red.append(datos_sinPCA_red[i][1])
+        eje_precision_red.append(datos_sinPCA_red[i][2])
+        eje_recall_red.append(datos_sinPCA_red[i][3])
+
     # Agrupamos los datos y graficamos
     todos = list()
     
-    d = [eje_accuracy_big]#, eje_accuracy_red]
+    d = [eje_accuracy_big, eje_accuracy_red]
     todos.append(d)
 
-    d = [eje_precision_big]#, eje_precision_red]
+    d = [eje_precision_big, eje_precision_red]
     todos.append(d)
 
-    d = [eje_recall_big]#, eje_recall_red]
+    d = [eje_recall_big, eje_recall_red]
     todos.append(d)
 
     for i in range(0, len(d) + 1):
@@ -76,26 +86,16 @@ for K in Kfolds:
         eje_precision_big.append(datos_conPCA_big[i][2])
         eje_recall_big.append(datos_conPCA_big[i][3])
 
-    datos_conPCA_red = leer_promedios_conPCA(carpeta_red_conPCA, esquema_red_conPCA,alphas,knn, K)
-    eje_accuracy_red = []
-    eje_precision_red = []
-    eje_recall_red = []
-
-    for i in sorted(datos_conPCA_red.keys()):
-        eje_accuracy_red.append(datos_conPCA_red[i][1])
-        eje_precision_red.append(datos_conPCA_red[i][2])
-        eje_recall_red.append(datos_conPCA_red[i][3])
-
     # Agrupamos los datos y graficamos
     todos = list()
     
-    d = [eje_accuracy_big, eje_accuracy_red]
+    d = [eje_accuracy_big]#, eje_accuracy_red]
     todos.append(d)
 
-    d = [eje_precision_big, eje_precision_red]
+    d = [eje_precision_big]#, eje_precision_red]
     todos.append(d)
 
-    d = [eje_recall_big, eje_recall_red]
+    d = [eje_recall_big]#, eje_recall_red]
     todos.append(d)
 
     for i in range(0, len(d) + 1):
