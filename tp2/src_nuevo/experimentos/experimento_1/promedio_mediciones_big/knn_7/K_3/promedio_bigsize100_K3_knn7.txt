@@ -5,7 +5,7 @@ Promedio Accuracy general:
 Promedio Precision general:
 0.6971122287
 Promedio Recall general:
-0.7324495344333334
+0.69324495344333334
 Promedio Accuracy por sujeto:
 1: 0.8333333333333334
 2: 0.7314814814666667
