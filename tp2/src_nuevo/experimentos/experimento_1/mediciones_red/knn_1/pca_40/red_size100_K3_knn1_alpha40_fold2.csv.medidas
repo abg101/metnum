@@ -1,11 +1,11 @@
 Tiempo(en ticks):
 131896
 Accuracy general
-0.08943089431
+0.92943089431
 Precision general
-0.1473867596
+0.9473867596
 Recall general
-0.08617886179
+0.917886179
 Accuracy por sujeto
 1: 0.125
 2: 0.25
