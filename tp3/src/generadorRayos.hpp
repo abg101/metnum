@@ -77,8 +77,8 @@ tuple< double, Matriz<double> > simularRayo(Matriz<double> imagen, int n, int m,
 
 	int i1 = pj.evaluar(0);
 	int i2 = pj.evaluar(columnas-1);
-    int i_min = std::max(0, std::min(filas-1, std::min(i1,i2)));
-    int i_max = std::max(0, std::min(filas-1, std::max(i1,i2)));
+    int i_min = std::max(0, std::min(filas-1, std::min(i1,i2))); //cambie el 1 por un 0
+    int i_max = std::max(0, std::min(filas-1, std::max(i1,i2))); //cambie el 1 por un 0
 
 	// recorro cada fila (entre i_min e i_max) y veo que columnas toca el rayo
 
@@ -86,8 +86,8 @@ tuple< double, Matriz<double> > simularRayo(Matriz<double> imagen, int n, int m,
 	{
 		int j1 = pi.evaluar(i-1);
 		int j2 = pi.evaluar(i);
-		int j_min = std::max(1, std::min(columnas-1, (int) std::ceil(std::min(j1,j2))));
-		int j_max = std::max(1, std::min(columnas-1, (int) std::ceil(std::max(j1,j2))));
+		int j_min = std::max(0, std::min(columnas-1, (int) std::ceil(std::min(j1,j2)))); //cambie el 1 por un 0
+		int j_max = std::max(0, std::min(columnas-1, (int) std::ceil(std::max(j1,j2)))); //cambie el 1 por un 0
 		for(int j = j_min; j <= j_max; j++)
 		{
 			t += imagen[i][j] + 1;
@@ -107,7 +107,7 @@ tuple< Matriz<double>, Matriz<double> > generarRayos(Matriz<double> imagen, int 
 	int columnas = imagen.columnas();
 	Matriz<double> rayos(k, n*m,0);
 	Matriz<double> tiempos(k, 1);
-	int p = std::trunc(m/20);
+	int p = std::trunc(k/20); //estaba puesto m/20, lo cambie por k/20 como en el taller
 	for(int i = 0; i < k; i++)
 	{
 		//sale y entra resultan siempre distintos
