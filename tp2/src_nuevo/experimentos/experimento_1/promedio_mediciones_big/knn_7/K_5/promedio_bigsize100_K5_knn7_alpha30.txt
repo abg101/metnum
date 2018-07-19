@@ -1,11 +1,11 @@
 Promedio de Tiempos(en ticks):
 3421679.2
 Promedio Accuracy general:
-0.6205849685399999
+0.86205849685399999
 Promedio Precision general:
-0.660698051
+0.8360698051
 Promedio Recall general:
-0.66856061944
+0.846856061944
 Promedio Accuracy por sujeto:
 1: 0.8
 2: 0.66333333334
