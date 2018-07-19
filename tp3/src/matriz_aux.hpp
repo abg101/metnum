@@ -274,6 +274,7 @@ Matriz<double> resolver_sistema_pivot(const Matriz<double>& ab)
    Matriz<double> copy = Matriz<double>(ab);
    double mayor; 
    int fil_mayor;
+         
    for(int i = 0;i < copy.filas();i++)
    {
 
@@ -288,7 +289,9 @@ Matriz<double> resolver_sistema_pivot(const Matriz<double>& ab)
           }
       }
 //      assert(mayor == 0.0); //el sistema no tiene soucion unica
-
+      if(mayor == 0.0){
+        continue;
+      }
       if(fil_mayor != i)
       {
         double aux;
@@ -299,7 +302,6 @@ Matriz<double> resolver_sistema_pivot(const Matriz<double>& ab)
           copy[i][j] = aux;
         }
       }
-
       Matriz<double> m = unos(copy.filas(),copy.columnas()); //VER ESTO      
       for(int j = i+1; j < copy.columnas()-1;j++) //revisar
       {
@@ -310,6 +312,7 @@ Matriz<double> resolver_sistema_pivot(const Matriz<double>& ab)
         }
   
       }
+
   }
   
   incognitas = resolver_sistema(copy);
