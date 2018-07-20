@@ -93,6 +93,19 @@ void mostrar_vec_como_matriz(const Matriz<double>& a,int cant_col)
 
 }
 
+bool es_ts(const Matriz<double>& a){
+  for(int i = 0;i < a.filas();i++)
+  {
+    for(int j = 0;j <a.columnas();j++)
+    {
+    if(!comp_doubles_epsilon(a[i][j],0,0.0000001))
+      if(j < i){
+        return false;
+      }
+    }
+  }
+  return true; 
+}
 //Muestra una matriz, ignorando las posiciones que valen 0.
 //Los elementos mostrados tienen la forma (valor_elemento, columna_elemento)
 void mostrar_matriz_sin_ceros(const Matriz<double>& a)
@@ -274,14 +287,17 @@ Matriz<double> resolver_sistema_pivot(const Matriz<double>& ab)
    Matriz<double> copy = Matriz<double>(ab);
    double mayor; 
    int fil_mayor;
-         
-   for(int i = 0;i < copy.filas();i++)
+   int filas = copy.filas();
+   if(filas > copy.columnas()){
+    filas = copy.columnas();
+   } 
+   for(int i = 0;i < filas;i++)
    {
 
       mayor = std::abs(copy[i][i]);
       fil_mayor = i;
 
-      for(int j = i+1;j < copy.columnas()-1;j++)
+      for(int j = i+1;j < copy.filas();j++)
       {
           if( std::abs(copy[j][i]) > mayor ){
             mayor = std::abs(copy[j][i]);
@@ -302,8 +318,9 @@ Matriz<double> resolver_sistema_pivot(const Matriz<double>& ab)
           copy[i][j] = aux;
         }
       }
+//      cout << "copy :\n" << copy << endl;
       Matriz<double> m = unos(copy.filas(),copy.columnas()); //VER ESTO      
-      for(int j = i+1; j < copy.columnas()-1;j++) //revisar
+      for(int j = i+1; j < copy.filas();j++) //revisar
       {
         m[j][i] = copy[j][i] / copy[i][i];  
         for (int k = i; k < copy.columnas(); k++)
@@ -314,7 +331,10 @@ Matriz<double> resolver_sistema_pivot(const Matriz<double>& ab)
       }
 
   }
-  
+  bool ts = es_ts(copy);
+  cout << "es ts? :\n " << ts << endl;
+  //mostrar_matriz_sin_ceros(copy);
+  //cout << "MATRIZ DSP DE PIVOTEAR :\n " << copy << endl;  
   incognitas = resolver_sistema(copy);
   return incognitas;
 }
@@ -361,48 +381,6 @@ Matriz<double> gen_matriz_random(int filas, int columnas, int modulo)
 }
 
 
-
-/*
-Para k=1:n-1
-  Mayor= |Ab(k,k)|;
-  Fila mayor= k;
-  Para f=k+1: n
-    Si |Ab(f,k)|&gt;mayor
-      Mayor = |Ab(f,k)|;
-      Fila mayor=f;
-    Fin si
-  Fin para
-
-  Si mayor == 0
-    Muestre “El sistema no tiene una solución única”
-  Fin si
-
-  Si fm~=k
-    Para r=k: n+1
-      aux=Ab(fm,r);
-      Ab(fm,r)= Ab( k, r);
-      Ab(k,r)=aux;
-    Fin para
-  Fin si
-
-  Para i =k+1:n
-    m( i , k )= Ab( i , k )/ Ab( k , k );
-    Para j=k:n+1
-      Ab( i , j )= Ab( i , j) - m( i , k)*Ab( k , j );
-    Fin para
-  Fin para
-Fin para
-  Imprima Ab
-
-Para i=n:-1:1
-  Suma =0;
-  Para j=i+1:n
-    Suma =suma+ Ab( i , j )*x( j ,1 );
-  Fin para
-  x( i , 1 )=( Ab( i , n+1 ) - suma)/Ab( i , i );
-Fin para
-
-*/
 
 
 #endif
