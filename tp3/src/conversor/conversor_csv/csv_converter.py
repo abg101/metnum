@@ -64,5 +64,5 @@ for file in myFileList:
             for v in value:
                 writer.writerow(v)
     else: # any other supported image file format
-        with open(output_folder + file.replace(extension, "").replace(input_folder, "") + extension_salida, 'w') as f:
-            img_grey.save(f)
+        f = output_folder + file.replace(extension, "").replace(input_folder, "") + extension_salida
+        img_grey.save(f)
